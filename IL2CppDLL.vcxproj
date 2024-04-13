@@ -50,7 +50,7 @@
     <ClCompile Include="include\Minhook\src\HDE\hde64.cpp" />
     <ClCompile Include="include\Minhook\src\hook.cpp" />
     <ClCompile Include="include\Minhook\src\trampoline.cpp" />
-    <ClCompile Include="lib\object.cpp" />
+    <ClCompile Include="lib\ClientHelper.cpp" />
     <ClCompile Include="lib\wrapper.cpp" />
     <ClCompile Include="user\features\menu.cpp" />
     <ClCompile Include="user\hooks\hooks.cpp" />
@@ -85,7 +85,7 @@
     <ClInclude Include="include\Minhook\src\HDE\table32.h" />
     <ClInclude Include="include\Minhook\src\HDE\table64.h" />
     <ClInclude Include="include\Minhook\src\trampoline.h" />
-    <ClInclude Include="lib\object.h" />
+    <ClInclude Include="lib\ClientHelper.h" />
     <ClInclude Include="lib\wrapper.h" />
     <ClInclude Include="user\features\menu.hpp" />
     <ClInclude Include="user\hooks\hooks.hpp" />

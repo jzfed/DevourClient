@@ -19,9 +19,6 @@
     <ClCompile Include="lib\wrapper.cpp">
       <Filter>lib</Filter>
     </ClCompile>
-    <ClCompile Include="lib\object.cpp">
-      <Filter>lib</Filter>
-    </ClCompile>
     <ClCompile Include="include\imgui\imgui.cpp">
       <Filter>include\imgui</Filter>
     </ClCompile>
@@ -67,6 +64,9 @@
     <ClCompile Include="user\settings\settings.cpp">
       <Filter>user\settings</Filter>
     </ClCompile>
+    <ClCompile Include="lib\ClientHelper.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="user\main.h">
@@ -103,9 +103,6 @@
       <Filter>framework</Filter>
     </ClInclude>
     <ClInclude Include="lib\wrapper.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\object.h">
       <Filter>lib</Filter>
     </ClInclude>
     <ClInclude Include="include\imgui\imconfig.h">
@@ -167,6 +164,9 @@
     </ClInclude>
     <ClInclude Include="user\settings\settings.hpp">
       <Filter>user\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ClientHelper.h">
+      <Filter>lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
