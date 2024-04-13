@@ -18,6 +18,13 @@
 // Set the name of your log file here
 extern const LPCWSTR LOG_FILE = L"DevourClient.txt";
 
+HMODULE myhModule = NULL;
+DWORD __stdcall EjectThread(LPVOID lpParameter) {
+    Sleep(100);
+	il2cpp_close_console();
+    FreeLibraryAndExitThread(myhModule, 0); //Freeing the module, that's why we needed the myhModule variable
+}
+
 // Custom injected code entry point
 void Run()
 {
@@ -38,6 +45,9 @@ void Run()
 
 		}
 
+		if (GetAsyncKeyState(VK_END) & 0x8000)
+			break;
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
+	CreateThread(0, 0, EjectThread, 0, 0, 0);
 }

@@ -3,5 +3,7 @@
 
 #pragma once
 
+extern HMODULE myhModule;
+
 // Custom injected code entry point
 void Run();
