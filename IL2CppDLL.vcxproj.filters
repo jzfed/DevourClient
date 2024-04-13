@@ -67,6 +67,9 @@
     <ClCompile Include="lib\ClientHelper.cpp">
       <Filter>lib</Filter>
     </ClCompile>
+    <ClCompile Include="user\utils\utils.cpp">
+      <Filter>user\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="user\main.h">
@@ -168,6 +171,9 @@
     <ClInclude Include="lib\ClientHelper.h">
       <Filter>lib</Filter>
     </ClInclude>
+    <ClInclude Include="user\utils\utils.hpp">
+      <Filter>user\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="appdata">
@@ -199,6 +205,9 @@
     </Filter>
     <Filter Include="user\settings">
       <UniqueIdentifier>{64867ae6-a574-4a01-ac5f-22a732ca25e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="user\utils">
+      <UniqueIdentifier>{05b8437a-8e9b-425b-acbc-3dd8bca051c3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

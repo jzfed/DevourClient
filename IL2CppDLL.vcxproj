@@ -56,6 +56,7 @@
     <ClCompile Include="user\hooks\hooks.cpp" />
     <ClCompile Include="user\main.cpp" />
     <ClCompile Include="user\settings\settings.cpp" />
+    <ClCompile Include="user\utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="appdata\il2cpp-api-functions.h" />
@@ -91,6 +92,7 @@
     <ClInclude Include="user\hooks\hooks.hpp" />
     <ClInclude Include="user\main.h" />
     <ClInclude Include="user\settings\settings.hpp" />
+    <ClInclude Include="user\utils\utils.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <!--<VCProjectVersion>16.0</VCProjectVersion>-->

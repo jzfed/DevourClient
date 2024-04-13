@@ -2,6 +2,7 @@
 #include "Hooks.hpp"
 #include "../features/menu.hpp"
 #include "../main.h"
+#include "../utils/utils.hpp"
 
 #include <iostream>
 #include "helpers.h"
@@ -39,8 +40,7 @@ TDebug_2_Log oDebug_2_Log = NULL;
 TDebug_2_Log oDebug_2_Warning = NULL;
 TDebug_2_Log oDebug_2_Error = NULL;
 void __stdcall hDebug_Log(app::Object* message, MethodInfo* method) {
-	std::string log = il2cppi_to_string(app::Object_ToString(message, nullptr));
-	std::cout << log << "\n";
+	std::cout << ToString(message) << std::endl;
 }
 
 void CreateHooks() {
