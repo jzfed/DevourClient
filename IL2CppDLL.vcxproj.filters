@@ -70,6 +70,9 @@
     <ClCompile Include="user\utils\utils.cpp">
       <Filter>user\utils</Filter>
     </ClCompile>
+    <ClCompile Include="user\features\misc\misc.cpp">
+      <Filter>user\features\misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="user\main.h">
@@ -174,6 +177,9 @@
     <ClInclude Include="user\utils\utils.hpp">
       <Filter>user\utils</Filter>
     </ClInclude>
+    <ClInclude Include="user\features\misc\misc.h">
+      <Filter>user\features\misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="appdata">
@@ -208,6 +214,9 @@
     </Filter>
     <Filter Include="user\utils">
       <UniqueIdentifier>{05b8437a-8e9b-425b-acbc-3dd8bca051c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="user\features\misc">
+      <UniqueIdentifier>{116f67d1-9398-4156-8fe3-93de590b3c57}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
