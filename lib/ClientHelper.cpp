@@ -1,7 +1,6 @@
 ﻿#include "pch-il2cpp.h"
 
 #include "ClientHelper.h"
-#include <iostream>
 
 bool IsSinglePlayer()
 {
@@ -17,3 +16,4 @@ bool IsHost()
 {
 	return app::BoltNetwork_get_IsServer(NULL);
 }
+

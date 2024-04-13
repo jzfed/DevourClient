@@ -3,6 +3,9 @@
 #include "../features/menu.hpp"
 #include "../main.h"
 
+#include <iostream>
+#include "helpers.h"
+
 #pragma warning(push, 0) //important cuz dx11 throws so much warnings
 #include <d3d11.h>
 #pragma warning(pop)
@@ -31,6 +34,29 @@
     }
 */
 
+void hDebug_Log(app::Object* message, MethodInfo* method) {
+	std::cout << "Debug_Log hooked\n";
+
+	std::cout << il2cppi_to_string(app::Object_ToString(message, nullptr)) << "\n";
+
+	app::Debug_2_Log(message, method);
+}
+
+void hDebug_LogError(app::Object* message, MethodInfo* method) {
+	std::cout << "Debug.LogError hooked\n";
+
+	std::cout << il2cppi_to_string(app::Object_ToString(message, nullptr)) << "\n";
+
+	app::Debug_2_LogError(message, method);
+}
+
+void hDebug_LogWarning(app::Object* message, MethodInfo* method) {
+	std::cout << "Debug_LogWarning hooked\n";
+
+	std::cout << il2cppi_to_string(app::Object_ToString(message, nullptr)) << "\n";
+
+	app::Debug_2_LogWarning(message, method);
+}
 
 void CreateHooks() {
 	/*
@@ -40,6 +66,52 @@ void CreateHooks() {
 	//We can store the original pointer to the original function into test_org if we want to call the org later --> trampoline hook
 	//original_sum can be NULL if we don't want to trampoline hook
 	*/
+
+	// Create the hook for Debug_Log
+	MH_STATUS status_Debug_Log = MH_CreateHook((LPVOID*)app::Debug_2_Log, &hDebug_Log, reinterpret_cast<LPVOID*>(&app::Debug_2_Log));
+	if (status_Debug_Log != MH_OK) {
+		std::cout << "Failed to create Debug_Log hook: " << MH_StatusToString(status_Debug_Log) << std::endl;
+		return;
+	}
+	else {
+		std::cout << "FMH_CreateHook: Debug_Log\n";
+	}
+
+	// Enable the hook for Debug_Log
+	MH_STATUS enable_status_Debug_Log = MH_EnableHook((LPVOID*)app::Debug_2_Log);
+	if (enable_status_Debug_Log != MH_OK) {
+		std::cout << "Failed to enable Debug_Log hook: " << MH_StatusToString(enable_status_Debug_Log) << std::endl;
+		return;
+	}
+
+	// Create the hook for Debug_Error
+	MH_STATUS status_Debug_Error = MH_CreateHook((LPVOID*)app::Debug_2_LogError, &hDebug_LogError, reinterpret_cast<LPVOID*>(&app::Debug_2_LogError));
+	if (status_Debug_Error != MH_OK) {
+		std::cout << "Failed to create Debug_LogError hook: " << MH_StatusToString(status_Debug_Error) << std::endl;
+		return;
+	}
+
+	// Enable the hook for Debug_Log
+	MH_STATUS enable_status_Debug_Error = MH_EnableHook((LPVOID*)app::Debug_2_LogError);
+	if (enable_status_Debug_Log != MH_OK) {
+		std::cout << "Failed to enable Debug_Error hook: " << MH_StatusToString(enable_status_Debug_Error) << std::endl;
+		return;
+	}
+
+
+	// Create the hook for Debug_Warning
+	MH_STATUS status_Debug_Warning = MH_CreateHook((LPVOID*)app::Debug_2_LogWarning, &hDebug_LogWarning, reinterpret_cast<LPVOID*>(&app::Debug_2_LogWarning));
+	if (status_Debug_Error != MH_OK) {
+		std::cout << "Failed to create Debug_LogError hook: " << MH_StatusToString(status_Debug_Warning) << std::endl;
+		return;
+	}
+
+	// Enable the hook for Debug_Log
+	MH_STATUS enable_status_Debug_Warning = MH_EnableHook((LPVOID*)app::Debug_2_LogWarning);
+	if (enable_status_Debug_Log != MH_OK) {
+		std::cout << "Failed to enable Debug_Warning hook: " << MH_StatusToString(enable_status_Debug_Warning) << std::endl;
+		return;
+	}
 }
 
 typedef HRESULT(__stdcall* D3D11PresentHook) (IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags);

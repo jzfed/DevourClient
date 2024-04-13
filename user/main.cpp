@@ -13,7 +13,7 @@
 #include <thread>
 
 #include "wrapper.h"
-#include "object.h"
+#include "ClientHelper.h"
 
 #include "hooks/hooks.hpp"
 
@@ -49,6 +49,9 @@ void Run()
 		CreateThread(0, 0, EjectThread, 0, 0, 0); //Unhooking
 		return;
 	}
+
+	CreateHooks();
+	
 	if (HookDX11()) {
 		il2cppi_log_write("DirectX11 hooked");
 	}
@@ -58,18 +61,12 @@ void Run()
 		return;
 	}
 
-	Wrapper* wrapper = new Wrapper();
 
 	while (true) {
-		if (GetAsyncKeyState(VK_F1) & 0x8000) {
-			
-
-		}
-
 		if (GetAsyncKeyState(VK_END) & 0x8000 || should_unhook)
 			break;
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+		std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 	}
 	CreateThread(0, 0, EjectThread, 0, 0, 0);
 }
