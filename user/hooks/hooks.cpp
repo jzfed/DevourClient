@@ -57,7 +57,6 @@ void __stdcall hNolanBehaviour_OnAttributeUpdateValue(app::NolanBehaviour* __thi
 // DO_APP_FUNC(0x005E5E10, bool, OptionsHelpers_IsRobeUnlocked, (OptionsHelpers * __this, String * robe, String * character, MethodInfo * method));
 typedef bool(__stdcall* TOptionsHelpers_IsRobeUnlocked)(app::OptionsHelpers*, app::String*, app::String*, MethodInfo*);
 TOptionsHelpers_IsRobeUnlocked oOptionsHelpers_IsRobeUnlocked = NULL;
-
 bool __stdcall hOptionsHelpers_IsRobeUnlocked(app::OptionsHelpers* __this, app::String* robe, app::String* character, MethodInfo* method) {
 
 	if (settings::unlock_all)
@@ -76,6 +75,17 @@ bool __stdcall hOptionsHelpers_IsCharacterUnlocked(app::OptionsHelpers* __this, 
 		return true;
 
 	return oOptionsHelpers_IsCharacterUnlocked(__this, prefab, method);
+}
+
+typedef app::RankHelpers_ExpGainInfo* (__stdcall* TRankHelpers_CalculateExpGain)(app::RankHelpers*, int32_t, int32_t, app::GameConfigToken*, MethodInfo*);
+TRankHelpers_CalculateExpGain oRankHelpers_CalculateExpGain = NULL;
+app::RankHelpers_ExpGainInfo* __stdcall hRankHelpers_CalculateExpGain(app::RankHelpers* __this, int32_t mapProgress, int32_t numAwards, app::GameConfigToken* gameConfigToken, MethodInfo* method) {
+	app::RankHelpers_ExpGainInfo* gain = oRankHelpers_CalculateExpGain(__this, mapProgress, numAwards, gameConfigToken, method);
+
+	if (settings::exp_modifier) {
+		gain->fields.totalExp = settings::new_exp;
+	}
+	return gain;
 }
 
 void CreateHooks() {
@@ -105,6 +115,11 @@ void CreateHooks() {
 	MH_STATUS status_uv = MH_CreateHook((LPVOID*)app::NolanBehaviour_OnAttributeUpdateValue , &hNolanBehaviour_OnAttributeUpdateValue, reinterpret_cast<LPVOID*>(&oNolanBehaviour_OnAttributeUpdateValue));
 	if (status_uv != MH_OK) {
 		std::cout << "Failed to create uv hook: " << MH_StatusToString(status_uv) << std::endl;
+		return;
+	}
+	MH_STATUS status_xp = MH_CreateHook((LPVOID*)app::RankHelpers_CalculateExpGain , &hRankHelpers_CalculateExpGain, reinterpret_cast<LPVOID*>(&oRankHelpers_CalculateExpGain));
+	if (status_uv != MH_OK) {
+		std::cout << "Failed to create xp hook: " << MH_StatusToString(status_xp) << std::endl;
 		return;
 	}
 	MH_STATUS enable_status_Debug_Log = MH_EnableHook(MH_ALL_HOOKS);
