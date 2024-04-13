@@ -68,7 +68,6 @@ bool __stdcall hOptionsHelpers_IsRobeUnlocked(app::OptionsHelpers* __this, app::
 // DO_APP_FUNC(0x005E44C0, bool, OptionsHelpers_IsCharacterUnlocked, (OptionsHelpers * __this, String * prefab, MethodInfo * method));
 typedef bool(__stdcall* TOptionsHelpers_IsCharacterUnlocked)(app::OptionsHelpers*, app::String* , MethodInfo*);
 TOptionsHelpers_IsCharacterUnlocked oOptionsHelpers_IsCharacterUnlocked = NULL;
-
 bool __stdcall hOptionsHelpers_IsCharacterUnlocked(app::OptionsHelpers* __this, app::String* prefab, MethodInfo* method) {
 
 	if (settings::unlock_all)
@@ -122,11 +121,6 @@ void CreateHooks() {
 		std::cout << "Failed to create xp hook: " << MH_StatusToString(status_xp) << std::endl;
 		return;
 	}
-	MH_STATUS enable_status_Debug_Log = MH_EnableHook(MH_ALL_HOOKS);
-	if (enable_status_Debug_Log != MH_OK) {
-		std::cout << "Failed to enable hooks: " << MH_StatusToString(enable_status_Debug_Log) << std::endl;
-		return;
-	}
 	MH_STATUS status_robe = MH_CreateHook((LPVOID*)app::OptionsHelpers_IsRobeUnlocked, &hOptionsHelpers_IsRobeUnlocked, reinterpret_cast<LPVOID*>(&oOptionsHelpers_IsRobeUnlocked));
 	if (status_robe != MH_OK) {
 		std::cout << "Failed to create robe hook: " << MH_StatusToString(status_robe) << std::endl;
@@ -135,6 +129,11 @@ void CreateHooks() {
 	MH_STATUS status_characterUnlock = MH_CreateHook((LPVOID*)app::OptionsHelpers_IsCharacterUnlocked, &hOptionsHelpers_IsCharacterUnlocked, reinterpret_cast<LPVOID*>(&oOptionsHelpers_IsCharacterUnlocked));
 	if (status_characterUnlock != MH_OK) {
 		std::cout << "Failed to create character unlock hook: " << MH_StatusToString(status_characterUnlock) << std::endl;
+		return;
+	}
+	MH_STATUS enable_status_Debug_Log = MH_EnableHook(MH_ALL_HOOKS);
+	if (enable_status_Debug_Log != MH_OK) {
+		std::cout << "Failed to enable hooks: " << MH_StatusToString(enable_status_Debug_Log) << std::endl;
 		return;
 	}
 }
