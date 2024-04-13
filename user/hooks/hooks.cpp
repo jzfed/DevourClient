@@ -1,6 +1,7 @@
 #include "pch-il2cpp.h"
 #include "Hooks.hpp"
 #include "../features/menu.hpp"
+#include "../settings/settings.hpp"
 #include "../main.h"
 #include "../utils/utils.hpp"
 
@@ -41,6 +42,16 @@ TDebug_2_Log oDebug_2_Warning = NULL;
 TDebug_2_Log oDebug_2_Error = NULL;
 void __stdcall hDebug_Log(app::Object* message, MethodInfo* method) {
 	std::cout << ToString(message) << std::endl;
+	il2cppi_log_write(ToString(message));
+}
+
+typedef void(__stdcall* TNolanBehaviour_OnAttributeUpdateValue)(app::NolanBehaviour*, app::Attribute_1*, MethodInfo*);
+TNolanBehaviour_OnAttributeUpdateValue oNolanBehaviour_OnAttributeUpdateValue = NULL;
+void __stdcall hNolanBehaviour_OnAttributeUpdateValue(app::NolanBehaviour* __this, app::Attribute_1* attribute, MethodInfo* method) {
+	if (settings::unlimited_uv && strcmp(il2cppi_to_string(attribute->fields.m_Name).c_str(), "Battery") == 0) {
+		attribute->fields.m_Value = 100.0f;
+	}
+	oNolanBehaviour_OnAttributeUpdateValue(__this, attribute, method);
 }
 
 void CreateHooks() {
@@ -67,9 +78,14 @@ void CreateHooks() {
 		std::cout << "Failed to create Debug_LogWarning hook: " << MH_StatusToString(status_Debug_Log) << std::endl;
 		return;
 	}
+	MH_STATUS status_uv = MH_CreateHook((LPVOID*)app::NolanBehaviour_OnAttributeUpdateValue , &hNolanBehaviour_OnAttributeUpdateValue, reinterpret_cast<LPVOID*>(&oNolanBehaviour_OnAttributeUpdateValue));
+	if (status_uv != MH_OK) {
+		std::cout << "Failed to create uv hook: " << MH_StatusToString(status_uv) << std::endl;
+		return;
+	}
 	MH_STATUS enable_status_Debug_Log = MH_EnableHook(MH_ALL_HOOKS);
 	if (enable_status_Debug_Log != MH_OK) {
-		std::cout << "Failed to enable Debug_Warning hook: " << MH_StatusToString(enable_status_Debug_Log) << std::endl;
+		std::cout << "Failed to enable hooks: " << MH_StatusToString(enable_status_Debug_Log) << std::endl;
 		return;
 	}
 }
