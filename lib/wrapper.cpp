@@ -48,5 +48,19 @@ const Il2CppImage* Wrapper::GetImage(const char* _assembly) {
 
 Il2CppObject* Wrapper::GetObjectFromClass(const Il2CppImage* _image, const char* _namespaze, const char* _name)
 {
+	Il2CppClass* _class = il2cpp_class_from_name(_image, _namespaze, _name);
+
+	if (_class) {
+		const Il2CppType* _type = il2cpp_class_get_type(_class);
+
+		if (_type) {
+			Il2CppObject* _object = il2cpp_type_get_object(_type);
+
+			if (_object) {
+				return _object;
+			}
+		}
+	}
+
 	return nullptr;
 }
