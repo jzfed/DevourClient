@@ -34,28 +34,13 @@
     }
 */
 
-void hDebug_Log(app::Object* message, MethodInfo* method) {
-	std::cout << "Debug_Log hooked\n";
-
-	std::cout << il2cppi_to_string(app::Object_ToString(message, nullptr)) << "\n";
-
-	app::Debug_2_Log(message, method);
-}
-
-void hDebug_LogError(app::Object* message, MethodInfo* method) {
-	std::cout << "Debug.LogError hooked\n";
-
-	std::cout << il2cppi_to_string(app::Object_ToString(message, nullptr)) << "\n";
-
-	app::Debug_2_LogError(message, method);
-}
-
-void hDebug_LogWarning(app::Object* message, MethodInfo* method) {
-	std::cout << "Debug_LogWarning hooked\n";
-
-	std::cout << il2cppi_to_string(app::Object_ToString(message, nullptr)) << "\n";
-
-	app::Debug_2_LogWarning(message, method);
+typedef void(__stdcall* TDebug_2_Log)(app::Object *, MethodInfo *);
+TDebug_2_Log oDebug_2_Log = NULL;
+TDebug_2_Log oDebug_2_Warning = NULL;
+TDebug_2_Log oDebug_2_Error = NULL;
+void __stdcall hDebug_Log(app::Object* message, MethodInfo* method) {
+	std::string log = il2cppi_to_string(app::Object_ToString(message, nullptr));
+	std::cout << log << "\n";
 }
 
 void CreateHooks() {
@@ -67,49 +52,24 @@ void CreateHooks() {
 	//original_sum can be NULL if we don't want to trampoline hook
 	*/
 
-	// Create the hook for Debug_Log
-	MH_STATUS status_Debug_Log = MH_CreateHook((LPVOID*)app::Debug_2_Log, &hDebug_Log, reinterpret_cast<LPVOID*>(&app::Debug_2_Log));
+	MH_STATUS status_Debug_Log = MH_CreateHook((LPVOID*)app::Debug_2_Log, &hDebug_Log, reinterpret_cast<LPVOID*>(&oDebug_2_Log));
 	if (status_Debug_Log != MH_OK) {
 		std::cout << "Failed to create Debug_Log hook: " << MH_StatusToString(status_Debug_Log) << std::endl;
 		return;
 	}
-	else {
-		std::cout << "FMH_CreateHook: Debug_Log\n";
+	status_Debug_Log = MH_CreateHook((LPVOID*)app::Debug_2_LogError, &hDebug_Log, reinterpret_cast<LPVOID*>(&oDebug_2_Error));
+	if (status_Debug_Log != MH_OK) {
+		std::cout << "Failed to create Debug_LogError hook: " << MH_StatusToString(status_Debug_Log) << std::endl;
+		return;
 	}
-
-	// Enable the hook for Debug_Log
-	MH_STATUS enable_status_Debug_Log = MH_EnableHook((LPVOID*)app::Debug_2_Log);
+	status_Debug_Log = MH_CreateHook((LPVOID*)app::Debug_2_LogWarning, &hDebug_Log, reinterpret_cast<LPVOID*>(&oDebug_2_Warning));
+	if (status_Debug_Log != MH_OK) {
+		std::cout << "Failed to create Debug_LogWarning hook: " << MH_StatusToString(status_Debug_Log) << std::endl;
+		return;
+	}
+	MH_STATUS enable_status_Debug_Log = MH_EnableHook(MH_ALL_HOOKS);
 	if (enable_status_Debug_Log != MH_OK) {
-		std::cout << "Failed to enable Debug_Log hook: " << MH_StatusToString(enable_status_Debug_Log) << std::endl;
-		return;
-	}
-
-	// Create the hook for Debug_Error
-	MH_STATUS status_Debug_Error = MH_CreateHook((LPVOID*)app::Debug_2_LogError, &hDebug_LogError, reinterpret_cast<LPVOID*>(&app::Debug_2_LogError));
-	if (status_Debug_Error != MH_OK) {
-		std::cout << "Failed to create Debug_LogError hook: " << MH_StatusToString(status_Debug_Error) << std::endl;
-		return;
-	}
-
-	// Enable the hook for Debug_Log
-	MH_STATUS enable_status_Debug_Error = MH_EnableHook((LPVOID*)app::Debug_2_LogError);
-	if (enable_status_Debug_Log != MH_OK) {
-		std::cout << "Failed to enable Debug_Error hook: " << MH_StatusToString(enable_status_Debug_Error) << std::endl;
-		return;
-	}
-
-
-	// Create the hook for Debug_Warning
-	MH_STATUS status_Debug_Warning = MH_CreateHook((LPVOID*)app::Debug_2_LogWarning, &hDebug_LogWarning, reinterpret_cast<LPVOID*>(&app::Debug_2_LogWarning));
-	if (status_Debug_Error != MH_OK) {
-		std::cout << "Failed to create Debug_LogError hook: " << MH_StatusToString(status_Debug_Warning) << std::endl;
-		return;
-	}
-
-	// Enable the hook for Debug_Log
-	MH_STATUS enable_status_Debug_Warning = MH_EnableHook((LPVOID*)app::Debug_2_LogWarning);
-	if (enable_status_Debug_Log != MH_OK) {
-		std::cout << "Failed to enable Debug_Warning hook: " << MH_StatusToString(enable_status_Debug_Warning) << std::endl;
+		std::cout << "Failed to enable Debug_Warning hook: " << MH_StatusToString(enable_status_Debug_Log) << std::endl;
 		return;
 	}
 }
