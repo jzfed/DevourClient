@@ -87,6 +87,54 @@ app::RankHelpers_ExpGainInfo* __stdcall hRankHelpers_CalculateExpGain(app::RankH
 	return gain;
 }
 
+typedef app::UIPerkSelectionType* (__stdcall* TMenu_SetupPerk)(app::Menu*, app::CharacterPerk*, MethodInfo*);
+TMenu_SetupPerk oMenu_SetupPerk = NULL;
+app::UIPerkSelectionType* __stdcall hMenu_SetupPerk(app::Menu* __this, app::CharacterPerk* perk, MethodInfo* method) {
+	if (settings::unlock_all) {
+		perk->fields.cost = 0;
+		perk->fields.isOwned = true;
+		perk->fields.isHidden = false;
+	}
+	return oMenu_SetupPerk(__this, perk, method);
+}
+
+typedef app::UIOutfitSelectionType* (__stdcall* TMenu_SetupOutfit)(app::Menu*, app::CharacterOutfit*, MethodInfo*);
+TMenu_SetupOutfit oMenu_SetupOutfit = NULL;
+app::UIOutfitSelectionType* __stdcall hMenu_SetupOutfit(app::Menu* __this, app::CharacterOutfit* outfit, MethodInfo* method) {
+	if (settings::unlock_all) {
+		outfit->fields.isHidden = false;
+		outfit->fields.isOwned = true;
+		outfit->fields.isSupporter = true;
+	}
+	return oMenu_SetupOutfit(__this, outfit, method);
+}
+
+typedef app::UIFlashlightSelectionType* (__stdcall* TMenu_SetupFlashlight)(app::Menu*, app::CharacterFlashlight*, MethodInfo*);
+TMenu_SetupFlashlight oMenu_SetupFlashlight = NULL;
+app::UIFlashlightSelectionType* __stdcall hMenu_SetupFlashlight(app::Menu* __this, app::CharacterFlashlight* flashlight, MethodInfo* method) {
+	if (settings::unlock_all) {
+		flashlight->fields.isHidden = false;
+		flashlight->fields.isOwned = true;
+		flashlight->fields.isSupporter = true;
+		flashlight->fields.cost = 0;
+	}
+	return oMenu_SetupFlashlight(__this, flashlight, method);
+}
+
+typedef app::UIEmoteSelectionType* (__stdcall* TMenu_SetupEmote)(app::Menu*, app::CharacterEmote*, MethodInfo*);
+TMenu_SetupEmote oMenu_SetupEmote = NULL;
+app::UIEmoteSelectionType* __stdcall hMenu_SetupEmote(app::Menu* __this, app::CharacterEmote* emote, MethodInfo* method) {
+	if (settings::unlock_all) {
+		emote->fields.cost = 0;
+		emote->fields.isHidden = false;
+		emote->fields.isOwned = true;
+		emote->fields.isSupporter = true;
+		emote->fields.requiresAchievement = false;
+		emote->fields.requiresPurchase = false;
+	}
+	return oMenu_SetupEmote(__this, emote, method);
+}
+
 void CreateHooks() {
 	/*
 	//Exemple :
@@ -129,6 +177,26 @@ void CreateHooks() {
 	MH_STATUS status_characterUnlock = MH_CreateHook((LPVOID*)app::OptionsHelpers_IsCharacterUnlocked, &hOptionsHelpers_IsCharacterUnlocked, reinterpret_cast<LPVOID*>(&oOptionsHelpers_IsCharacterUnlocked));
 	if (status_characterUnlock != MH_OK) {
 		std::cout << "Failed to create character unlock hook: " << MH_StatusToString(status_characterUnlock) << std::endl;
+		return;
+	}
+	MH_STATUS status_perks = MH_CreateHook((LPVOID*)app::Menu_SetupPerk, &hMenu_SetupPerk, reinterpret_cast<LPVOID*>(&oMenu_SetupPerk));
+	if (status_perks != MH_OK) {
+		std::cout << "Failed to create character perks hook: " << MH_StatusToString(status_perks) << std::endl;
+		return;
+	}
+	MH_STATUS status_outfit = MH_CreateHook((LPVOID*)app::Menu_SetupOutfit, &hMenu_SetupOutfit, reinterpret_cast<LPVOID*>(&oMenu_SetupOutfit));
+	if (status_outfit != MH_OK) {
+		std::cout << "Failed to create character outfit hook: " << MH_StatusToString(status_outfit) << std::endl;
+		return;
+	}
+	MH_STATUS status_flashlight = MH_CreateHook((LPVOID*)app::Menu_SetupFlashlight, &hMenu_SetupFlashlight, reinterpret_cast<LPVOID*>(&oMenu_SetupFlashlight));
+	if (status_flashlight != MH_OK) {
+		std::cout << "Failed to create flashlight hook: " << MH_StatusToString(status_flashlight) << std::endl;
+		return;
+	}
+	MH_STATUS status_emote = MH_CreateHook((LPVOID*)app::Menu_SetupEmote, &hMenu_SetupEmote, reinterpret_cast<LPVOID*>(&oMenu_SetupEmote));
+	if (status_emote != MH_OK) {
+		std::cout << "Failed to create emote hook: " << MH_StatusToString(status_emote) << std::endl;
 		return;
 	}
 	MH_STATUS enable_status_Debug_Log = MH_EnableHook(MH_ALL_HOOKS);
