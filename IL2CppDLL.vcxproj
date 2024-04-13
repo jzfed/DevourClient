@@ -38,9 +38,24 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="include\imgui\imgui.cpp" />
+    <ClCompile Include="include\imgui\imgui_draw.cpp" />
+    <ClCompile Include="include\imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="include\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="include\imgui\imgui_stdlib.cpp" />
+    <ClCompile Include="include\imgui\imgui_tables.cpp" />
+    <ClCompile Include="include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="include\Minhook\src\buffer.cpp" />
+    <ClCompile Include="include\Minhook\src\HDE\hde32.cpp" />
+    <ClCompile Include="include\Minhook\src\HDE\hde64.cpp" />
+    <ClCompile Include="include\Minhook\src\hook.cpp" />
+    <ClCompile Include="include\Minhook\src\trampoline.cpp" />
     <ClCompile Include="lib\object.cpp" />
     <ClCompile Include="lib\wrapper.cpp" />
+    <ClCompile Include="user\features\menu.cpp" />
+    <ClCompile Include="user\hooks\hooks.cpp" />
     <ClCompile Include="user\main.cpp" />
+    <ClCompile Include="user\settings\settings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="appdata\il2cpp-api-functions.h" />
@@ -53,9 +68,29 @@
     <ClInclude Include="framework\il2cpp-appdata.h" />
     <ClInclude Include="framework\il2cpp-init.h" />
     <ClInclude Include="framework\pch-il2cpp.h" />
+    <ClInclude Include="include\imgui\imconfig.h" />
+    <ClInclude Include="include\imgui\imgui.h" />
+    <ClInclude Include="include\imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="include\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="include\imgui\imgui_internal.h" />
+    <ClInclude Include="include\imgui\imgui_stdlib.h" />
+    <ClInclude Include="include\imgui\imstb_rectpack.h" />
+    <ClInclude Include="include\imgui\imstb_textedit.h" />
+    <ClInclude Include="include\imgui\imstb_truetype.h" />
+    <ClInclude Include="include\Minhook\include\MinHook.h" />
+    <ClInclude Include="include\Minhook\src\buffer.h" />
+    <ClInclude Include="include\Minhook\src\HDE\hde32.h" />
+    <ClInclude Include="include\Minhook\src\HDE\hde64.h" />
+    <ClInclude Include="include\Minhook\src\HDE\pstdint.h" />
+    <ClInclude Include="include\Minhook\src\HDE\table32.h" />
+    <ClInclude Include="include\Minhook\src\HDE\table64.h" />
+    <ClInclude Include="include\Minhook\src\trampoline.h" />
     <ClInclude Include="lib\object.h" />
     <ClInclude Include="lib\wrapper.h" />
+    <ClInclude Include="user\features\menu.hpp" />
+    <ClInclude Include="user\hooks\hooks.hpp" />
     <ClInclude Include="user\main.h" />
+    <ClInclude Include="user\settings\settings.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <!--<VCProjectVersion>16.0</VCProjectVersion>-->
@@ -122,9 +157,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)include\;$(SolutionDir)include\Minhook\include;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)include\;$(SolutionDir)include\Minhook\include;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

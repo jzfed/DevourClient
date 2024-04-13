@@ -4,6 +4,8 @@
 #pragma once
 
 extern HMODULE myhModule;
+extern bool should_unhook;
+DWORD __stdcall EjectThread(LPVOID lpParameter);
 
 // Custom injected code entry point
 void Run();

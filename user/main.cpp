@@ -15,13 +15,17 @@
 #include "wrapper.h"
 #include "object.h"
 
+#include "hooks/hooks.hpp"
+
 // Set the name of your log file here
 extern const LPCWSTR LOG_FILE = L"DevourClient.txt";
 
 HMODULE myhModule = NULL;
+bool should_unhook = 0;
 DWORD __stdcall EjectThread(LPVOID lpParameter) {
     Sleep(100);
 	il2cpp_close_console();
+	DisableHooks();
     FreeLibraryAndExitThread(myhModule, 0); //Freeing the module, that's why we needed the myhModule variable
 }
 
@@ -37,6 +41,23 @@ void Run()
     // If you would like to output to a new console window, use il2cppi_new_console() to open one and redirect stdout
     il2cppi_new_console();
 
+	if (InitializeHooks()) {
+		il2cppi_log_write("Hooks initialized");
+	}
+	else {
+		il2cppi_log_write("MH_Initialize failed, quitting...");
+		CreateThread(0, 0, EjectThread, 0, 0, 0); //Unhooking
+		return;
+	}
+	if (HookDX11()) {
+		il2cppi_log_write("DirectX11 hooked");
+	}
+	else {
+		il2cppi_log_write("DirectX11 hook failed, quitting...");
+		CreateThread(0, 0, EjectThread, 0, 0, 0); //Unhooking
+		return;
+	}
+
 	Wrapper* wrapper = new Wrapper();
 
 	while (true) {
@@ -45,8 +66,9 @@ void Run()
 
 		}
 
-		if (GetAsyncKeyState(VK_END) & 0x8000)
+		if (GetAsyncKeyState(VK_END) & 0x8000 || should_unhook)
 			break;
+
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 	CreateThread(0, 0, EjectThread, 0, 0, 0);
