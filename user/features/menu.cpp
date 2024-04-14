@@ -3,6 +3,8 @@
 #include "../main.h"
 #include "../settings/settings.hpp"
 
+#include "misc/misc.h"
+
 #include <string>
 #include <vector>
 
@@ -187,7 +189,7 @@ void DrawMapSpecificTab() {
 	}
 
 	if (ImGui::Button("Force start game")) {
-		//Misc::ForceStart();
+		Misc::ForceStart();
 	}
 	
 	if (ImGui::Button("Knock out everyone")) {

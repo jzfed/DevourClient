@@ -21,11 +21,9 @@ Wrapper::Wrapper()
 		if (assembly) {
 			const char* assemblyName = il2cpp_image_get_name(assembly->image);
 			assemblyMap[assemblyName] = assembly;
-			std::cout << "\t- " << assemblyName << std::endl;
 		}
 	}
 }
-
 
 const Il2CppAssembly* Wrapper::GetAssembly(const char* _assembly) {
 	for (const auto& entry : assemblyMap) {
