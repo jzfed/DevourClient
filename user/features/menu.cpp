@@ -1,7 +1,7 @@
-#include "pch-il2cpp.h"
+﻿#include "pch-il2cpp.h"
 #include "Menu.hpp"
-#include "../main.h"
-#include "../settings/settings.hpp"
+#include "main.h"
+#include "settings/settings.hpp"
 
 #include "misc/misc.h"
 
@@ -14,8 +14,8 @@ void InitStyle()
 
 	auto& Style = ImGui::GetStyle();
 
-	Style.WindowRounding = 8.000f;
-	Style.FrameRounding = 4.000f;
+	Style.WindowRounding = 0.000f;
+	Style.FrameRounding = 0.000f;
 
 	Style.Colors[ImGuiCol_WindowBg] = ImColor(0, 0, 0, 240);
 	Style.Colors[ImGuiCol_TitleBg] = ImColor(1, 1, 1, 240);
@@ -30,13 +30,17 @@ void InitStyle()
 	Style.Colors[ImGuiCol_FrameBgHovered] = ImColor(60, 66, 76, 102);
 	Style.Alpha = 0.8f;
 
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 8.0f));
+
 	ImGuiIO& io = ImGui::GetIO();
-	io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\tahoma.ttf", 13.000f);
+	io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 14.000f);
 }
 
 void DrawVisualsTab() {
-	ImGui::Checkbox("Big flashlight", &settings::big_flashlight);
+	ImGui::Checkbox("Unlimited UV", &settings::unlimited_uv);
+	ImGui::Checkbox("Fullbright", &settings::fullBright);
 
+	/*
 	bool open_flcolor_popup = ImGui::ColorButton("flashlightcolor", ImVec4(settings::flashlight_color[0], settings::flashlight_color[1], settings::flashlight_color[2], settings::flashlight_color[3]));
 	if (open_flcolor_popup)
 	{
@@ -134,86 +138,35 @@ void DrawVisualsTab() {
 	if (ImGui::BeginPopup("gesppop")) {
 		ImGui::ColorPicker4("Goat ESP color", (float*)&settings::goat_esp_color);
 		ImGui::EndPopup();
-	}
+	}*/
 }
 
 void DrawEntitiesTab() {
-	if (ImGui::Button("TP items to you")) {
-		//call tp items
-	}
-	
-	if (ImGui::Button("Freeze Azazel")) {
-		//Misc::FreezeAzazel();
-	}
-
-	ImGui::Spacing();
-	ImGui::Text("Azazel & Demons");
-	const char* azazel_demons_items[] = { "Sam", "Molly", "Anna", "Zara", "Ghost", "Inmate", "Demon"};
-	static int entity_current = 0;
-	ImGui::Combo("##a", &entity_current, azazel_demons_items, IM_ARRAYSIZE(azazel_demons_items));
-	if (ImGui::Button("Spawn##a")) {
-		//call spawn function
-	}
-
-	ImGui::Spacing();
 	ImGui::Text("Items");
-	const char* items_items[] = { "Hay", "First aid", "Battery", "Gasoline", "Fuse", "Food", "Bleach", "Ritual Book (inactive)", "Ritual Book (active)", "Matchbox", "Egg-1", "Egg-2", "Egg-3", "Egg-4", "Egg-5", "Egg-6", "Egg-7", "Egg-8", "Egg-9", "Egg-10"};
+	const char* items_items[] = { "Hay", "First aid", "Battery", "Gasoline", "Fuse", "Food", "Bleach", "Bone", "Ritual Book (in-active)", "Ritual Book (active)", "Matchbox", "Egg-1", "Egg-2", "Egg-3", "Egg-4", "Egg-5", "Egg-6", "Egg-7", "Egg-8", "Egg-9", "Egg-10" };
 	static int item_current = 0;
 	ImGui::Combo("##i", &item_current, items_items, IM_ARRAYSIZE(items_items));
 	if (ImGui::Button("Spawn##i")) {
-		//print("--> %s\n",items_items[item_current]);
-		//Misc::CarryItem(items_items[item_current]);
+		Misc::CarryItem(items_items[item_current]);
 	}
 
 	ImGui::Spacing();
 	ImGui::Text("Animals");
-	const char* animals_items[] = { "Rat", "Goat", "Spider"};
+	const char* animals_items[] = { "Rat", "Goat", "Pig" };
 	static int animal_current = 0;
 	ImGui::Combo("##an", &animal_current, animals_items, IM_ARRAYSIZE(animals_items));
 	if (ImGui::Button("Spawn##an")) {
-		//Misc::SpawnAnimal(animals_items[animal_current]);
+		Misc::CarryAnimal(animals_items[animal_current]);
 	}
 }
 
 void DrawMapSpecificTab() {
-	if (ImGui::Button("Instant win")) {
-		//call instant win
-	}
-	
-	if (ImGui::Button("Burn a ritual object")) {
-		//Misc::BurnRitualObj(false);
-	}
-	
-	if (ImGui::Button("Burn all ritual objects")) {
-		//Misc::BurnRitualObj(true);
-	}
-
-	if (ImGui::Button("Force start game")) {
+	if (ImGui::Button("Force Start The Game")) {
 		Misc::ForceStart();
 	}
-	
-	if (ImGui::Button("Knock out everyone")) {
-		//Misc::KnockoutPlayers(false);
-	}
-	
-	if (ImGui::Button("knock yourself out")) {
-		//Misc::KnockoutPlayers(true);
-	}
-	
-	if (ImGui::Button("Shoot Everyone (Town)")) {
-		//Misc::ShootEveryone(true, true);
-	}
 
-	if (ImGui::Button("Shoot Yourself (Town)")) {
-		//Misc::ShootEveryone(false, true);
-	}
-	
-	if (ImGui::Button("Jumpscare Everyone")) {
-		//Misc::Jumpscare(true);
-	}
-	
-	if (ImGui::Button("Skip long interact")) {
-		//Misc::SkipLongInteract();
+	if (ImGui::Button("Instant Win")) {
+		Misc::InstantWin();
 	}
 }
 
@@ -319,39 +272,16 @@ void DrawInspector() {
 }
 
 void DrawMiscTab() {
-	ImGui::Checkbox("Chat spam", &settings::chat_spam);
-	ImGui::InputText("Message", &settings::message);
+	//ImGui::Checkbox("Chat spam", &settings::chat_spam);
+	//ImGui::InputText("Message", &settings::message);
 
+	/*
 	if (ImGui::Button("Unlock Achievements")) {
 		//Unlock Achievements
 	}
 
-	if (ImGui::Button("Unlock Doors")) {
-		//Misc::UnlockDoors();
-	}
-
-	if (ImGui::Button("Revive Yourself")) {
-		//Misc::Revive(false);
-	}
-
-	if (ImGui::Button("Revive Everyone")) {
-		//Misc::Revive(true);
-	}
-	
 	if (ImGui::Button("TP Keys")) {
 		//Misc::TPKeys();
-	}
-	
-	ImGui::Checkbox("Unlock all", &settings::unlock_all);
-
-	ImGui::Checkbox("Spoof level", &settings::spoof_level);
-	ImGui::InputInt("New level", &settings::new_level);
-	//normalize level
-	if (settings::new_level > 666) {
-		settings::new_level = 666;
-	}
-	else if (settings::new_level < 0) {
-		settings::new_level = 0;
 	}
 
 	ImGui::Checkbox("Change Steam name", &settings::steam_name_spoof);
@@ -361,20 +291,27 @@ void DrawMiscTab() {
 	ImGui::InputText("New name##server", &settings::server_name);
 
 	ImGui::Checkbox("Fly", &settings::fly);
-	
+
 	if (ImGui::Button("Make random noise")) {
 		//Misc::PlayRandomSound();
 	}
 
-	ImGui::Checkbox("EXP modifier", &settings::exp_modifier);
+	ImGui::Checkbox("Walk in lobby", &settings::walk_in_lobby);
+
+	ImGui::Checkbox("Auto respawn", &settings::auto_respawn);
+	*/
+
+	ImGui::Checkbox("EXP Modifier", &settings::exp_modifier);
 	ImGui::SliderInt("Amount", &settings::new_exp, 0, 5000);
 
-	ImGui::Checkbox("Walk in lobby", &settings::walk_in_lobby);
-	
-	ImGui::Checkbox("Auto respawn", &settings::auto_respawn);
-	
-	ImGui::Checkbox("Change player speed", &settings::change_player_speed);
-	ImGui::SliderInt("Multiplier", &settings::new_speed, 0, 10);
+	ImGui::Checkbox("Unlock all", &settings::unlock_all);
+	ImGui::Checkbox("Disable Long Interact", &settings::disable_longInteract);
+
+	ImGui::Checkbox("Azazel Speed", &settings::freeze_azazel);
+	ImGui::SliderFloat("Multiplier", &settings::new_azazel_speed, 0, 15);
+
+	ImGui::Checkbox("Spoof level", &settings::spoof_level);
+	ImGui::InputInt("New level", &settings::new_level);
 
 #if _DEBUG
 	ImGui::Spacing();
@@ -390,10 +327,35 @@ void DrawMiscTab() {
 	}
 }
 
+void DrawPlayersTab() {
+	ImGui::Checkbox("Change player speed", &settings::change_player_speed);
+	ImGui::SliderInt("Multiplier", &settings::new_speed, 0, 10);
+
+	if (ImGui::Button("Revive Players")) {
+		Misc::Revive(false);
+	}
+
+	if (ImGui::Button("Revive Yourself")) {
+		Misc::Revive(true);
+	}
+
+	if (ImGui::Button("Send Jumpscare To Players")) {
+		Misc::Jumpscare();
+	}
+
+	if (ImGui::Button("Kill The Players")) {
+		Misc::Kill(false);
+	}
+
+	if (ImGui::Button("Kill Yourself")) {
+		Misc::Kill(true);
+	}
+}
+
 tabs current_tab = tabs::VISUALS;
 void DrawMenu(bool open_menu) {
 	ImGui::SetNextWindowSize(ImVec2(240.000f, 300.000f), ImGuiCond_Once);
-	ImGui::Begin("Devour Client", NULL, 2);
+	ImGui::Begin("DevourClient", NULL, 2);
 
 #if _DEBUG
 	if (inspector) {
@@ -420,24 +382,32 @@ void DrawMenu(bool open_menu) {
 	if (ImGui::Button("Misc", ImVec2(0.000f, 0.000f))) {
 		current_tab = tabs::MISC;
 	}
-	
+
+	ImGui::SameLine();
+	if (ImGui::Button("Players", ImVec2(0.000f, 0.000f))) {
+		current_tab = tabs::MISC;
+	}
+
 	ImGui::Separator();
 
 	switch (current_tab) {
-		case tabs::VISUALS:
-			DrawVisualsTab();
-			break;
-		case tabs::ENTITIES:
-			DrawEntitiesTab();
-			break;
-		case tabs::MAP_SPECIFIC:
-			DrawMapSpecificTab();
-			break;
-		case tabs::MISC:
-			DrawMiscTab();
-			break;
-		default:
-			break;
+	case tabs::VISUALS:
+		DrawVisualsTab();
+		break;
+	case tabs::ENTITIES:
+		DrawEntitiesTab();
+		break;
+	case tabs::MAP_SPECIFIC:
+		DrawMapSpecificTab();
+		break;
+	case tabs::MISC:
+		DrawMiscTab();
+		break;
+	case tabs::PLAYERS:
+		DrawPlayersTab();
+		break;
+	default:
+		break;
 	}
 
 	ImGui::End();

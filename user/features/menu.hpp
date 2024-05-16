@@ -11,7 +11,8 @@ enum class tabs {
 	VISUALS,
 	ENTITIES,
 	MAP_SPECIFIC,
-	MISC
+	MISC,
+	PLAYERS
 };
 
 void InitStyle();

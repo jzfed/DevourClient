@@ -8,7 +8,7 @@ namespace settings {
 	extern int height;
 	extern int width;
 
-	extern bool big_flashlight;
+	extern bool fullBright;
 	extern float flashlight_color[4];
 
 	extern bool unlimited_uv;
