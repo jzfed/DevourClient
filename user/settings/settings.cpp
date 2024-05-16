@@ -33,7 +33,7 @@ namespace settings {
 	bool steam_name_spoof = false;
 	std::string new_name = "patate";
 	bool server_name_spoof = false;
-	std::string server_name = "Jadis";
+	std::string server_name = "Jadis0x";
 	bool fly = false;
 	bool unlock_all = true;
 	bool exp_modifier = false;

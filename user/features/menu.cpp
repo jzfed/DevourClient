@@ -299,6 +299,9 @@ void DrawMiscTab() {
 	ImGui::Checkbox("Walk in lobby", &settings::walk_in_lobby);
 
 	ImGui::Checkbox("Auto respawn", &settings::auto_respawn);
+
+	ImGui::Checkbox("Spoof level", &settings::spoof_level);
+	ImGui::InputInt("New level", &settings::new_level);
 	*/
 
 	ImGui::Checkbox("EXP Modifier", &settings::exp_modifier);
@@ -309,9 +312,7 @@ void DrawMiscTab() {
 
 	ImGui::Checkbox("Azazel Speed", &settings::freeze_azazel);
 	ImGui::SliderFloat("Multiplier", &settings::new_azazel_speed, 0, 15);
-
-	ImGui::Checkbox("Spoof level", &settings::spoof_level);
-	ImGui::InputInt("New level", &settings::new_level);
+	
 
 #if _DEBUG
 	ImGui::Spacing();
@@ -354,7 +355,7 @@ void DrawPlayersTab() {
 
 tabs current_tab = tabs::VISUALS;
 void DrawMenu(bool open_menu) {
-	ImGui::SetNextWindowSize(ImVec2(240.000f, 300.000f), ImGuiCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(690.000f, 420.000f), ImGuiCond_Once);
 	ImGui::Begin("DevourClient", NULL, 2);
 
 #if _DEBUG
@@ -385,7 +386,7 @@ void DrawMenu(bool open_menu) {
 
 	ImGui::SameLine();
 	if (ImGui::Button("Players", ImVec2(0.000f, 0.000f))) {
-		current_tab = tabs::MISC;
+		current_tab = tabs::PLAYERS;
 	}
 
 	ImGui::Separator();

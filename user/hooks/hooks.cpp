@@ -45,7 +45,7 @@ bool open_menu = false;
 typedef void(__stdcall* TDebug_2_Log)(app::Object*, MethodInfo*);
 TDebug_2_Log oDebug_2_Log = NULL;
 void __stdcall hDebug_Log(app::Object* message, MethodInfo* method) {
-	std::cout << "[DevourClient] " << ToString(message) << std::endl;
+	std::cout << "[DevourClient]: " << ToString(message) << std::endl;
 	il2cppi_log_write(ToString(message));
 }
 

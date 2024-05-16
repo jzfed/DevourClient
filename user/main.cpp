@@ -49,12 +49,13 @@ void Run()
 	else
 		std::cout << "Unknown\n\n";
 	
-	std::cout << dye::light_aqua("\tMade with < 3 by patate and Jadis0x.\n");
+	std::cout << dye::light_aqua("\tMade with < 3 by patate and Jadis0x.\n\n");
 
 	uint64_t steamUserID = app::SteamUser_GetSteamID(nullptr).m_SteamID;
 	std::string steamName = il2cppi_to_string(app::SteamFriends_GetPersonaName(nullptr));
 
 	std::cout << "[DevourClient]: " << dye::yellow("GitHub: ") << dye::aqua_on_black("https://github.com/ALittlePatate/DevourClient\n");
+	std::cout << "[DevourClient]: " << "Note: " << dye::light_red("if you payed for this you most likely got scammed.\n\n");
 	std::cout << "[DevourClient]: Logged in as " << dye::yellow(steamName) << " (" << steamUserID << ")\n\n";
 
 	std::cout << "[DevourClient]: " << dye::aqua("Initializing..\n");
@@ -84,7 +85,7 @@ void Run()
 		return;
 	}
 
-	std::cout << "[DevourClient]: " << dye::light_green("Done!:)\n");
+	std::cout << "[DevourClient]: " << dye::light_green("Done!:)\n\n");
 
 
 	std::string scene = SceneName();
