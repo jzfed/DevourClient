@@ -1,15 +1,15 @@
 #pragma once
 
-#include <string>
-
-class Wrapper;
 
 bool IsSinglePlayer();
 bool IsOnline();
 bool IsHost();
+bool IsLocalPlayer(app::NolanBehaviour* player);
+bool IsPlayerCrawling();
+bool IsPlayerCrawling(app::GameObject* go);
+bool IsInGame();
 
-app::Menu* get_HorrorMenu();
-std::string get_SceneName();
+app::GameObject* GetAzazel(app::Survival* survival);
 
-void BurnRitualObj(bool burnAll);
-void BurnManager(std::string& sceneName, Wrapper& wrapper, const Il2CppImage* image, bool burnAll);
+std::string SceneName();
+float Time_DeltaTime();

@@ -51,11 +51,13 @@
     <ClCompile Include="include\Minhook\src\hook.cpp" />
     <ClCompile Include="include\Minhook\src\trampoline.cpp" />
     <ClCompile Include="lib\ClientHelper.cpp" />
-    <ClCompile Include="lib\wrapper.cpp" />
+    <ClCompile Include="lib\UnityCore.cpp" />
+    <ClCompile Include="lib\Wrapper.cpp" />
     <ClCompile Include="user\features\menu.cpp" />
     <ClCompile Include="user\features\misc\misc.cpp" />
     <ClCompile Include="user\hooks\hooks.cpp" />
     <ClCompile Include="user\main.cpp" />
+    <ClCompile Include="user\players\players.cpp" />
     <ClCompile Include="user\settings\settings.cpp" />
     <ClCompile Include="user\utils\utils.cpp" />
   </ItemGroup>
@@ -70,6 +72,7 @@
     <ClInclude Include="framework\il2cpp-appdata.h" />
     <ClInclude Include="framework\il2cpp-init.h" />
     <ClInclude Include="framework\pch-il2cpp.h" />
+    <ClInclude Include="include\color.hpp" />
     <ClInclude Include="include\imgui\imconfig.h" />
     <ClInclude Include="include\imgui\imgui.h" />
     <ClInclude Include="include\imgui\imgui_impl_dx11.h" />
@@ -88,11 +91,13 @@
     <ClInclude Include="include\Minhook\src\HDE\table64.h" />
     <ClInclude Include="include\Minhook\src\trampoline.h" />
     <ClInclude Include="lib\ClientHelper.h" />
-    <ClInclude Include="lib\wrapper.h" />
+    <ClInclude Include="lib\UnityCore.h" />
+    <ClInclude Include="lib\Wrapper.h" />
     <ClInclude Include="user\features\menu.hpp" />
     <ClInclude Include="user\features\misc\misc.h" />
     <ClInclude Include="user\hooks\hooks.hpp" />
     <ClInclude Include="user\main.h" />
+    <ClInclude Include="user\players\players.h" />
     <ClInclude Include="user\settings\settings.hpp" />
     <ClInclude Include="user\utils\utils.hpp" />
   </ItemGroup>

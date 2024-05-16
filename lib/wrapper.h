@@ -1,15 +1,20 @@
 #pragma once
 
-#include <map>
+struct Il2CppObject;
+struct Il2CppImage;
 
 class Wrapper {
 public:
-	Wrapper();
-
-	const Il2CppAssembly* GetAssembly(const char* _assembly);
-	const Il2CppImage* GetImage(const char* _assembly);
-
-	Il2CppObject* GetObjectFromClass(const Il2CppImage* _image, const char* _namespaze, const char* _name);
+	Wrapper(const char* imageName);
+	Wrapper& find_class(const char* classNamespace, const char* className);
+	void get_fields(const char* classNamespace, const char* className);
+	void method_info(const char* classNamespace, const char* className);
+	void classList();
+	Il2CppObject* get_class();
+	const char* GetImageName();
+	const Il2CppImage* get_image();
 private:
-	std::map<const char*, const Il2CppAssembly*> assemblyMap;
+	const Il2CppImage* GetImage(const char* image);
+	const Il2CppImage* image;
+	Il2CppObject* obj;
 };

@@ -16,7 +16,7 @@
     <ClCompile Include="framework\pch-il2cpp.cpp">
       <Filter>framework</Filter>
     </ClCompile>
-    <ClCompile Include="lib\wrapper.cpp">
+    <ClCompile Include="lib\Wrapper.cpp">
       <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="include\imgui\imgui.cpp">
@@ -73,6 +73,12 @@
     <ClCompile Include="user\features\misc\misc.cpp">
       <Filter>user\features\misc</Filter>
     </ClCompile>
+    <ClCompile Include="lib\UnityCore.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="user\players\players.cpp">
+      <Filter>user\players</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="user\main.h">
@@ -108,7 +114,7 @@
     <ClInclude Include="framework\pch-il2cpp.h">
       <Filter>framework</Filter>
     </ClInclude>
-    <ClInclude Include="lib\wrapper.h">
+    <ClInclude Include="lib\Wrapper.h">
       <Filter>lib</Filter>
     </ClInclude>
     <ClInclude Include="include\imgui\imconfig.h">
@@ -180,6 +186,15 @@
     <ClInclude Include="user\features\misc\misc.h">
       <Filter>user\features\misc</Filter>
     </ClInclude>
+    <ClInclude Include="include\color.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\UnityCore.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="user\players\players.h">
+      <Filter>user\players</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="appdata">
@@ -217,6 +232,9 @@
     </Filter>
     <Filter Include="user\features\misc">
       <UniqueIdentifier>{116f67d1-9398-4156-8fe3-93de590b3c57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="user\players">
+      <UniqueIdentifier>{54f72ffe-f8ca-4732-bd14-62d1a7a68267}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
