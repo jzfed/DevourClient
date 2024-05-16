@@ -42,4 +42,9 @@ namespace settings {
 	bool auto_respawn = false;
 	bool change_player_speed = false;
 	int new_speed = 1;
+
+	bool freeze_azazel = false;
+	float new_azazel_speed = 0.f;
+
+	bool disable_longInteract = false;
 }

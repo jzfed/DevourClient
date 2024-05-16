@@ -46,6 +46,11 @@ namespace settings {
 	extern bool auto_respawn;
 	extern bool change_player_speed;
 	extern int new_speed;
+
+	extern bool freeze_azazel;
+	extern float new_azazel_speed;
+
+	extern bool disable_longInteract;
 }
 
 #endif
