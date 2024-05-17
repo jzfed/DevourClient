@@ -33,7 +33,7 @@ Not detected.
 
 ## Contact
 
-You can add me on discord at patate#1252
+You can add me on discord at "_.patate"
 
 ## Code used
 
