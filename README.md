@@ -6,6 +6,9 @@ Devour client is a cheat for the game DEVOUR. It is written in C++.
 
 Not detected.
 
+## Menu
+![menu screenshot](screenshots/menu_screenshot.jpg)
+
 ## Features
 
 * Fully compatible with the new IL2CPP version of the game
