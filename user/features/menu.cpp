@@ -277,9 +277,10 @@ void DrawMiscTab() {
 
 	/*
 	if (ImGui::Button("Unlock Achievements")) {
-		//Unlock Achievements
+		Misc::CustomizedLobby();
 	}
 
+	
 	if (ImGui::Button("TP Keys")) {
 		//Misc::TPKeys();
 	}
@@ -289,13 +290,17 @@ void DrawMiscTab() {
 
 	ImGui::Checkbox("Change server name", &settings::server_name_spoof);
 	ImGui::InputText("New name##server", &settings::server_name);
+	*/
 
 	ImGui::Checkbox("Fly", &settings::fly);
+	ImGui::SliderFloat("Speed: ", &settings::fly_speed, 1.f, 10.f);
 
+	/*
 	if (ImGui::Button("Make random noise")) {
 		//Misc::PlayRandomSound();
 	}
 
+	
 	ImGui::Checkbox("Walk in lobby", &settings::walk_in_lobby);
 
 	ImGui::Checkbox("Auto respawn", &settings::auto_respawn);

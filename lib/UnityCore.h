@@ -2,11 +2,24 @@
 
 #include "Wrapper.h"
 #include <vector>
+#include <iostream>
 
 namespace Unity {
 	namespace GameObject {
 		// DO_APP_FUNC(0x02D34DA0, Component *, GameObject_GetComponentByName, (GameObject * __this, String * type, MethodInfo * method));
 		app::Component* GetComponentByName(app::GameObject* go, const char* type);
+	}
+
+	namespace Math{
+		namespace Vector3 {
+			std::string ToString(app::Vector3* v);
+			std::string ToString(app::Vector3 v);
+		}
+	}
+
+	namespace Transform{
+		app::Transform* Get(app::GameObject* go);
+		app::Vector3 Position(app::Transform* transform);
 	}
 }
 

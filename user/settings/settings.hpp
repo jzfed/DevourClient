@@ -39,6 +39,7 @@ namespace settings {
 	extern bool server_name_spoof;
 	extern std::string server_name;
 	extern bool fly;
+	extern float fly_speed;
 	extern bool unlock_all;
 	extern bool exp_modifier;
 	extern int new_exp;

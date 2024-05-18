@@ -113,6 +113,9 @@ void Run()
 		if (settings::fullBright)
 			Misc::FullBright();
 
+		if (settings::fly)
+			Misc::Fly(settings::fly_speed);
+
 		std::this_thread::sleep_for(std::chrono::milliseconds(400));
 	}
 	CreateThread(0, 0, EjectThread, 0, 0, 0);
