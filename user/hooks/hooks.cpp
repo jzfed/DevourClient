@@ -597,12 +597,12 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 			return phookD3D11Present(pSwapChain, SyncInterval, Flags);
 	}
 
-	if (GetKeyState('Q') & 0x8000) {
+	if (GetKeyState(VK_INSERT) & 0x8000) {
 		pressed = true;
 	}
 
 
-	else if (!(GetKeyState('Q') & 0x8000) && pressed) {
+	else if (!(GetKeyState(VK_INSERT) & 0x8000) && pressed) {
 		open_menu = !open_menu;
 		pressed = false;
 

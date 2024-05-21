@@ -96,7 +96,7 @@ void Run()
 		if (!horrorMenu)
 			return;
 
-		app::String* str = reinterpret_cast<app::String*>(il2cpp_string_new("Welcome to DevourClient.\n\nAfter ensuring the game is in full screen, press the Q key to activate the menu.\n\n\nYou can disable the cheat by pressing the 'END' key."));
+		app::String* str = reinterpret_cast<app::String*>(il2cpp_string_new("Welcome to DevourClient.\n\nAfter ensuring the game is in full screen, press the INS key to activate the menu.\n\n\nYou can disable the cheat by pressing the 'END' key."));
 
 		if (str) {
 			if (app::Menu_ShowMessageModal == nullptr)
@@ -114,9 +114,9 @@ void Run()
 			Misc::FullBright();
 
 		if (settings::fly)
-			Misc::Fly(settings::fly_speed);
+			//Misc::Fly(settings::fly_speed);
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(400));
+		std::this_thread::sleep_for(std::chrono::milliseconds(700));
 	}
 	CreateThread(0, 0, EjectThread, 0, 0, 0);
 }

@@ -53,9 +53,6 @@ void DrawVisualsTab() {
 	ImGui::SameLine();
 	ImGui::Text("Flashlight color");
 
-	ImGui::Checkbox("Unlimited UV", &settings::unlimited_uv);
-	ImGui::Checkbox("Fullbright", &settings::fullbright);
-
 	ImGui::Checkbox("Player ESP", &settings::player_esp);
 	ImGui::SameLine();
 	bool open_pelcolor_popup = ImGui::ColorButton("playerespcolor", ImVec4(settings::player_esp_color[0], settings::player_esp_color[1], settings::player_esp_color[2], settings::player_esp_color[3]));
