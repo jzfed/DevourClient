@@ -1,4 +1,4 @@
-// Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty
+﻿// Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty
 // Custom injected code entry point
 
 #include "pch-il2cpp.h"
@@ -18,6 +18,7 @@
 #include "color.hpp"
 #include "UnityCore.h"
 #include "features/misc/misc.h"
+#include "utils/utils.hpp"
 
 // Set the name of your log file here
 extern const LPCWSTR LOG_FILE = L"DevourClient.txt";
@@ -25,21 +26,21 @@ extern const LPCWSTR LOG_FILE = L"DevourClient.txt";
 HMODULE myhModule = NULL;
 bool should_unhook = 0;
 DWORD __stdcall EjectThread(LPVOID lpParameter) {
-    Sleep(100);
+	Sleep(100);
 	il2cpp_close_console();
 	DisableHooks();
-    FreeLibraryAndExitThread(myhModule, 0); //Freeing the module, that's why we needed the myhModule variable
+	FreeLibraryAndExitThread(myhModule, 0); //Freeing the module, that's why we needed the myhModule variable
 }
 
 // Custom injected code entry point
 void Run()
 {
-    // Initialize thread data - DO NOT REMOVE
-    il2cpp_thread_attach(il2cpp_domain_get());
+	// Initialize thread data - DO NOT REMOVE
+	il2cpp_thread_attach(il2cpp_domain_get());
 
 
-    // If you would like to output to a new console window, use il2cppi_new_console() to open one and redirect stdout
-    il2cppi_new_console();
+	// If you would like to output to a new console window, use il2cppi_new_console() to open one and redirect stdout
+	il2cppi_new_console();
 
 	std::cout << dye::green("\n\tDevourClient v2.0\n\t") << __DATE__ << " - " << __TIME__ << std::endl;
 	std::cout << "\tDevour Version ";
@@ -48,7 +49,7 @@ void Run()
 		std::cout << dye::light_red("v") << dye::light_red(il2cppi_to_string(app::Application_get_version(NULL))) << "\n\n";
 	else
 		std::cout << "Unknown\n\n";
-	
+
 	std::cout << dye::light_aqua("\tMade with < 3 by patate and Jadis0x.\n\n");
 
 	uint64_t steamUserID = app::SteamUser_GetSteamID(nullptr).m_SteamID;
@@ -73,7 +74,7 @@ void Run()
 	}
 
 	CreateHooks();
-	
+
 	if (HookDX11()) {
 		il2cppi_log_write("DirectX11 hooked");
 		std::cout << "[DevourClient]: " << dye::aqua("DirectX11 hooked.\n");
@@ -85,8 +86,15 @@ void Run()
 		return;
 	}
 
-	std::cout << "[DevourClient]: " << dye::light_green("Done!:)\n\n");
+	// create settings.ini
+	std::string filename = "settings.ini";
+	std::string key = "open_menu";
+	std::string defaultValue = "INSERT";  // default value
 
+	// null file??
+	std::string keyValue = ReadValueFromIni(filename, key, defaultValue);
+
+	std::cout << "[DevourClient]: " << dye::light_green("Done!:)\n\n");
 
 	std::string scene = SceneName();
 
@@ -107,16 +115,20 @@ void Run()
 	}
 
 	while (true) {
-		if (GetAsyncKeyState(VK_END) & 0x8000 || should_unhook)
+		if (GetAsyncKeyState(VK_END) & 0x8000 || should_unhook) {
 			break;
+		}
 
-		if (settings::fullBright)
+		if (settings::fullBright) {
 			Misc::FullBright();
+		}
 
-		if (settings::fly)
+		if (settings::fly) {
 			//Misc::Fly(settings::fly_speed);
+		}
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(700));
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
 	CreateThread(0, 0, EjectThread, 0, 0, 0);
 }
