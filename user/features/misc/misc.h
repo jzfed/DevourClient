@@ -11,7 +11,7 @@ namespace Misc {
     void InstantWin();
     void Fly(float speed);
     void CustomizedLobby();
-    void SpawnPrefab(app::PrefabId id);
+    void SpawnPrefab(const char* prefabName);
     void FullBright();
     void Revive(bool self);
     void GetKeys();

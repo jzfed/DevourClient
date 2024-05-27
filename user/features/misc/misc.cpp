@@ -187,30 +187,51 @@ void Misc::Fly(float speed) {
 
 void Misc::CustomizedLobby()
 {
-	
+
 }
 
 // This function has not been tested
-// This function has not been tested
-// This function has not been tested
-void Misc::SpawnPrefab(app::PrefabId id) {
+void Misc::SpawnPrefab(const char* prefabName) {
+
+	if (IsHost() == false) { return; }
+
+	std::string _scene = SceneName();
+	if (_scene == std::string("Menu")) return;
+
 	if (il2cppi_is_initialized(app::BoltPrefabs__TypeInfo)) {
-		app::PrefabId pGate = (*app::BoltPrefabs__TypeInfo)->static_fields->ManorGate;
 
-		app::Quaternion rotation = app::Quaternion_get_identity(NULL);
+		app::BoltPrefabs__StaticFields* _prefab_field = (*app::BoltPrefabs__TypeInfo)->static_fields;
 
-		auto localPlayer = Player::GetLocalPlayer();
 
+		std::map<const char*, app::PrefabId> prefabMapDevour = {
+		{"TV", _prefab_field->TV},
+		{"Devour Door Back", _prefab_field->DevourDoorBack},
+		{"Devour Door Main", _prefab_field->DevourDoorMain},
+		{"Devour Door Room", _prefab_field->DevourDoorRoom},
+		{"Animal Gate", _prefab_field->Animal_Gate},
+		{"DoorNumber", _prefab_field->DoorNumber},
+		{"Town Door", _prefab_field->TownDoor},
+		{"Inn Double Door", _prefab_field->InnDoubleDoor},
+		{"Slaughterhouse Fire Escape Door", _prefab_field->SlaughterhouseFireEscapeDoor},
+		{"Asylum White Door", _prefab_field->AsylumWhiteDoor},
+		{"Town Cell Door", _prefab_field->TownCellDoor},
+		};
+
+		app::PrefabId p = prefabMapDevour[prefabName];
+
+		app::GameObject* localPlayer = Player::GetLocalPlayer();
 		if (localPlayer) {
-			app::Transform* _transform = Unity::Transform::Get(localPlayer);
-			if (_transform == nullptr) return;
+			app::Quaternion rotation = app::Quaternion_get_identity(NULL);
 
-			app::Vector3 pos = Unity::Transform::Position(_transform);
+			app::Transform* playerTransform = Unity::Transform::Get(localPlayer);
+			if (playerTransform == nullptr) return;
 
-			// CRASH????????????????
-			app::BoltNetwork_Instantiate_6(pGate, pos, rotation, NULL);
+			app::Vector3 playerPos = Unity::Transform::Position(playerTransform);
+
+			if (app::BoltNetwork_Instantiate_6) {
+				app::GameObject* go = (app::GameObject*)app::BoltNetwork_Instantiate_6(p, playerPos, rotation, nullptr);
+			}
 		}
-
 	}
 }
 

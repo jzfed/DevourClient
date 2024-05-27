@@ -148,12 +148,33 @@ void DrawEntitiesTab() {
 	}
 
 	ImGui::Spacing();
+
 	ImGui::Text("Animals");
 	const char* animals_items[] = { "Rat", "Goat", "Pig" };
 	static int animal_current = 0;
 	ImGui::Combo("##an", &animal_current, animals_items, IM_ARRAYSIZE(animals_items));
 	if (ImGui::Button("Spawn##an")) {
 		Misc::CarryAnimal(animals_items[animal_current]);
+	}
+
+	ImGui::Text("Prefabs");
+	const char* prefab_items[] = {
+		"TV",
+		"Devour Door Back",
+		"Devour Door Main",
+		"Devour Door Room",
+		"Animal Gate",
+		"DoorNumber",
+		"Town Door",
+		"Inn Double Door",
+		"Slaughterhouse Fire Escape Door",
+		"Asylum White Door",
+		"Town Cell Door",
+	};
+	static int prefab_current = 0;
+	ImGui::Combo("##pref", &prefab_current, prefab_items, IM_ARRAYSIZE(prefab_items));
+	if (ImGui::Button("Spawn##pref")) {
+		Misc::SpawnPrefab(prefab_items[prefab_current]);
 	}
 }
 
