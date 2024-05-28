@@ -52,6 +52,8 @@ void DrawVisualsTab() {
 	}
 	ImGui::SameLine();
 	ImGui::Text("Flashlight color");
+	*/
+
 
 	ImGui::Checkbox("Player ESP", &settings::player_esp);
 	ImGui::SameLine();
@@ -77,6 +79,7 @@ void DrawVisualsTab() {
 		ImGui::EndPopup();
 	}
 
+	/*
 	ImGui::Checkbox("Azazel ESP", &settings::azazel_esp);
 	ImGui::SameLine();
 	bool open_azacolor_popup = ImGui::ColorButton("azaespcolor", ImVec4(settings::azazel_esp_color[0], settings::azazel_esp_color[1], settings::azazel_esp_color[2], settings::azazel_esp_color[3]));

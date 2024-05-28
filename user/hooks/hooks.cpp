@@ -2,6 +2,7 @@
 #include "Hooks.hpp"
 #include "features/menu.hpp"
 #include "settings/settings.hpp"
+#include "../features/esp/esp.hpp"
 #include "main.h"
 #include "utils/utils.hpp"
 
@@ -630,6 +631,8 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 		DrawMenu(open_menu);
 	}
 	
+	if (settings::player_esp)
+		ESP::RunPlayersESP();
 
 	ImGui::GetIO().MouseDrawCursor = open_menu;
 

@@ -79,6 +79,9 @@
     <ClCompile Include="user\players\players.cpp">
       <Filter>user\players</Filter>
     </ClCompile>
+    <ClCompile Include="user\features\esp\esp.cpp">
+      <Filter>user\features\esp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="user\main.h">
@@ -195,6 +198,9 @@
     <ClInclude Include="user\players\players.h">
       <Filter>user\players</Filter>
     </ClInclude>
+    <ClInclude Include="user\features\esp\esp.hpp">
+      <Filter>user\features\esp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="appdata">
@@ -235,6 +241,9 @@
     </Filter>
     <Filter Include="user\players">
       <UniqueIdentifier>{54f72ffe-f8ca-4732-bd14-62d1a7a68267}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="user\features\esp">
+      <UniqueIdentifier>{8f74b1c2-1d3c-4a14-8a6f-7bf00e07d57e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
