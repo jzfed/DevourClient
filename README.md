@@ -16,6 +16,8 @@ Not detected.
 * Detects the map you are playing on (useful for the instant win)
 * Fullbright (allows your flashlight to light a lot more)
 * Unlimited UV light
+* Player ESP
+* Player snaplines
 * Achievements unlocker
 * Doors unlocker
 * Unlock all, including flashlights, perks, outfits. Active by default, can't be turned off, no persistance.
