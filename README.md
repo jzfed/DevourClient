@@ -32,6 +32,10 @@ Not detected.
 * Send Jumpscare To Players
 * Kill yourself/everyone
 
+# How To Install
+
+[https://www.youtube.com/watch?v=uBwTqp5B4gU](https://www.youtube.com/watch?v=uBwTqp5B4gU)
+
 ## Building from source
 
 0. Clone the repository (or Code -> Download Zip)
