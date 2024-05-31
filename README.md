@@ -11,9 +11,6 @@ Not detected.
 
 ## Features
 
-* Fully compatible with the new IL2CPP version of the game
-* Detects if you're in game, so no chances of crashing on main menu by activating features
-* Detects the map you are playing on (useful for the instant win)
 * Unlimited UV light
 * Fullbright (allows your flashlight to light a lot more)
 * Player ESP
