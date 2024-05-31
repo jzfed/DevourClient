@@ -3,6 +3,7 @@
 #include "Wrapper.h"
 #include <vector>
 #include <iostream>
+#include "ClientHelper.h"
 
 namespace Unity {
 	namespace GameObject {
@@ -10,14 +11,14 @@ namespace Unity {
 		app::Component* GetComponentByName(app::GameObject* go, const char* type);
 	}
 
-	namespace Math{
+	namespace Math {
 		namespace Vector3 {
 			std::string ToString(app::Vector3* v);
 			std::string ToString(app::Vector3 v);
 		}
 	}
 
-	namespace Transform{
+	namespace Transform {
 		app::Transform* Get(app::GameObject* go);
 		app::Vector3 Position(app::Transform* transform);
 	}
@@ -44,11 +45,12 @@ namespace UnityCore {
 
 			app::Object_1* obj_1 = app::Object_1_FindObjectOfType(reinterpret_cast<app::Type*>(object), nullptr);
 
-			if (obj_1) {
-				T* foundObject = reinterpret_cast<T*>(obj_1);
-				if (foundObject) {
-					return foundObject;
-				}
+			if (IsNull(obj_1) || obj_1 == nullptr) return nullptr;
+
+			T* foundObject = reinterpret_cast<T*>(obj_1);
+
+			if (foundObject) {
+				return foundObject;
 			}
 		}
 

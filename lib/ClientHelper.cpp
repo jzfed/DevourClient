@@ -73,6 +73,14 @@ bool IsInGame()
 	return false;
 }
 
+bool IsNull(app::Object_1* obj)
+{
+	if (obj == nullptr)
+		return true;
+
+	return !app::Object_1_op_Implicit(obj, nullptr);
+}
+
 app::GameObject* GetAzazel(app::Survival* survival)
 {
 	app::GameObject* ai = app::Survival_GetAzazel(survival, nullptr);

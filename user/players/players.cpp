@@ -3,6 +3,7 @@
 #include "players.h"
 
 #include <iostream>
+#include "ClientHelper.h"
 
 
 app::GameObject__Array* Players::GetAllPlayers()
@@ -22,6 +23,18 @@ app::GameObject__Array* Players::GetAllPlayers()
 
 app::GameObject* Player::GetLocalPlayer()
 {
+	static app::GameObject* cachedLocalPlayer = nullptr;
+
+	if (cachedLocalPlayer != nullptr) {
+		// Check if cached player is still valid
+		if (IsNull((app::Object_1*)cachedLocalPlayer)) {
+			cachedLocalPlayer = nullptr;
+		}
+		else {
+			return cachedLocalPlayer;
+		}
+	}
+
 	app::GameObject__Array* playerList = Players::GetAllPlayers();
 	app::String* NolanBehaviourStr = reinterpret_cast<app::String*>(il2cpp_string_new("NolanBehaviour"));
 
@@ -32,24 +45,23 @@ app::GameObject* Player::GetLocalPlayer()
 	for (int i = 0; i < _size; i++) {
 		app::GameObject* currentPlayer = playerList->vector[i];
 
-		if (app::GameObject_GetComponentByName) {
-			app::Component* nbComponent = app::GameObject_GetComponentByName(currentPlayer, NolanBehaviourStr, nullptr);
+		if (IsNull((app::Object_1*)currentPlayer)) {
+			return nullptr;
+		}
+		else {
+			if (app::GameObject_GetComponentByName) {
+				app::Component* nbComponent = app::GameObject_GetComponentByName(currentPlayer, NolanBehaviourStr, nullptr);
 
-			if (nbComponent) {
-				app::NolanBehaviour* nb = reinterpret_cast<app::NolanBehaviour*>(nbComponent);
+				if (nbComponent) {
+					app::NolanBehaviour* nb = reinterpret_cast<app::NolanBehaviour*>(nbComponent);
 
-				if (nb) {
-
-					if (app::BoltEntity_get_IsOwner != nullptr && currentPlayer != nullptr) {
-
-						app::BoltEntity* entity = nb->fields._._._._._entity;
-
-						if (entity) {
-							if (app::BoltEntity_get_IsOwner(entity, nullptr)) {
-								return currentPlayer;
-							}
+					if (nb) {
+						if (IsLocalPlayer(nb)) {
+							return currentPlayer;
 						}
-
+						else {
+							return nullptr;
+						}
 					}
 				}
 			}
