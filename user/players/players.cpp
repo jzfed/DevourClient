@@ -46,7 +46,7 @@ app::GameObject* Player::GetLocalPlayer()
 		app::GameObject* currentPlayer = playerList->vector[i];
 
 		if (IsNull((app::Object_1*)currentPlayer)) {
-			return nullptr;
+			continue;
 		}
 		else {
 			if (app::GameObject_GetComponentByName) {
@@ -55,13 +55,9 @@ app::GameObject* Player::GetLocalPlayer()
 				if (nbComponent) {
 					app::NolanBehaviour* nb = reinterpret_cast<app::NolanBehaviour*>(nbComponent);
 
-					if (nb) {
-						if (IsLocalPlayer(nb)) {
-							return currentPlayer;
-						}
-						else {
-							return nullptr;
-						}
+					if (nb && IsLocalPlayer(nb)) {
+						cachedLocalPlayer = currentPlayer;
+						return currentPlayer;
 					}
 				}
 			}
@@ -72,24 +68,28 @@ app::GameObject* Player::GetLocalPlayer()
 
 app::NolanBehaviour* Player::GetNolan()
 {
-	app::GameObject* localPlayer = Player::GetLocalPlayer();
-	app::String* NolanBehaviourStr = reinterpret_cast<app::String*>(il2cpp_string_new("NolanBehaviour"));
+	static app::NolanBehaviour* cachedNolan = nullptr;
+	static app::GameObject* lastLocalPlayer = nullptr;
 
-	if (localPlayer) {
+	app::GameObject* localPlayer = Player::GetLocalPlayer();
+	if (localPlayer == nullptr) return nullptr;
+
+	if (lastLocalPlayer != localPlayer) {
+		app::String* NolanBehaviourStr = reinterpret_cast<app::String*>(il2cpp_string_new("NolanBehaviour"));
 		if (app::GameObject_GetComponentByName) {
 			app::Component* nbComponent = app::GameObject_GetComponentByName(localPlayer, NolanBehaviourStr, nullptr);
 
 			if (nbComponent) {
 				app::NolanBehaviour* nb = reinterpret_cast<app::NolanBehaviour*>(nbComponent);
-
 				if (nb) {
-					return nb;
+					cachedNolan = nb;
+					lastLocalPlayer = localPlayer;
 				}
 			}
 		}
 	}
 
-	return nullptr;
+	return cachedNolan;
 }
 
 

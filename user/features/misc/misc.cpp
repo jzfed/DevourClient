@@ -147,6 +147,7 @@ void Misc::Fly(float speed) {
 	if (localPlayer == nullptr) return;
 
 	auto nb = Player::GetNolan();
+
 	app::Transform* _transform = Unity::Transform::Get(localPlayer);
 
 	if (_transform) {
