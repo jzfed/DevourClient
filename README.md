@@ -19,7 +19,7 @@ Not detected.
 * Player ESP
 * Player Snaplines
 * Spawn any item
-* Force Star The Game
+* Force Start The Game
 * Instant Win
 * TP to Azazel
 * Fly
