@@ -138,54 +138,6 @@ void Misc::InstantWin()
 	}
 }
 
-// This function has not been tested
-// This function has not been tested
-// This function has not been tested
-void Misc::Fly(float speed) {
-	auto localPlayer = Player::GetLocalPlayer();
-
-	if (localPlayer == nullptr) return;
-
-	auto nb = Player::GetNolan();
-
-	app::Transform* _transform = Unity::Transform::Get(localPlayer);
-
-	if (_transform) {
-		app::Vector3 pos = Unity::Transform::Position(_transform);
-
-		if (GetAsyncKeyState('W') & 0x8000) {
-			pos = pos + (app::Transform_get_forward(_transform, nullptr) * speed * Time_DeltaTime());
-		}
-		if (GetAsyncKeyState('S') & 0x8000) {
-			pos = pos - (app::Transform_get_forward(_transform, nullptr) * speed * Time_DeltaTime());
-		}
-		if (GetAsyncKeyState('D') & 0x8000) {
-			pos = pos + (app::Transform_get_right(_transform, nullptr) * speed * Time_DeltaTime());
-		}
-		if (GetAsyncKeyState('A') & 0x8000) {
-			pos = pos - (app::Transform_get_right(_transform, nullptr) * speed * Time_DeltaTime());
-		}
-		if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
-			pos = pos + (app::Transform_get_up(_transform, nullptr) * speed * Time_DeltaTime());
-		}
-		if (GetAsyncKeyState(VK_LCONTROL) & 0x8000) {
-			pos = pos - (app::Transform_get_up(_transform, nullptr) * speed * Time_DeltaTime());
-		}
-
-		auto component = Unity::GameObject::GetComponentByName(localPlayer, "UltimateCharacterLocomotion");
-
-		if (component) {
-			app::UltimateCharacterLocomotion* locomotion = reinterpret_cast<app::UltimateCharacterLocomotion*>(component);
-
-			if (locomotion) {
-				if (app::UltimateCharacterLocomotion_SetPosition_1 == nullptr) return;
-
-				app::UltimateCharacterLocomotion_SetPosition_1(locomotion, pos, false, nullptr);
-			}
-		}
-	}
-}
-
 void Misc::CustomizedLobby()
 {
 
@@ -254,16 +206,8 @@ void Misc::RankSpoofer(int value) {
 	}
 }
 
-void Misc::FullBright()
+void Misc::FullBright(app::NolanBehaviour* nb)
 {
-	std::string _scene = SceneName();
-
-	if (_scene == std::string("Menu")) {
-		return;
-	}
-
-	app::NolanBehaviour* nb = Player::GetNolan();
-
 	if (nb != nullptr) {
 		app::Light* _flashlight = nb->fields.flashlightSpot;
 

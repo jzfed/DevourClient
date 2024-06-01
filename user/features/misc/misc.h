@@ -9,10 +9,9 @@ namespace Misc {
     void CarryItem(const char* itemName);
     void CarryAnimal(const char* animalName);
     void InstantWin();
-    void Fly(float speed);
     void CustomizedLobby();
     void SpawnPrefab(const char* prefabName);
-    void FullBright();
+    void FullBright(app::NolanBehaviour* nb);
     void Revive(bool self);
     void GetKeys();
     void Jumpscare();

@@ -22,26 +22,26 @@
 bool open_menu = false;
 
 /*
-    //Code about hooking stuff
-    //Exemple of hooked function :
-    typedef int (__stdcall* TEST)(); //We define the function, must be the EXACT same definition as the original one
-    TEST test_org = NULL;
-    int __stdcall test_hook() //MUST BE the original calling convention
-    {
-        std::cout << "called" << std::endl;
-        return test_org(); //if we want to call the original one, we can just return 1 otherwise
-    }
+	//Code about hooking stuff
+	//Exemple of hooked function :
+	typedef int (__stdcall* TEST)(); //We define the function, must be the EXACT same definition as the original one
+	TEST test_org = NULL;
+	int __stdcall test_hook() //MUST BE the original calling convention
+	{
+		std::cout << "called" << std::endl;
+		return test_org(); //if we want to call the original one, we can just return 1 otherwise
+	}
 
-    //Exemple :
-    MH_STATUS status_test = MH_CreateHook((LPVOID*)test_sig, &test_hook, reinterpret_cast<LPVOID*>(&test_org));
-    //We say that for every call to the test_sig address we want to redirect it to the address of the function named test_hook (& gives the pointer to it)
-    //We can store the original pointer to the original function into test_org if we want to call the org later --> trampoline hook
-    //original_sum can be NULL if we don't want to trampoline hook
+	//Exemple :
+	MH_STATUS status_test = MH_CreateHook((LPVOID*)test_sig, &test_hook, reinterpret_cast<LPVOID*>(&test_org));
+	//We say that for every call to the test_sig address we want to redirect it to the address of the function named test_hook (& gives the pointer to it)
+	//We can store the original pointer to the original function into test_org if we want to call the org later --> trampoline hook
+	//original_sum can be NULL if we don't want to trampoline hook
 
-    if (status_test != MH_OK) { //If it failed
-        print(MH_StatusToString(status)); //If we are in debug mode, we print the fail status into the console
-        return 0; //We exit
-    }
+	if (status_test != MH_OK) { //If it failed
+		print(MH_StatusToString(status)); //If we are in debug mode, we print the fail status into the console
+		return 0; //We exit
+	}
 */
 
 typedef void(__stdcall* TDebug_2_Log)(app::Object*, MethodInfo*);
@@ -59,6 +59,72 @@ void __stdcall hNolanBehaviour_OnAttributeUpdateValue(app::NolanBehaviour* __thi
 	}
 	oNolanBehaviour_OnAttributeUpdateValue(__this, attribute, method);
 }
+
+// DO_APP_FUNC(0x004AABA0, void, NolanBehaviour_Update, (NolanBehaviour * __this, MethodInfo * method));
+typedef void(__stdcall* TNolanBehaviour_Update)(app::NolanBehaviour*, MethodInfo*);
+TNolanBehaviour_Update oNolanBehaviour_Update = NULL;
+void __stdcall hNolanBehaviour_Update(app::NolanBehaviour* __this, MethodInfo* method) {
+
+	if (settings::fly && IsLocalPlayer(__this)) {
+
+		float speed = settings::fly_speed;
+
+		app::Transform* transform = app::Component_get_transform((app::Component*)__this, nullptr);
+
+		if (transform) {
+
+			app::Vector3 pos = Unity::Transform::Position(transform);
+
+			if (GetAsyncKeyState('W') & 0x8000) {
+				pos = pos + (app::Transform_get_forward(transform, nullptr) * speed * Time_DeltaTime());
+			}
+			if (GetAsyncKeyState('S') & 0x8000) {
+				pos = pos - (app::Transform_get_forward(transform, nullptr) * speed * Time_DeltaTime());
+			}
+			if (GetAsyncKeyState('D') & 0x8000) {
+				pos = pos + (app::Transform_get_right(transform, nullptr) * speed * Time_DeltaTime());
+			}
+			if (GetAsyncKeyState('A') & 0x8000) {
+				pos = pos - (app::Transform_get_right(transform, nullptr) * speed * Time_DeltaTime());
+			}
+			if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
+				pos = pos + (app::Transform_get_up(transform, nullptr) * speed * Time_DeltaTime());
+			}
+			if (GetAsyncKeyState(VK_LCONTROL) & 0x8000) {
+				pos = pos - (app::Transform_get_up(transform, nullptr) * speed * Time_DeltaTime());
+			}
+
+
+			app::GameObject* thisGameObject = app::Component_get_gameObject((app::Component*)__this, nullptr);
+
+			if (thisGameObject != nullptr || !IsNull((app::Object_1*)thisGameObject)) {
+				app::Component* _UltimateCharacterLocomotion = Unity::GameObject::GetComponentByName(thisGameObject, "UltimateCharacterLocomotion");
+
+				if (_UltimateCharacterLocomotion != nullptr && !IsNull((app::Object_1*)_UltimateCharacterLocomotion)) {
+					if (app::UltimateCharacterLocomotion_SetPosition_1) {
+						app::UltimateCharacterLocomotion_SetPosition_1((app::UltimateCharacterLocomotion*)_UltimateCharacterLocomotion, pos, false, nullptr);
+					}
+				}
+			}
+		}
+	}
+
+	if (settings::change_player_speed && IsLocalPlayer(__this)) {
+		// Apply Sprint Speed
+		if (__this->fields.speedChangeAbility)
+		{
+			__this->fields.speedChangeAbility->fields.m_SpeedChangeMultiplier = (float)settings::new_speed;
+			__this->fields.speedChangeAbility->fields.m_MaxSpeedChangeValue = (float)settings::new_speed;
+		}
+	}
+
+	if (settings::fullBright && IsLocalPlayer(__this)) {
+		Misc::FullBright(__this);
+	}
+
+	oNolanBehaviour_Update(__this, method);
+}
+
 
 // DO_APP_FUNC(0x004A7D70, void, NolanBehaviour_FixedUpdate, (NolanBehaviour* __this, MethodInfo* method));
 typedef void(__stdcall* TNolanBehaviour_FixedUpdate)(app::NolanBehaviour*, MethodInfo*);
@@ -80,16 +146,6 @@ void __stdcall hNolanBehaviour_FixedUpdate(app::NolanBehaviour* __this, MethodIn
 					app::UltimateCharacterLocomotion_set_TimeScale(locomotion, settings::new_azazel_speed, NULL);
 				}
 			}
-		}
-	}
-
-
-	if (settings::change_player_speed && IsLocalPlayer(__this)) {
-		// Apply Sprint Speed
-		if (__this->fields.speedChangeAbility)
-		{
-			__this->fields.speedChangeAbility->fields.m_SpeedChangeMultiplier = (float)settings::new_speed;
-			__this->fields.speedChangeAbility->fields.m_MaxSpeedChangeValue = (float)settings::new_speed;
 		}
 	}
 
@@ -377,7 +433,14 @@ void CreateHooks() {
 		return;
 	}
 
-	// NOLAN HOOK
+	// NOLAN UPDATE HOOK
+	MH_STATUS status_nolanUpdate = MH_CreateHook((LPVOID*)app::NolanBehaviour_Update, &hNolanBehaviour_Update, reinterpret_cast<LPVOID*>(&oNolanBehaviour_Update));
+	if (status_nolanUpdate != MH_OK) {
+		std::cout << "Failed to create nolan update hook: " << MH_StatusToString(status_nolanUpdate) << std::endl;
+		return;
+	}
+
+	// NOLAN FIXED HOOK
 	MH_STATUS status_nolan = MH_CreateHook((LPVOID*)app::NolanBehaviour_FixedUpdate, &hNolanBehaviour_FixedUpdate, reinterpret_cast<LPVOID*>(&oNolanBehaviour_FixedUpdate));
 	if (status_nolan != MH_OK) {
 		std::cout << "Failed to create nolan hook: " << MH_StatusToString(status_nolan) << std::endl;
@@ -631,15 +694,11 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 	if (open_menu) {
 		DrawMenu(open_menu);
 	}
-	
+
+	// to-do: move it to "fixed update" hook
 	if (settings::player_esp)
 		ESP::RunPlayersESP();
 
-	if (settings::fly)
-		Misc::Fly(settings::fly_speed);
-		
-	if (settings::fullBright)
-		Misc::FullBright();
 
 	ImGui::GetIO().MouseDrawCursor = open_menu;
 

@@ -318,7 +318,7 @@ void DrawMiscTab() {
 	*/
 
 	ImGui::Checkbox("Fly", &settings::fly);
-	ImGui::SliderFloat("Speed: ", &settings::fly_speed, 5.f, 15.f);
+	ImGui::SliderFloat("Speed: ", &settings::fly_speed, 5.f, 20.f);
 
 	/*
 	if (ImGui::Button("Make random noise")) {
