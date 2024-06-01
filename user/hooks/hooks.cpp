@@ -60,6 +60,32 @@ void __stdcall hNolanBehaviour_OnAttributeUpdateValue(app::NolanBehaviour* __thi
 	oNolanBehaviour_OnAttributeUpdateValue(__this, attribute, method);
 }
 
+
+// DO_APP_FUNC(0x006406A0, void, Menu_Update, (Menu * __this, MethodInfo * method));
+typedef void(__stdcall* TMenu_Update)(app::Menu*, MethodInfo*);
+TMenu_Update oMenu_Update = NULL;
+void __stdcall hMenu_Update(app::Menu* __this, MethodInfo* method) {
+
+	if (settings::steam_name_spoof) {
+
+		Il2CppString* steamId = il2cpp_string_new("43634643643");
+		Il2CppString* new_name = il2cpp_string_new(settings::new_name.c_str());
+
+		__this->fields.steamID = reinterpret_cast<app::String*>(steamId);
+		__this->fields.steamName = reinterpret_cast<app::String*>(new_name);
+	}
+
+	if (settings::server_name_spoof) {
+		app::String* newServerName = reinterpret_cast<app::String*>(il2cpp_string_new(settings::server_name.c_str()));
+
+		if (app::Text_set_text != nullptr) {
+			app::Text_set_text(__this->fields.serverNameText, newServerName, nullptr);
+		}
+	}
+
+	oMenu_Update(__this, method);
+}
+
 // DO_APP_FUNC(0x004AABA0, void, NolanBehaviour_Update, (NolanBehaviour * __this, MethodInfo * method));
 typedef void(__stdcall* TNolanBehaviour_Update)(app::NolanBehaviour*, MethodInfo*);
 TNolanBehaviour_Update oNolanBehaviour_Update = NULL;
@@ -430,6 +456,13 @@ void CreateHooks() {
 	MH_STATUS status_uv = MH_CreateHook((LPVOID*)app::NolanBehaviour_OnAttributeUpdateValue, &hNolanBehaviour_OnAttributeUpdateValue, reinterpret_cast<LPVOID*>(&oNolanBehaviour_OnAttributeUpdateValue));
 	if (status_uv != MH_OK) {
 		std::cout << "Failed to create uv hook: " << MH_StatusToString(status_uv) << std::endl;
+		return;
+	}
+
+	// Horror.Menu Hook
+	MH_STATUS status_Menu_Update = MH_CreateHook((LPVOID*)app::Menu_Update, &hMenu_Update, reinterpret_cast<LPVOID*>(&oMenu_Update));
+	if (status_Menu_Update != MH_OK) {
+		std::cout << "Failed to create status_Menu_Update hook: " << MH_StatusToString(status_Menu_Update) << std::endl;
 		return;
 	}
 

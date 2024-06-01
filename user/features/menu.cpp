@@ -300,25 +300,19 @@ void DrawMiscTab() {
 	//ImGui::Checkbox("Chat spam", &settings::chat_spam);
 	//ImGui::InputText("Message", &settings::message);
 
-	/*
 	if (ImGui::Button("Unlock Achievements")) {
-		Misc::CustomizedLobby();
+		Misc::UnlockAchievements();
 	}
 
-	
+	/*
 	if (ImGui::Button("TP Keys")) {
 		//Misc::TPKeys();
 	}
+	*/
 
 	ImGui::Checkbox("Change Steam name", &settings::steam_name_spoof);
 	ImGui::InputText("New name##steam", &settings::new_name);
 
-	ImGui::Checkbox("Change server name", &settings::server_name_spoof);
-	ImGui::InputText("New name##server", &settings::server_name);
-	*/
-
-	ImGui::Checkbox("Fly", &settings::fly);
-	ImGui::SliderFloat("Speed: ", &settings::fly_speed, 5.f, 20.f);
 
 	/*
 	if (ImGui::Button("Make random noise")) {
