@@ -15,10 +15,14 @@
 #include "Wrapper.h"
 #include "ClientHelper.h"
 #include "hooks/hooks.hpp"
-#include "color.hpp"
 #include "UnityCore.h"
+#include "color.hpp"
 #include "features/misc/misc.h"
 #include "utils/utils.hpp"
+#include "network/VersionControl.h"
+
+
+#define CLIENT_VERSION "4.1"
 
 // Set the name of your log file here
 extern const LPCWSTR LOG_FILE = L"DevourClient.txt";
@@ -42,7 +46,9 @@ void Run()
 	// If you would like to output to a new console window, use il2cppi_new_console() to open one and redirect stdout
 	il2cppi_new_console();
 
-	std::cout << dye::green("\n\tDevourClient v2.0\n\t") << __DATE__ << " - " << __TIME__ << std::endl;
+
+	std::cout << dye::green("\n\tDevourClient v") << dye::green(CLIENT_VERSION) << "\n\t" << __DATE__ << " - " << __TIME__ << std::endl;
+
 	std::cout << "\tDevour Version ";
 
 	if (app::Application_get_version != nullptr)
@@ -58,6 +64,39 @@ void Run()
 	std::cout << "[DevourClient]: " << dye::yellow("GitHub: ") << dye::aqua_on_black("https://github.com/ALittlePatate/DevourClient\n");
 	std::cout << "[DevourClient]: " << "Note: " << dye::light_red("if you payed for this you most likely got scammed.\n\n");
 	std::cout << "[DevourClient]: Logged in as " << dye::yellow(steamName) << " (" << steamUserID << ")\n\n";
+
+	// DevourClient version control
+	VersionControl client(CLIENT_VERSION, L"https://api.github.com/repos/ALittlePatate/DevourClient/releases/latest");
+	il2cppi_log_write("[DevourClient]: Update check successful, client is up-to-date.\n");
+	std::cout << "[DevourClient]: " << dye::light_aqua("Checking for updates..\n");
+	client.CheckForUpdate();
+
+	if (client.IsUpToDate()) {
+		il2cppi_log_write("[DevourClient]: Update check successful, client is up-to-date.\n");
+		std::cout << "[DevourClient]: " << dye::light_green("Client is up to date.") << "\n\n";
+	}
+	else {
+		il2cppi_log_write("[DevourClient]: Client is out of date!\n");
+		std::cout << "[DevourClient]: " << dye::red_on_black("Client is out of date!") << "\n\n";
+
+		const char* latestDownloadLink = client.GetLatestDownloadLink();
+		app::String* str = reinterpret_cast<app::String*>(il2cpp_string_new(latestDownloadLink));
+
+		const int result = MessageBox(NULL, L"Version is not up to date! Would you like to download the new version?", L"DevourClient", MB_YESNO | MB_ICONERROR);
+
+
+		switch (result)
+		{
+		case IDYES:
+			app::Application_OpenURL(str, nullptr);
+			break;
+		case IDNO:
+			MessageBox(NULL, L"You can download the new version at any time to benefit from new features, improvements, and bug fixes", L"DevourClient", MB_OK | MB_ICONEXCLAMATION);
+			break;
+		default:
+			break;
+		}
+	}
 
 	std::cout << "[DevourClient]: " << dye::aqua("Initializing..\n");
 	il2cppi_log_write("Initializing..");
@@ -85,14 +124,6 @@ void Run()
 		CreateThread(0, 0, EjectThread, 0, 0, 0); //Unhooking
 		return;
 	}
-
-	// create settings.ini
-	std::string filename = "settings.ini";
-	std::string key = "open_menu";
-	std::string defaultValue = "INSERT";  // default value
-
-	// null file??
-	std::string keyValue = ReadValueFromIni(filename, key, defaultValue);
 
 	std::cout << "[DevourClient]: " << dye::light_green("Done!:)\n\n");
 

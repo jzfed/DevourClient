@@ -353,6 +353,9 @@ void DrawMiscTab() {
 }
 
 void DrawPlayersTab() {
+	ImGui::Checkbox("Fly", &settings::fly);
+	ImGui::SliderFloat("Speed: ", &settings::fly_speed, 5.f, 20.f);
+
 	ImGui::Checkbox("Change player speed", &settings::change_player_speed);
 	ImGui::SliderInt("Multiplier", &settings::new_speed, 0, 10);
 

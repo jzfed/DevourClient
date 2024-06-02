@@ -82,6 +82,9 @@
     <ClCompile Include="user\features\esp\esp.cpp">
       <Filter>user\features\esp</Filter>
     </ClCompile>
+    <ClCompile Include="user\network\VersionControl.cpp">
+      <Filter>user\network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="user\main.h">
@@ -201,6 +204,12 @@
     <ClInclude Include="user\features\esp\esp.hpp">
       <Filter>user\features\esp</Filter>
     </ClInclude>
+    <ClInclude Include="user\network\VersionControl.h">
+      <Filter>user\network</Filter>
+    </ClInclude>
+    <ClInclude Include="include\json.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="appdata">
@@ -244,6 +253,9 @@
     </Filter>
     <Filter Include="user\features\esp">
       <UniqueIdentifier>{8f74b1c2-1d3c-4a14-8a6f-7bf00e07d57e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="user\network">
+      <UniqueIdentifier>{faef4024-c359-4051-90fc-8735a4acbe8f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

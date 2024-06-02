@@ -58,6 +58,7 @@
     <ClCompile Include="user\features\misc\misc.cpp" />
     <ClCompile Include="user\hooks\hooks.cpp" />
     <ClCompile Include="user\main.cpp" />
+    <ClCompile Include="user\network\VersionControl.cpp" />
     <ClCompile Include="user\players\players.cpp" />
     <ClCompile Include="user\settings\settings.cpp" />
     <ClCompile Include="user\utils\utils.cpp" />
@@ -83,6 +84,7 @@
     <ClInclude Include="include\imgui\imstb_rectpack.h" />
     <ClInclude Include="include\imgui\imstb_textedit.h" />
     <ClInclude Include="include\imgui\imstb_truetype.h" />
+    <ClInclude Include="include\json.hpp" />
     <ClInclude Include="include\Minhook\include\MinHook.h" />
     <ClInclude Include="include\Minhook\src\buffer.h" />
     <ClInclude Include="include\Minhook\src\HDE\hde32.h" />
@@ -99,6 +101,7 @@
     <ClInclude Include="user\features\misc\misc.h" />
     <ClInclude Include="user\hooks\hooks.hpp" />
     <ClInclude Include="user\main.h" />
+    <ClInclude Include="user\network\VersionControl.h" />
     <ClInclude Include="user\players\players.h" />
     <ClInclude Include="user\settings\settings.hpp" />
     <ClInclude Include="user\utils\utils.hpp" />
