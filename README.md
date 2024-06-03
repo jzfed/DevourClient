@@ -20,6 +20,8 @@ Not detected.
 * Instant Win
 * TP to Azazel
 * Fly
+* Unlock Achievements
+* Change Steam Name
 * EXP Modifier
 * Unlock all, including flashlights, perks, outfits. Active by default, can't be turned off, no persistance.
 * Disable long interact
