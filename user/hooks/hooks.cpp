@@ -10,7 +10,7 @@
 #include "helpers.h"
 
 #include "players/players.h"
-#include "UnityCore.h"
+#include "UnityEngine.h"
 #include "ClientHelper.h"
 #include "features/misc/misc.h"
 
@@ -67,19 +67,12 @@ TMenu_Update oMenu_Update = NULL;
 void __stdcall hMenu_Update(app::Menu* __this, MethodInfo* method) {
 
 	if (settings::steam_name_spoof) {
-
-		Il2CppString* steamId = il2cpp_string_new("43634643643");
-		Il2CppString* new_name = il2cpp_string_new(settings::new_name.c_str());
-
-		__this->fields.steamID = reinterpret_cast<app::String*>(steamId);
-		__this->fields.steamName = reinterpret_cast<app::String*>(new_name);
+		__this->fields.steamName = ConvertToSystemString(settings::new_name.c_str());
 	}
 
 	if (settings::server_name_spoof) {
-		app::String* newServerName = reinterpret_cast<app::String*>(il2cpp_string_new(settings::server_name.c_str()));
-
 		if (app::Text_set_text != nullptr) {
-			app::Text_set_text(__this->fields.serverNameText, newServerName, nullptr);
+			app::Text_set_text(__this->fields.serverNameText, ConvertToSystemString(settings::server_name.c_str()), nullptr);
 		}
 	}
 
@@ -99,7 +92,7 @@ void __stdcall hNolanBehaviour_Update(app::NolanBehaviour* __this, MethodInfo* m
 
 		if (transform) {
 
-			app::Vector3 pos = Unity::Transform::Position(transform);
+			app::Vector3 pos = UnityEngine::Transform::Position(transform);
 
 			if (GetAsyncKeyState('W') & 0x8000) {
 				pos = pos + (app::Transform_get_forward(transform, nullptr) * speed * Time_DeltaTime());
@@ -124,7 +117,7 @@ void __stdcall hNolanBehaviour_Update(app::NolanBehaviour* __this, MethodInfo* m
 			app::GameObject* thisGameObject = app::Component_get_gameObject((app::Component*)__this, nullptr);
 
 			if (thisGameObject != nullptr || !IsNull((app::Object_1*)thisGameObject)) {
-				app::Component* _UltimateCharacterLocomotion = Unity::GameObject::GetComponentByName(thisGameObject, "UltimateCharacterLocomotion");
+				app::Component* _UltimateCharacterLocomotion = UnityEngine::GameObject::GetComponentByName(thisGameObject, "UltimateCharacterLocomotion");
 
 				if (_UltimateCharacterLocomotion != nullptr && !IsNull((app::Object_1*)_UltimateCharacterLocomotion)) {
 					if (app::UltimateCharacterLocomotion_SetPosition_1) {
@@ -161,8 +154,7 @@ void __stdcall hNolanBehaviour_FixedUpdate(app::NolanBehaviour* __this, MethodIn
 		app::GameObject* goAzazel = __this->fields.m_Survival->fields.m_Azazel;
 
 		if (goAzazel) {
-			app::String* azazelComponent = reinterpret_cast<app::String*>(il2cpp_string_new("UltimateCharacterLocomotion"));
-			auto component = app::GameObject_GetComponentByName(goAzazel, azazelComponent, nullptr);
+			auto component = app::GameObject_GetComponentByName(goAzazel, ConvertToSystemString("UltimateCharacterLocomotion"), nullptr);
 
 			if (component) {
 				app::UltimateCharacterLocomotion* locomotion = reinterpret_cast<app::UltimateCharacterLocomotion*>(component);

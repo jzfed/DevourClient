@@ -51,7 +51,7 @@
     <ClCompile Include="include\Minhook\src\hook.cpp" />
     <ClCompile Include="include\Minhook\src\trampoline.cpp" />
     <ClCompile Include="lib\ClientHelper.cpp" />
-    <ClCompile Include="lib\UnityCore.cpp" />
+    <ClCompile Include="lib\UnityEngine.cpp" />
     <ClCompile Include="lib\Wrapper.cpp" />
     <ClCompile Include="user\features\esp\esp.cpp" />
     <ClCompile Include="user\features\menu.cpp" />
@@ -94,7 +94,7 @@
     <ClInclude Include="include\Minhook\src\HDE\table64.h" />
     <ClInclude Include="include\Minhook\src\trampoline.h" />
     <ClInclude Include="lib\ClientHelper.h" />
-    <ClInclude Include="lib\UnityCore.h" />
+    <ClInclude Include="lib\UnityEngine.h" />
     <ClInclude Include="lib\Wrapper.h" />
     <ClInclude Include="user\features\esp\esp.hpp" />
     <ClInclude Include="user\features\menu.hpp" />

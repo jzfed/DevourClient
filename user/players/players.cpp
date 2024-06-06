@@ -1,24 +1,15 @@
 #include "pch-il2cpp.h"
 
 #include "players.h"
-
-#include <iostream>
+#include <helpers.h>
+#include "UnityEngine.h"
 #include "ClientHelper.h"
-
 
 app::GameObject__Array* Players::GetAllPlayers()
 {
-	app::String* playerTagStr = reinterpret_cast<app::String*>(il2cpp_string_new("Player"));
+	app::GameObject__Array* players = UnityEngine::Object::FindGameObjectsWithTag("Player");
 
-	if (app::GameObject_FindGameObjectsWithTag) {
-		app::GameObject__Array* playersTag = app::GameObject_FindGameObjectsWithTag(playerTagStr, nullptr);
-
-		if (playersTag) {
-			return playersTag;
-		}
-	}
-
-	return nullptr;
+	return players ? players : nullptr;
 }
 
 app::GameObject* Player::GetLocalPlayer()
@@ -36,7 +27,6 @@ app::GameObject* Player::GetLocalPlayer()
 	}
 
 	app::GameObject__Array* playerList = Players::GetAllPlayers();
-	app::String* NolanBehaviourStr = reinterpret_cast<app::String*>(il2cpp_string_new("NolanBehaviour"));
 
 	if (!playerList || playerList->max_length == 0)
 		return nullptr;
@@ -49,16 +39,14 @@ app::GameObject* Player::GetLocalPlayer()
 			continue;
 		}
 		else {
-			if (app::GameObject_GetComponentByName) {
-				app::Component* nbComponent = app::GameObject_GetComponentByName(currentPlayer, NolanBehaviourStr, nullptr);
+			app::Component* nbComponent = UnityEngine::GameObject::GetComponentByName(currentPlayer, "NolanBehaviour");
 
-				if (nbComponent) {
-					app::NolanBehaviour* nb = reinterpret_cast<app::NolanBehaviour*>(nbComponent);
+			if (nbComponent) {
+				app::NolanBehaviour* nb = reinterpret_cast<app::NolanBehaviour*>(nbComponent);
 
-					if (nb && IsLocalPlayer(nb)) {
-						cachedLocalPlayer = currentPlayer;
-						return currentPlayer;
-					}
+				if (nb && IsLocalPlayer(nb)) {
+					cachedLocalPlayer = currentPlayer;
+					return currentPlayer;
 				}
 			}
 		}
@@ -75,16 +63,16 @@ app::NolanBehaviour* Player::GetNolan()
 	if (localPlayer == nullptr) return nullptr;
 
 	if (lastLocalPlayer != localPlayer) {
-		app::String* NolanBehaviourStr = reinterpret_cast<app::String*>(il2cpp_string_new("NolanBehaviour"));
-		if (app::GameObject_GetComponentByName) {
-			app::Component* nbComponent = app::GameObject_GetComponentByName(localPlayer, NolanBehaviourStr, nullptr);
 
-			if (nbComponent) {
-				app::NolanBehaviour* nb = reinterpret_cast<app::NolanBehaviour*>(nbComponent);
-				if (nb) {
-					cachedNolan = nb;
-					lastLocalPlayer = localPlayer;
-				}
+		app::Component* nbComponent = UnityEngine::GameObject::GetComponentByName(localPlayer, "NolanBehaviour");
+
+		if (nbComponent) {
+
+			app::NolanBehaviour* nb = reinterpret_cast<app::NolanBehaviour*>(nbComponent);
+
+			if (nb) {
+				cachedNolan = nb;
+				lastLocalPlayer = localPlayer;
 			}
 		}
 	}

@@ -4,7 +4,7 @@
 
 #include "ClientHelper.h"
 #include "players/players.h"
-#include "UnityCore.h"
+#include "UnityEngine.h"
 
 bool IsSinglePlayer()
 {
@@ -46,10 +46,8 @@ bool IsPlayerCrawling(app::GameObject* go)
 	if (go == NULL)
 		return false;
 
-	app::String* str = reinterpret_cast<app::String*>(il2cpp_string_new("NolanBehaviour"));
-
 	if (app::GameObject_GetComponentByName != NULL) {
-		app::Component* nbComponent = app::GameObject_GetComponentByName(go, str, nullptr);
+		app::Component* nbComponent = app::GameObject_GetComponentByName(go, ConvertToSystemString("NolanBehaviour"), nullptr);
 
 		if (nbComponent) {
 			app::NolanBehaviour* nb = reinterpret_cast<app::NolanBehaviour*>(nbComponent);
@@ -65,7 +63,7 @@ bool IsPlayerCrawling(app::GameObject* go)
 
 bool IsInGame()
 {
-	app::OptionsHelpers* optionsHelpers = UnityCore::Object<app::OptionsHelpers>::FindObjectOfType("OptionsHelpers");
+	app::OptionsHelpers* optionsHelpers = UnityEngine::Object::FindObjectOfType<app::OptionsHelpers>("OptionsHelpers");
 
 	if (optionsHelpers)
 		return optionsHelpers->fields._inGame_k__BackingField;

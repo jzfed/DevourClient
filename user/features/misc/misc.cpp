@@ -5,17 +5,18 @@
 #include "ClientHelper.h"
 #include "players/players.h"
 #include "helpers.h"
-#include "UnityCore.h"
+#include "UnityEngine.h"
 #include <iostream>
 #include "Windows.h"
 #include <map>
+#include "utils/utils.hpp"
 
 void Misc::ForceStart()
 {
 	std::string _scene = SceneName();
 
 	if (IsHost() && _scene == std::string("Menu")) {
-		app::Menu* _menu = UnityCore::Object<app::Menu>::FindObjectOfType("Menu", "Horror");
+		app::Menu* _menu = UnityEngine::Object::FindObjectOfType<app::Menu>("Menu", "Horror");
 
 		if (_menu) {
 			if (app::Menu_OnLobbyStartButtonClick) {
@@ -60,8 +61,7 @@ void Misc::CarryItem(const char* itemName)
 	std::string carryItem = itemMap[itemName];
 
 	if (!carryItem.empty() && Player::GetLocalPlayer()) {
-		app::String* str2 = reinterpret_cast<app::String*>(il2cpp_string_new(carryItem.c_str()));
-		app::NolanBehaviour_StartCarry(Player::GetNolan(), str2, nullptr);
+		app::NolanBehaviour_StartCarry(Player::GetNolan(), ConvertToSystemString(carryItem.c_str()), nullptr);
 	}
 }
 
@@ -82,8 +82,7 @@ void Misc::CarryAnimal(const char* animalName)
 	std::string carryAnimal = animalMap[animalName];
 
 	if (!carryAnimal.empty() && Player::GetLocalPlayer()) {
-		app::String* str2 = reinterpret_cast<app::String*>(il2cpp_string_new(carryAnimal.c_str()));
-		app::NolanBehaviour_StartCarry(Player::GetNolan(), str2, nullptr);
+		app::NolanBehaviour_StartCarry(Player::GetNolan(), ConvertToSystemString(carryAnimal.c_str()), nullptr);
 	}
 }
 
@@ -95,14 +94,12 @@ void Misc::InstantWin()
 
 	std::string _scene = SceneName();
 
-	if (_scene == std::string("Menu") && !IsHost() && !Player::GetLocalPlayer()) {
-		return;
-	}
+	if (_scene == std::string("Menu") && !IsHost() && !Player::GetLocalPlayer()) return;
 
 	int32_t progress = 10;
 
 	if (_scene == std::string("Inn")) {
-		app::MapController* _MapController = UnityCore::Object<app::MapController>::FindObjectOfType("MapController");
+		app::MapController* _MapController = UnityEngine::Object::FindObjectOfType<app::MapController>("MapController");
 
 		if (_MapController) {
 
@@ -114,7 +111,7 @@ void Misc::InstantWin()
 		}
 	}
 	else if (_scene == std::string("Slaughterhouse")) {
-		app::SlaughterhouseAltarController* _SlaughterhouseAltarController = UnityCore::Object<app::SlaughterhouseAltarController>::FindObjectOfType("SlaughterhouseAltarController");
+		app::SlaughterhouseAltarController* _SlaughterhouseAltarController = UnityEngine::Object::FindObjectOfType<app::SlaughterhouseAltarController>("SlaughterhouseAltarController");
 
 		if (_SlaughterhouseAltarController) {
 
@@ -126,7 +123,8 @@ void Misc::InstantWin()
 		}
 	}
 	else {
-		app::SurvivalObjectBurnController* _SurvivalObjectBurnController = UnityCore::Object<app::SurvivalObjectBurnController>::FindObjectOfType("SurvivalObjectBurnController");
+		//app::SurvivalObjectBurnController* _SurvivalObjectBurnController = UnityEngine::Object::FindObjectOfType("SurvivalObjectBurnController");
+		app::SurvivalObjectBurnController* _SurvivalObjectBurnController = UnityEngine::Object::FindObjectOfType<app::SurvivalObjectBurnController>("SurvivalObjectBurnController");
 
 		if (_SurvivalObjectBurnController) {
 			// DO_APP_FUNC(0x00562590, void, SurvivalObjectBurnController_SkipToGoat, (SurvivalObjectBurnController * __this, int32_t number, MethodInfo * method));
@@ -176,10 +174,10 @@ void Misc::SpawnPrefab(const char* prefabName) {
 		if (localPlayer) {
 			app::Quaternion rotation = app::Quaternion_get_identity(NULL);
 
-			app::Transform* playerTransform = Unity::Transform::Get(localPlayer);
+			app::Transform* playerTransform = UnityEngine::Transform::Get(localPlayer);
 			if (playerTransform == nullptr) return;
 
-			app::Vector3 playerPos = Unity::Transform::Position(playerTransform);
+			app::Vector3 playerPos = UnityEngine::Transform::Position(playerTransform);
 
 			if (app::BoltNetwork_Instantiate_6) {
 				app::GameObject* go = (app::GameObject*)app::BoltNetwork_Instantiate_6(p, playerPos, rotation, nullptr);
@@ -196,7 +194,7 @@ void Misc::RankSpoofer(int value) {
 		return;
 	}
 	else {
-		app::NolanRankController* rankController = UnityCore::Object<app::NolanRankController>::FindObjectOfType("NolanRankController");
+		app::NolanRankController* rankController = UnityEngine::Object::FindObjectOfType<app::NolanRankController>("NolanRankController");
 
 		if (rankController != nullptr) {
 			if (app::NolanRankController_SetRank != nullptr) {
@@ -229,7 +227,7 @@ void Misc::Revive(bool self)
 	}
 
 	// app::SurvivalReviveInteractable
-	app::SurvivalReviveInteractable* revive = UnityCore::Object<app::SurvivalReviveInteractable>::FindObjectOfType("SurvivalReviveInteractable");
+	app::SurvivalReviveInteractable* revive = UnityEngine::Object::FindObjectOfType<app::SurvivalReviveInteractable>("SurvivalReviveInteractable");
 
 	if (revive == NULL) {
 		if (self) {
@@ -290,10 +288,10 @@ void Misc::Jumpscare() {
 		return;
 	}
 
-	app::Survival* survival = UnityCore::Object<app::Survival>::FindObjectOfType("Survival");
+	app::Survival* survival = UnityEngine::Object::FindObjectOfType<app::Survival>("Survival");
 	if (survival == NULL) { return; }
 
-	app::SurvivalAzazelBehaviour* azazel = UnityCore::Object<app::SurvivalAzazelBehaviour>::FindObjectOfType("SurvivalAzazelBehaviour");
+	app::SurvivalAzazelBehaviour* azazel = UnityEngine::Object::FindObjectOfType<app::SurvivalAzazelBehaviour>("SurvivalAzazelBehaviour");
 
 	app::GameObject* ai = GetAzazel(survival);
 
@@ -307,7 +305,7 @@ void Misc::Jumpscare() {
 
 			if (currentPlayer == NULL) continue;
 
-			app::Component* component = Unity::GameObject::GetComponentByName(currentPlayer, "NolanBehaviour");
+			app::Component* component = UnityEngine::GameObject::GetComponentByName(currentPlayer, "NolanBehaviour");
 
 			if (component != NULL) {
 				app::NolanBehaviour* nb = reinterpret_cast<app::NolanBehaviour*>(component);
@@ -335,10 +333,10 @@ void Misc::Kill(bool self) {
 		return;
 	}
 
-	app::Survival* survival = UnityCore::Object<app::Survival>::FindObjectOfType("Survival");
+	app::Survival* survival = UnityEngine::Object::FindObjectOfType<app::Survival>("Survival");
 	if (survival == NULL) { return; }
 
-	app::SurvivalAzazelBehaviour* azazel = UnityCore::Object<app::SurvivalAzazelBehaviour>::FindObjectOfType("SurvivalAzazelBehaviour");
+	app::SurvivalAzazelBehaviour* azazel = UnityEngine::Object::FindObjectOfType<app::SurvivalAzazelBehaviour>("SurvivalAzazelBehaviour");
 
 	app::GameObject* ai = GetAzazel(survival);
 
@@ -363,7 +361,7 @@ void Misc::Kill(bool self) {
 
 				if (currentPlayer == NULL) continue;
 
-				app::Component* component = Unity::GameObject::GetComponentByName(currentPlayer, "NolanBehaviour");
+				app::Component* component = UnityEngine::GameObject::GetComponentByName(currentPlayer, "NolanBehaviour");
 
 				if (component != NULL) {
 					app::NolanBehaviour* nb = reinterpret_cast<app::NolanBehaviour*>(component);
@@ -397,7 +395,8 @@ void Misc::TpToAzazel()
 
 		if (nb == nullptr) return;
 
-		app::Survival* _survival = UnityCore::Object<app::Survival>::FindObjectOfType("Survival");
+
+		app::Survival* _survival = UnityEngine::Object::FindObjectOfType<app::Survival>("Survival");
 		if (_survival == nullptr) return;
 
 		// get azazel
@@ -419,49 +418,5 @@ void Misc::TpToAzazel()
 
 void Misc::UnlockAchievements()
 {
-	app::AchievementHelpers* achievementsSingleton = app::AchievementHelpers_get_singleton(nullptr);
-
-	if (achievementsSingleton != nullptr) {
-
-		const char* achievements[] = {
-			"ACH_ALL_CLIPBOARDS_READ", "ACH_ALL_NOTES_READ", "ACH_UNLOCKED_CAGE",
-			"ACH_UNLOCKED_ATTIC_CAGE", "ACH_CALMED_ANNA", "ACH_FRIED_RAT",
-			"ACH_BURNT_GOAT", "ACH_KNOCKED_OUT_BY_ANNA", "ACH_KNOCKOUT_OUT_BY_DEMON",
-			"ACH_KNOCKED_OUT_IN_HIDING", "STAT_NUM_BLEACH_USED", "ACH_WON_SP",
-			"ACH_WIN_NIGHTMARE", "ACH_WON_HARD_SP", "ACH_WON_COOP", "ACH_WON_HARD",
-			"ACH_WIN_NIGHTMARE_SP", "ACH_LOST", "ACH_NEVER_KNOCKED_OUT",
-			"ACH_ONLY_ONE_KNOCKED_OUT", "ACH_WON_HARD_NO_MEDKITS", "ACH_WON_NO_MEDKITS",
-			"ACH_WON_NO_BATTERIES", "ACH_WON_NIGHTMARE_NO_MEDKITS",
-			"ACH_WON_NO_KNOCKOUT_COOP", "ACH_WON_HARD_NO_BATTERIES",
-			"ACH_WON_HARD_{0}", "ACH_WON_NIGHTMARE_{0}", "ACH_WON_NIGHTMARE_NO_BATTERIES",
-			"ACH_SURVIVED_TO_7_GOATS", "ACH_SURVIVED_TO_5_GOATS", "ACH_SURVIVED_TO_3_GOATS",
-			"ACH_WON_Manor_NIGHTMARE_SP", "ACH_WON_NIGHTMARE_", "ACH_WON_MANOR_NIGHTMARE_SP",
-			"ACH_WON_TOWN_HARD", "ACH_WON_INN_HARD_SP", "ACH_ALL_FEATHERS",
-			"ACH_WON_SLAUGHTERHOUSE_COOP", "ACH_ALL_BARBED_WIRES", "ACH_WON_INN_HARD",
-			"ACH_WON_MOLLY_HARD", "ACH_ALL_HORSESHOES", "ACH_WON_MOLLY_HARD_SP",
-			"ACH_WON_TOWN_NIGHTMARE_SP", "ACH_100_GASOLINE_USED", "ACH_WON_INN_SP",
-			"ACH_WON_MANOR_HARD_SP", "ACH_WON_MOLLY_SP", "ACH_1000_PIGS_DESTROYED",
-			"ACH_1000_MIRRORS_DESTROYED", "ACH_100_EGGS_DESTROYED", "ACH_WON_SLAUGHTERHOUSE_HARD_SP",
-			"ACH_WON_TOWN_COOP", "ACH_100_FUSES_USED", "ACH_WON_MOLLY_COOP",
-			"ACH_WON_MOLLY_NIGHTMARE_SP", "ACH_1000_BOOKS_DESTROYED", "ACH_ALL_PATCHES",
-			"ACH_WON_SLAUGHTERHOUSE_SP", "ACH_WON_TOWN_NIGHTMARE", "ACH_WON_INN_COOP",
-			"ACH_ALL_CHERRY_BLOSSOM", "ACH_WON_TOWN_HARD_SP", "ACH_WON_MOLLY_NIGHTMARE",
-			"ACH_WON_INN_NIGHTMARE_SP", "ACH_ALL_ROSES", "ACH_WON_TOWN_SP",
-			"ACH_WON_SLAUGHTERHOUSE_NIGHTMARE_SP", "ACH_WON_INN_NIGHTMARE",
-			"ACH_WON_MANOR_COOP", "ACH_WON_SLAUGHTERHOUSE_HARD", "ACH_WON_SLAUGHTERHOUSE_NIGHTMARE",
-			"ACH_WON_MANOR_HARD", "ACH_WON_MANOR_NIGHTMARE", "ACH_WON_MANOR_SP"
-		};
-
-
-		int size = sizeof(achievements) / sizeof(achievements[0]);
-
-		std::cout << "Achievements length: " << size << "\n";
-
-		for (int i = 0; i < size; ++i) {
-			app::String* currentachievements = reinterpret_cast<app::String*>(il2cpp_string_new(achievements[i]));
-
-			// crash
-			app::AchievementHelpers_Unlock(achievementsSingleton, currentachievements, false, nullptr);
-		}
-	}
+	//
 }

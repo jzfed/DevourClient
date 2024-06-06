@@ -73,7 +73,7 @@
     <ClCompile Include="user\features\misc\misc.cpp">
       <Filter>user\features\misc</Filter>
     </ClCompile>
-    <ClCompile Include="lib\UnityCore.cpp">
+    <ClCompile Include="lib\UnityEngine.cpp">
       <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="user\players\players.cpp">
@@ -195,7 +195,7 @@
     <ClInclude Include="include\color.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="lib\UnityCore.h">
+    <ClInclude Include="lib\UnityEngine.h">
       <Filter>lib</Filter>
     </ClInclude>
     <ClInclude Include="user\players\players.h">

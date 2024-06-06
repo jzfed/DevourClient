@@ -15,7 +15,7 @@
 #include "Wrapper.h"
 #include "ClientHelper.h"
 #include "hooks/hooks.hpp"
-#include "UnityCore.h"
+#include "UnityEngine.h"
 #include "color.hpp"
 #include "features/misc/misc.h"
 #include "utils/utils.hpp"
@@ -80,15 +80,12 @@ void Run()
 		std::cout << "[DevourClient]: " << dye::red_on_black("Client is out of date!") << "\n\n";
 
 		const char* latestDownloadLink = client.GetLatestDownloadLink();
-		app::String* str = reinterpret_cast<app::String*>(il2cpp_string_new(latestDownloadLink));
-
 		const int result = MessageBox(NULL, L"Version is not up to date! Would you like to download the new version?", L"DevourClient", MB_YESNO | MB_ICONERROR);
-
 
 		switch (result)
 		{
 		case IDYES:
-			app::Application_OpenURL(str, nullptr);
+			app::Application_OpenURL(ConvertToSystemString(latestDownloadLink), nullptr);
 			break;
 		case IDNO:
 			MessageBox(NULL, L"You can download the new version at any time to benefit from new features, improvements, and bug fixes", L"DevourClient", MB_OK | MB_ICONEXCLAMATION);
@@ -130,18 +127,18 @@ void Run()
 	std::string scene = SceneName();
 
 	if (scene == std::string("Menu")) {
-		app::Menu* horrorMenu = UnityCore::Object<app::Menu>::FindObjectOfType("Menu", "Horror");
+		app::Menu* horrorMenu = UnityEngine::Object::FindObjectOfType<app::Menu>("Menu", "Horror");
 
 		if (!horrorMenu)
 			return;
 
-		app::String* str = reinterpret_cast<app::String*>(il2cpp_string_new("Welcome to DevourClient.\n\nAfter ensuring the game is in full screen, press the INS key to activate the menu.\n\n\nYou can disable the cheat by pressing the 'END' key."));
+		app::String* message_modal_textContent = ConvertToSystemString("Welcome to DevourClient.\n\nAfter ensuring the game is in full screen, press the INS key to activate the menu.\n\n\nYou can disable the cheat by pressing the 'END' key.");
 
-		if (str) {
+		if (message_modal_textContent) {
 			if (app::Menu_ShowMessageModal == nullptr)
 				return;
 
-			app::Menu_ShowMessageModal(horrorMenu, str, nullptr);
+			app::Menu_ShowMessageModal(horrorMenu, message_modal_textContent, nullptr);
 		}
 	}
 

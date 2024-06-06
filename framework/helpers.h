@@ -26,6 +26,9 @@ std::string il2cppi_to_string(Il2CppString* str);
 
 // Helper function to convert System.String to std::string
 std::string il2cppi_to_string(app::String* str);
+
+// Helper function to convert const char* to System.String
+app::String* ConvertToSystemString(const char* str);
 #endif
 
 // Helper function to check if a metadata usage pointer is initialized

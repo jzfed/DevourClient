@@ -52,4 +52,12 @@ std::string il2cppi_to_string(Il2CppString* str) {
 std::string il2cppi_to_string(app::String* str) {
     return il2cppi_to_string(reinterpret_cast<Il2CppString*>(str));
 }
+app::String* ConvertToSystemString(const char* str)
+{
+    Il2CppString* il2cpp_str =  il2cpp_string_new(str);
+
+    app::String* system_string_str = reinterpret_cast<app::String*>(il2cpp_str);
+
+    return system_string_str;
+}
 #endif
