@@ -15,6 +15,4 @@ bool InitializeHooks();
 void DisableHooks();
 
 void hDebug_Log(app::Object* message, MethodInfo* method);
-void hDebug_LogError(app::Object* message, MethodInfo* method);
-void hDebug_LogException(app::Exception* exception, MethodInfo* method);
 void hDebug_LogWarning(app::Object* message, MethodInfo* method);

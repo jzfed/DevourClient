@@ -44,10 +44,19 @@ bool open_menu = false;
 	}
 */
 
+// debug log
 typedef void(__stdcall* TDebug_2_Log)(app::Object*, MethodInfo*);
 TDebug_2_Log oDebug_2_Log = NULL;
 void __stdcall hDebug_Log(app::Object* message, MethodInfo* method) {
-	std::cout << "[DevourClient]: " << ToString(message) << std::endl;
+	std::cout << "[Log][DevourClient]: " << ToString(message) << std::endl;
+	il2cppi_log_write(ToString(message));
+}
+
+// LogWarning
+typedef void(__stdcall* TDebug_2_LogWarning)(app::Object*, MethodInfo*);
+TDebug_2_LogWarning oDebug_2_LogWarning = NULL;
+void __stdcall hDebug_LogWarning(app::Object* message, MethodInfo* method) {
+	std::cout << "[Warning][DevourClient]: " << ToString(message) << std::endl;
 	il2cppi_log_write(ToString(message));
 }
 
@@ -437,10 +446,17 @@ void CreateHooks() {
 	//original_sum can be NULL if we don't want to trampoline hook
 	*/
 
-	// DEBUG LOOK
+	// DEBUG NORMAL
 	MH_STATUS status_Debug_Log = MH_CreateHook((LPVOID*)app::Debug_2_Log, &hDebug_Log, reinterpret_cast<LPVOID*>(&oDebug_2_Log));
 	if (status_Debug_Log != MH_OK) {
 		std::cout << "Failed to create Debug_Log hook: " << MH_StatusToString(status_Debug_Log) << std::endl;
+		return;
+	}
+
+	// DEBUG WARNING
+	MH_STATUS status_Debug_LogWarning = MH_CreateHook((LPVOID*)app::Debug_2_LogWarning, &hDebug_LogWarning, reinterpret_cast<LPVOID*>(&oDebug_2_LogWarning));
+	if (status_Debug_LogWarning != MH_OK) {
+		std::cout << "Failed to create Debug_LogWarning hook: " << MH_StatusToString(status_Debug_LogWarning) << std::endl;
 		return;
 	}
 
