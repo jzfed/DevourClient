@@ -22,6 +22,26 @@ namespace UnityEngine {
 		app::Vector3 Position(app::Transform* transform);
 	}
 
+	struct Input {
+		static float GetAxis(const char* axisName);
+	};
+
+	struct Behaviour {
+		template<typename T>
+		static inline bool Enabled(T* behaviour) {
+			return app::Behaviour_get_enabled((app::Behaviour*)behaviour, nullptr);
+		}
+
+		template<typename T>
+		static inline void Enabled(T* behaviour, bool value) {
+			app::Behaviour_set_enabled((app::Behaviour*)behaviour, value, nullptr);
+		}
+	};
+
+	struct Camera {
+		static app::Camera* GetMainCamera();
+	};
+
 	struct Object {
 
 		static const char* GetObjectName(app::Object_1* obj);
@@ -32,7 +52,7 @@ namespace UnityEngine {
 		static void FindObjectFromInstanceID(int32_t instanceID);
 
 		template<typename T>
-		static T* FindObjectOfType(const char* className, const char* classNamespace = "", const char* assemblyName = "Assembly-CSharp.dll") {
+		static inline T* FindObjectOfType(const char* className, const char* classNamespace = "", const char* assemblyName = "Assembly-CSharp.dll") {
 
 			Wrapper obj(assemblyName);
 
@@ -48,4 +68,5 @@ namespace UnityEngine {
 		}
 		
 	};
+
 }

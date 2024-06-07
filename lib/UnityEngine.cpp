@@ -54,6 +54,10 @@ app::Vector3 UnityEngine::Transform::Position(app::Transform* transform)
 	return app::Transform_get_position(transform, nullptr);
 }
 
+app::Camera* UnityEngine::Camera::GetMainCamera() {
+	return app::Camera_get_main(nullptr) ? app::Camera_get_main(nullptr) : nullptr;
+}
+
 const char* UnityEngine::Object::GetObjectName(app::Object_1* obj)
 {
 	static std::string name = il2cppi_to_string(app::Object_1_GetName(obj, nullptr));
@@ -69,4 +73,9 @@ app::GameObject__Array* UnityEngine::Object::FindGameObjectsWithTag(const char* 
 
 void UnityEngine::Object::FindObjectFromInstanceID(int32_t instanceID)
 {
+}
+
+float UnityEngine::Input::GetAxis(const char* axisName)
+{
+	return app::Input_1_GetAxis(ConvertToSystemString(axisName), nullptr);
 }
