@@ -16,9 +16,6 @@
     <ClCompile Include="framework\pch-il2cpp.cpp">
       <Filter>framework</Filter>
     </ClCompile>
-    <ClCompile Include="lib\Wrapper.cpp">
-      <Filter>lib</Filter>
-    </ClCompile>
     <ClCompile Include="include\imgui\imgui.cpp">
       <Filter>include\imgui</Filter>
     </ClCompile>
@@ -64,17 +61,11 @@
     <ClCompile Include="user\settings\settings.cpp">
       <Filter>user\settings</Filter>
     </ClCompile>
-    <ClCompile Include="lib\ClientHelper.cpp">
-      <Filter>lib</Filter>
-    </ClCompile>
     <ClCompile Include="user\utils\utils.cpp">
       <Filter>user\utils</Filter>
     </ClCompile>
     <ClCompile Include="user\features\misc\misc.cpp">
       <Filter>user\features\misc</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\UnityEngine.cpp">
-      <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="user\players\players.cpp">
       <Filter>user\players</Filter>
@@ -84,6 +75,30 @@
     </ClCompile>
     <ClCompile Include="user\network\VersionControl.cpp">
       <Filter>user\network</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\private\ClientHelper.cpp">
+      <Filter>lib\private</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\private\wrapper.cpp">
+      <Filter>lib\private</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\private\UnityEngine\Camera.cpp">
+      <Filter>lib\private\UnityEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\private\UnityEngine\GameObject.cpp">
+      <Filter>lib\private\UnityEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\private\UnityEngine\Input.cpp">
+      <Filter>lib\private\UnityEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\private\UnityEngine\Math.cpp">
+      <Filter>lib\private\UnityEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\private\UnityEngine\Object.cpp">
+      <Filter>lib\private\UnityEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\private\UnityEngine\Transform.cpp">
+      <Filter>lib\private\UnityEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -119,9 +134,6 @@
     </ClInclude>
     <ClInclude Include="framework\pch-il2cpp.h">
       <Filter>framework</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Wrapper.h">
-      <Filter>lib</Filter>
     </ClInclude>
     <ClInclude Include="include\imgui\imconfig.h">
       <Filter>include\imgui</Filter>
@@ -183,9 +195,6 @@
     <ClInclude Include="user\settings\settings.hpp">
       <Filter>user\settings</Filter>
     </ClInclude>
-    <ClInclude Include="lib\ClientHelper.h">
-      <Filter>lib</Filter>
-    </ClInclude>
     <ClInclude Include="user\utils\utils.hpp">
       <Filter>user\utils</Filter>
     </ClInclude>
@@ -194,9 +203,6 @@
     </ClInclude>
     <ClInclude Include="include\color.hpp">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\UnityEngine.h">
-      <Filter>lib</Filter>
     </ClInclude>
     <ClInclude Include="user\players\players.h">
       <Filter>user\players</Filter>
@@ -209,6 +215,33 @@
     </ClInclude>
     <ClInclude Include="include\json.hpp">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\public\ClientHelper.h">
+      <Filter>lib\public</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\public\wrapper.h">
+      <Filter>lib\public</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\public\UnityEngine\Camera.h">
+      <Filter>lib\public\UnityEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\public\UnityEngine\Engine.hpp">
+      <Filter>lib\public\UnityEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\public\UnityEngine\GameObject.h">
+      <Filter>lib\public\UnityEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\public\UnityEngine\Input.h">
+      <Filter>lib\public\UnityEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\public\UnityEngine\Math.h">
+      <Filter>lib\public\UnityEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\public\UnityEngine\Object.h">
+      <Filter>lib\public\UnityEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\public\UnityEngine\Transform.h">
+      <Filter>lib\public\UnityEngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -256,6 +289,18 @@
     </Filter>
     <Filter Include="user\network">
       <UniqueIdentifier>{faef4024-c359-4051-90fc-8735a4acbe8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\public">
+      <UniqueIdentifier>{22144ae2-ce2d-48f4-ac56-0cefde863748}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\private">
+      <UniqueIdentifier>{b83e2b95-1a9b-4065-8f3b-750d80fa32da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\private\UnityEngine">
+      <UniqueIdentifier>{a4d2670d-9928-419c-ab6d-12fd69137e9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\public\UnityEngine">
+      <UniqueIdentifier>{289d934d-1844-4207-b865-47a910a88c81}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

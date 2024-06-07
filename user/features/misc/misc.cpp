@@ -5,7 +5,7 @@
 #include "ClientHelper.h"
 #include "players/players.h"
 #include "helpers.h"
-#include "UnityEngine.h"
+#include "UnityEngine/Engine.hpp"
 #include <iostream>
 #include "Windows.h"
 #include <map>
@@ -16,7 +16,7 @@ void Misc::ForceStart()
 	std::string _scene = SceneName();
 
 	if (IsHost() && _scene == std::string("Menu")) {
-		app::Menu* _menu = UnityEngine::Object::FindObjectOfType<app::Menu>("Menu", "Horror");
+		app::Menu* _menu = Object::FindObjectOfType<app::Menu>("Menu", "Horror");
 
 		if (_menu) {
 			if (app::Menu_OnLobbyStartButtonClick) {
@@ -99,7 +99,7 @@ void Misc::InstantWin()
 	int32_t progress = 10;
 
 	if (_scene == std::string("Inn")) {
-		app::MapController* _MapController = UnityEngine::Object::FindObjectOfType<app::MapController>("MapController");
+		app::MapController* _MapController = Object::FindObjectOfType<app::MapController>("MapController");
 
 		if (_MapController) {
 
@@ -111,7 +111,7 @@ void Misc::InstantWin()
 		}
 	}
 	else if (_scene == std::string("Slaughterhouse")) {
-		app::SlaughterhouseAltarController* _SlaughterhouseAltarController = UnityEngine::Object::FindObjectOfType<app::SlaughterhouseAltarController>("SlaughterhouseAltarController");
+		app::SlaughterhouseAltarController* _SlaughterhouseAltarController = Object::FindObjectOfType<app::SlaughterhouseAltarController>("SlaughterhouseAltarController");
 
 		if (_SlaughterhouseAltarController) {
 
@@ -124,7 +124,7 @@ void Misc::InstantWin()
 	}
 	else {
 		//app::SurvivalObjectBurnController* _SurvivalObjectBurnController = UnityEngine::Object::FindObjectOfType("SurvivalObjectBurnController");
-		app::SurvivalObjectBurnController* _SurvivalObjectBurnController = UnityEngine::Object::FindObjectOfType<app::SurvivalObjectBurnController>("SurvivalObjectBurnController");
+		app::SurvivalObjectBurnController* _SurvivalObjectBurnController = Object::FindObjectOfType<app::SurvivalObjectBurnController>("SurvivalObjectBurnController");
 
 		if (_SurvivalObjectBurnController) {
 			// DO_APP_FUNC(0x00562590, void, SurvivalObjectBurnController_SkipToGoat, (SurvivalObjectBurnController * __this, int32_t number, MethodInfo * method));
@@ -174,10 +174,10 @@ void Misc::SpawnPrefab(const char* prefabName) {
 		if (localPlayer) {
 			app::Quaternion rotation = app::Quaternion_get_identity(NULL);
 
-			app::Transform* playerTransform = UnityEngine::Transform::Get(localPlayer);
+			app::Transform* playerTransform = Transform::Get(localPlayer);
 			if (playerTransform == nullptr) return;
 
-			app::Vector3 playerPos = UnityEngine::Transform::Position(playerTransform);
+			app::Vector3 playerPos = Transform::Position(playerTransform);
 
 			if (app::BoltNetwork_Instantiate_6) {
 				app::GameObject* go = (app::GameObject*)app::BoltNetwork_Instantiate_6(p, playerPos, rotation, nullptr);
@@ -194,7 +194,7 @@ void Misc::RankSpoofer(int value) {
 		return;
 	}
 	else {
-		app::NolanRankController* rankController = UnityEngine::Object::FindObjectOfType<app::NolanRankController>("NolanRankController");
+		app::NolanRankController* rankController = Object::FindObjectOfType<app::NolanRankController>("NolanRankController");
 
 		if (rankController != nullptr) {
 			if (app::NolanRankController_SetRank != nullptr) {
@@ -227,7 +227,7 @@ void Misc::Revive(bool self)
 	}
 
 	// app::SurvivalReviveInteractable
-	app::SurvivalReviveInteractable* revive = UnityEngine::Object::FindObjectOfType<app::SurvivalReviveInteractable>("SurvivalReviveInteractable");
+	app::SurvivalReviveInteractable* revive = Object::FindObjectOfType<app::SurvivalReviveInteractable>("SurvivalReviveInteractable");
 
 	if (revive == NULL) {
 		if (self) {
@@ -288,10 +288,10 @@ void Misc::Jumpscare() {
 		return;
 	}
 
-	app::Survival* survival = UnityEngine::Object::FindObjectOfType<app::Survival>("Survival");
+	app::Survival* survival = Object::FindObjectOfType<app::Survival>("Survival");
 	if (survival == NULL) { return; }
 
-	app::SurvivalAzazelBehaviour* azazel = UnityEngine::Object::FindObjectOfType<app::SurvivalAzazelBehaviour>("SurvivalAzazelBehaviour");
+	app::SurvivalAzazelBehaviour* azazel = Object::FindObjectOfType<app::SurvivalAzazelBehaviour>("SurvivalAzazelBehaviour");
 
 	app::GameObject* ai = GetAzazel(survival);
 
@@ -305,7 +305,7 @@ void Misc::Jumpscare() {
 
 			if (currentPlayer == NULL) continue;
 
-			app::Component* component = UnityEngine::GameObject::GetComponentByName(currentPlayer, "NolanBehaviour");
+			app::Component* component = GameObject::GetComponentByName(currentPlayer, "NolanBehaviour");
 
 			if (component != NULL) {
 				app::NolanBehaviour* nb = reinterpret_cast<app::NolanBehaviour*>(component);
@@ -333,10 +333,10 @@ void Misc::Kill(bool self) {
 		return;
 	}
 
-	app::Survival* survival = UnityEngine::Object::FindObjectOfType<app::Survival>("Survival");
+	app::Survival* survival = Object::FindObjectOfType<app::Survival>("Survival");
 	if (survival == NULL) { return; }
 
-	app::SurvivalAzazelBehaviour* azazel = UnityEngine::Object::FindObjectOfType<app::SurvivalAzazelBehaviour>("SurvivalAzazelBehaviour");
+	app::SurvivalAzazelBehaviour* azazel = Object::FindObjectOfType<app::SurvivalAzazelBehaviour>("SurvivalAzazelBehaviour");
 
 	app::GameObject* ai = GetAzazel(survival);
 
@@ -361,7 +361,7 @@ void Misc::Kill(bool self) {
 
 				if (currentPlayer == NULL) continue;
 
-				app::Component* component = UnityEngine::GameObject::GetComponentByName(currentPlayer, "NolanBehaviour");
+				app::Component* component = GameObject::GetComponentByName(currentPlayer, "NolanBehaviour");
 
 				if (component != NULL) {
 					app::NolanBehaviour* nb = reinterpret_cast<app::NolanBehaviour*>(component);
@@ -396,7 +396,7 @@ void Misc::TpToAzazel()
 		if (nb == nullptr) return;
 
 
-		app::Survival* _survival = UnityEngine::Object::FindObjectOfType<app::Survival>("Survival");
+		app::Survival* _survival = Object::FindObjectOfType<app::Survival>("Survival");
 		if (_survival == nullptr) return;
 
 		// get azazel

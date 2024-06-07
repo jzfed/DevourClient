@@ -2,12 +2,12 @@
 
 #include "players.h"
 #include <helpers.h>
-#include "UnityEngine.h"
+#include "UnityEngine/Engine.hpp"
 #include "ClientHelper.h"
 
 app::GameObject__Array* Players::GetAllPlayers()
 {
-	app::GameObject__Array* players = UnityEngine::Object::FindGameObjectsWithTag("Player");
+	app::GameObject__Array* players = Object::FindGameObjectsWithTag("Player");
 
 	return players ? players : nullptr;
 }
@@ -18,7 +18,7 @@ app::GameObject* Player::GetLocalPlayer()
 
 	if (cachedLocalPlayer != nullptr) {
 		// Check if cached player is still valid
-		if (IsNull((app::Object_1*)cachedLocalPlayer)) {
+		if (Object::IsNull((app::Object_1*)cachedLocalPlayer)) {
 			cachedLocalPlayer = nullptr;
 		}
 		else {
@@ -35,11 +35,11 @@ app::GameObject* Player::GetLocalPlayer()
 	for (int i = 0; i < _size; i++) {
 		app::GameObject* currentPlayer = playerList->vector[i];
 
-		if (IsNull((app::Object_1*)currentPlayer)) {
+		if (Object::IsNull((app::Object_1*)currentPlayer)) {
 			continue;
 		}
 		else {
-			app::Component* nbComponent = UnityEngine::GameObject::GetComponentByName(currentPlayer, "NolanBehaviour");
+			app::Component* nbComponent = GameObject::GetComponentByName(currentPlayer, "NolanBehaviour");
 
 			if (nbComponent) {
 				app::NolanBehaviour* nb = reinterpret_cast<app::NolanBehaviour*>(nbComponent);
@@ -64,7 +64,7 @@ app::NolanBehaviour* Player::GetNolan()
 
 	if (lastLocalPlayer != localPlayer) {
 
-		app::Component* nbComponent = UnityEngine::GameObject::GetComponentByName(localPlayer, "NolanBehaviour");
+		app::Component* nbComponent = GameObject::GetComponentByName(localPlayer, "NolanBehaviour");
 
 		if (nbComponent) {
 

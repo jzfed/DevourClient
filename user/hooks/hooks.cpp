@@ -10,7 +10,7 @@
 #include "helpers.h"
 
 #include "players/players.h"
-#include "UnityEngine.h"
+#include "UnityEngine/Engine.hpp"
 #include "ClientHelper.h"
 #include "features/misc/misc.h"
 
@@ -92,7 +92,7 @@ void __stdcall hNolanBehaviour_Update(app::NolanBehaviour* __this, MethodInfo* m
 
 		if (transform) {
 
-			app::Vector3 pos = UnityEngine::Transform::Position(transform);
+			app::Vector3 pos = Transform::Position(transform);
 
 			if (GetAsyncKeyState('W') & 0x8000) {
 				pos = pos + (app::Transform_get_forward(transform, nullptr) * speed * Time_DeltaTime());
@@ -116,10 +116,10 @@ void __stdcall hNolanBehaviour_Update(app::NolanBehaviour* __this, MethodInfo* m
 
 			app::GameObject* thisGameObject = app::Component_get_gameObject((app::Component*)__this, nullptr);
 
-			if (thisGameObject != nullptr || !IsNull((app::Object_1*)thisGameObject)) {
-				app::Component* _UltimateCharacterLocomotion = UnityEngine::GameObject::GetComponentByName(thisGameObject, "UltimateCharacterLocomotion");
+			if (thisGameObject != nullptr || !Object::IsNull((app::Object_1*)thisGameObject)) {
+				app::Component* _UltimateCharacterLocomotion = GameObject::GetComponentByName(thisGameObject, "UltimateCharacterLocomotion");
 
-				if (_UltimateCharacterLocomotion != nullptr && !IsNull((app::Object_1*)_UltimateCharacterLocomotion)) {
+				if (_UltimateCharacterLocomotion != nullptr && !Object::IsNull((app::Object_1*)_UltimateCharacterLocomotion)) {
 					if (app::UltimateCharacterLocomotion_SetPosition_1) {
 						app::UltimateCharacterLocomotion_SetPosition_1((app::UltimateCharacterLocomotion*)_UltimateCharacterLocomotion, pos, false, nullptr);
 					}

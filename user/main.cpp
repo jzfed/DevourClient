@@ -15,7 +15,7 @@
 #include "Wrapper.h"
 #include "ClientHelper.h"
 #include "hooks/hooks.hpp"
-#include "UnityEngine.h"
+#include "UnityEngine/Engine.hpp"
 #include "color.hpp"
 #include "features/misc/misc.h"
 #include "utils/utils.hpp"
@@ -127,7 +127,7 @@ void Run()
 	std::string scene = SceneName();
 
 	if (scene == std::string("Menu")) {
-		app::Menu* horrorMenu = UnityEngine::Object::FindObjectOfType<app::Menu>("Menu", "Horror");
+		app::Menu* horrorMenu = Object::FindObjectOfType<app::Menu>("Menu", "Horror");
 
 		if (!horrorMenu)
 			return;

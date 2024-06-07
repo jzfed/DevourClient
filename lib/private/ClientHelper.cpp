@@ -4,7 +4,7 @@
 
 #include "ClientHelper.h"
 #include "players/players.h"
-#include "UnityEngine.h"
+#include "UnityEngine/Engine.hpp"
 
 bool IsSinglePlayer()
 {
@@ -43,40 +43,28 @@ bool IsPlayerCrawling()
 
 bool IsPlayerCrawling(app::GameObject* go)
 {
-	if (go == NULL)
+	if (go == nullptr) return false;
+
+	app::Component* nbComponent = GameObject::GetComponentByName(go, "NolanBehaviour");
+
+	if (nbComponent) return false;
+
+	app::NolanBehaviour* nb = reinterpret_cast<app::NolanBehaviour*>(nbComponent);
+
+	if (nb)
+		return app::NolanBehaviour_IsCrawling(nb, nullptr);
+	else
 		return false;
-
-	if (app::GameObject_GetComponentByName != NULL) {
-		app::Component* nbComponent = app::GameObject_GetComponentByName(go, ConvertToSystemString("NolanBehaviour"), nullptr);
-
-		if (nbComponent) {
-			app::NolanBehaviour* nb = reinterpret_cast<app::NolanBehaviour*>(nbComponent);
-
-			if (nb) {
-				return app::NolanBehaviour_IsCrawling(nb, nullptr);
-			}
-		}
-	}
-
-	return app::NolanBehaviour_IsCrawling(Player::GetNolan(), nullptr);
 }
 
 bool IsInGame()
 {
-	app::OptionsHelpers* optionsHelpers = UnityEngine::Object::FindObjectOfType<app::OptionsHelpers>("OptionsHelpers");
+	app::OptionsHelpers* optionsHelpers = Object::FindObjectOfType<app::OptionsHelpers>("OptionsHelpers");
 
 	if (optionsHelpers)
 		return optionsHelpers->fields._inGame_k__BackingField;
 
 	return false;
-}
-
-bool IsNull(app::Object_1* obj)
-{
-	if (obj == nullptr)
-		return true;
-
-	return !app::Object_1_op_Implicit(obj, nullptr);
 }
 
 app::GameObject* GetAzazel(app::Survival* survival)

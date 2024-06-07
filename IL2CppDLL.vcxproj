@@ -50,9 +50,14 @@
     <ClCompile Include="include\Minhook\src\HDE\hde64.cpp" />
     <ClCompile Include="include\Minhook\src\hook.cpp" />
     <ClCompile Include="include\Minhook\src\trampoline.cpp" />
-    <ClCompile Include="lib\ClientHelper.cpp" />
-    <ClCompile Include="lib\UnityEngine.cpp" />
-    <ClCompile Include="lib\Wrapper.cpp" />
+    <ClCompile Include="lib\private\ClientHelper.cpp" />
+    <ClCompile Include="lib\private\UnityEngine\Camera.cpp" />
+    <ClCompile Include="lib\private\UnityEngine\GameObject.cpp" />
+    <ClCompile Include="lib\private\UnityEngine\Input.cpp" />
+    <ClCompile Include="lib\private\UnityEngine\Math.cpp" />
+    <ClCompile Include="lib\private\UnityEngine\Object.cpp" />
+    <ClCompile Include="lib\private\UnityEngine\Transform.cpp" />
+    <ClCompile Include="lib\private\wrapper.cpp" />
     <ClCompile Include="user\features\esp\esp.cpp" />
     <ClCompile Include="user\features\menu.cpp" />
     <ClCompile Include="user\features\misc\misc.cpp" />
@@ -93,9 +98,15 @@
     <ClInclude Include="include\Minhook\src\HDE\table32.h" />
     <ClInclude Include="include\Minhook\src\HDE\table64.h" />
     <ClInclude Include="include\Minhook\src\trampoline.h" />
-    <ClInclude Include="lib\ClientHelper.h" />
-    <ClInclude Include="lib\UnityEngine.h" />
-    <ClInclude Include="lib\Wrapper.h" />
+    <ClInclude Include="lib\public\ClientHelper.h" />
+    <ClInclude Include="lib\public\UnityEngine\Camera.h" />
+    <ClInclude Include="lib\public\UnityEngine\Engine.hpp" />
+    <ClInclude Include="lib\public\UnityEngine\GameObject.h" />
+    <ClInclude Include="lib\public\UnityEngine\Input.h" />
+    <ClInclude Include="lib\public\UnityEngine\Math.h" />
+    <ClInclude Include="lib\public\UnityEngine\Object.h" />
+    <ClInclude Include="lib\public\UnityEngine\Transform.h" />
+    <ClInclude Include="lib\public\wrapper.h" />
     <ClInclude Include="user\features\esp\esp.hpp" />
     <ClInclude Include="user\features\menu.hpp" />
     <ClInclude Include="user\features\misc\misc.h" />
@@ -226,7 +237,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch-il2cpp.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)lib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)lib\public;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
