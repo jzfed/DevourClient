@@ -29,7 +29,6 @@ namespace settings {
 	extern float demon_esp_color[4];
 	extern bool goat_esp;
 	extern float goat_esp_color[4];
-
 	extern bool chat_spam;
 	extern std::string message;
 	extern bool spoof_level;
@@ -47,11 +46,10 @@ namespace settings {
 	extern bool auto_respawn;
 	extern bool change_player_speed;
 	extern int new_speed;
-
 	extern bool freeze_azazel;
 	extern float new_azazel_speed;
-
 	extern bool disable_longInteract;
+	extern bool freecam;
 }
 
 #endif
