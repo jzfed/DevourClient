@@ -174,10 +174,10 @@ void Misc::SpawnPrefab(const char* prefabName) {
 		if (localPlayer) {
 			app::Quaternion rotation = app::Quaternion_get_identity(NULL);
 
-			app::Transform* playerTransform = Transform::Get(localPlayer);
+			app::Transform* playerTransform = Transform::GetTransform(localPlayer);
 			if (playerTransform == nullptr) return;
 
-			app::Vector3 playerPos = Transform::Position(playerTransform);
+			app::Vector3 playerPos = Transform::GetPosition(playerTransform);
 
 			if (app::BoltNetwork_Instantiate_6) {
 				app::GameObject* go = (app::GameObject*)app::BoltNetwork_Instantiate_6(p, playerPos, rotation, nullptr);

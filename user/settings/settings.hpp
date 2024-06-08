@@ -49,7 +49,6 @@ namespace settings {
 	extern bool freeze_azazel;
 	extern float new_azazel_speed;
 	extern bool disable_longInteract;
-	extern bool freecam;
 }
 
 #endif

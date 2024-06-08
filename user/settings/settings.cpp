@@ -48,5 +48,4 @@ namespace settings {
 	float new_azazel_speed = 0.f;
 
 	bool disable_longInteract = false;
-	bool freecam = false;
 }

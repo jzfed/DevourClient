@@ -31,11 +31,11 @@ static void DrawBoxESP(app::GameObject *it, float footOffset, float headOffset, 
 	if (!it || cam == nullptr)
 		return;
 
-	app::Transform* _transform = Transform::Get(it);
+	app::Transform* _transform = Transform::GetTransform(it);
 	if (_transform == nullptr)
 		return;
 		
-	app::Vector3 pos = Transform::Position(_transform);
+	app::Vector3 pos = Transform::GetPosition(_transform);
 
 	app::Vector3 footpos = app::Camera_WorldToScreenPoint_1(cam, app::Vector3{pos.x, pos.y + footOffset, pos.z}, NULL);
 	app::Vector3 headpos = app::Camera_WorldToScreenPoint_1(cam, app::Vector3{pos.x, pos.y + headOffset, pos.z}, NULL);

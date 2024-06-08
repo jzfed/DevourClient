@@ -93,52 +93,6 @@ typedef void(__stdcall* TNolanBehaviour_Update)(app::NolanBehaviour*, MethodInfo
 TNolanBehaviour_Update oNolanBehaviour_Update = NULL;
 void __stdcall hNolanBehaviour_Update(app::NolanBehaviour* __this, MethodInfo* method) {
 
-
-	if (settings::freecam && IsLocalPlayer(__this)) {
-		app::CameraController* cameraController = __this->fields.cameraController;
-
-		cameraController->fields.m_Anchor = nullptr;
-		cameraController->fields.m_Character = nullptr;
-		cameraController->fields.m_CharacterLocomotion = nullptr;
-
-		app::Transform* cameraControllerTransform = app::CameraController_get_CameraTransform(cameraController, nullptr);
-
-		static app::Vector3 newCameraPosition = app::Transform_get_position(cameraControllerTransform, nullptr);
-		static app::Quaternion newCameraRotation = app::Transform_get_rotation(cameraControllerTransform, nullptr);
-
-		// Kamera hareketi ve rotasyonu için inputları kontrol et
-		float moveSpeed = 15.0f;
-		float rotateSpeed = 2.0f;
-
-		if (GetAsyncKeyState('W') & 0x8000) {
-			newCameraPosition = newCameraPosition + (app::Transform_get_forward(cameraControllerTransform, nullptr) * moveSpeed * Time_DeltaTime());
-		}
-		if (GetAsyncKeyState('S') & 0x8000) {
-			newCameraPosition = newCameraPosition - (app::Transform_get_forward(cameraControllerTransform, nullptr) * moveSpeed * Time_DeltaTime());
-		}
-		if (GetAsyncKeyState('A') & 0x8000) {
-			newCameraPosition = newCameraPosition - (app::Transform_get_right(cameraControllerTransform, nullptr) * moveSpeed * Time_DeltaTime());
-		}
-		if (GetAsyncKeyState('D') & 0x8000) {
-			newCameraPosition = newCameraPosition + (app::Transform_get_right(cameraControllerTransform, nullptr) * moveSpeed * Time_DeltaTime());
-		}
-
-		// Mouse hareketlerini al
-		float deltaX = Input::GetAxis("Mouse X") * rotateSpeed;
-		float deltaY = Input::GetAxis("Mouse Y") * rotateSpeed;
-
-		// Kamerayı döndür
-		app::Quaternion rotationX = app::Quaternion_Euler(0, deltaX, 0, nullptr);
-		app::Quaternion rotationY = app::Quaternion_Euler(-deltaY, 0, 0, nullptr);
-
-		newCameraRotation = app::Quaternion_op_Multiply(newCameraRotation, rotationX, nullptr);
-		newCameraRotation = app::Quaternion_op_Multiply(rotationY, newCameraRotation, nullptr);
-
-		// Yeni pozisyon ve rotasyonu ayarla
-		app::Transform_set_position(cameraControllerTransform, newCameraPosition, nullptr);
-		app::Transform_set_rotation(cameraControllerTransform, newCameraRotation, nullptr);
-	}
-
 	if (settings::fly && IsLocalPlayer(__this)) {
 
 		float speed = settings::fly_speed;
@@ -147,7 +101,7 @@ void __stdcall hNolanBehaviour_Update(app::NolanBehaviour* __this, MethodInfo* m
 
 		if (transform) {
 
-			app::Vector3 pos = Transform::Position(transform);
+			app::Vector3 pos = Transform::GetPosition(transform);
 
 			if (GetAsyncKeyState('W') & 0x8000) {
 				pos = pos + (app::Transform_get_forward(transform, nullptr) * speed * Time_DeltaTime());
@@ -167,7 +121,6 @@ void __stdcall hNolanBehaviour_Update(app::NolanBehaviour* __this, MethodInfo* m
 			if (GetAsyncKeyState(VK_LCONTROL) & 0x8000) {
 				pos = pos - (app::Transform_get_up(transform, nullptr) * speed * Time_DeltaTime());
 			}
-
 
 			app::GameObject* thisGameObject = app::Component_get_gameObject((app::Component*)__this, nullptr);
 
