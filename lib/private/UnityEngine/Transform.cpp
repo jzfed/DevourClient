@@ -46,3 +46,8 @@ app::Quaternion Transform::QuaternionEuler(app::Vector3 eulerAngles)
 
 	return app::Quaternion_Euler(x, y, z, nullptr);
 }
+
+app::Quaternion Transform::QuaternionIdentity()
+{
+	return app::Quaternion_get_identity(nullptr);
+}
