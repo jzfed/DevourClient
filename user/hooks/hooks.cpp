@@ -717,10 +717,6 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 		pressed = true;
 	}
 
-	if (GetKeyDown(KeyCode::Insert)) {
-		pressed = true;
-	}
-
 
 	else if (!GetKeyDown(KeyCode::Insert) && pressed) {
 		open_menu = !open_menu;
