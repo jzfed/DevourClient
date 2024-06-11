@@ -687,19 +687,34 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 			pSwapChain->GetDesc(&sd);
 			window = sd.OutputWindow;
 			ID3D11Texture2D* pBackBuffer;
-			pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
-			pDevice->CreateRenderTargetView(pBackBuffer, NULL, &mainRenderTargetViewD3D11);
-			pBackBuffer->Release();
-			oWndProc = (WNDPROC)SetWindowLongPtr(window, GWLP_WNDPROC, (LONG_PTR)WndProc);
-			auto context = ImGui::CreateContext();
-			ImGui::SetCurrentContext(context);
-			InitStyle();
-			ImGui_ImplWin32_Init(window);
-			ImGui_ImplDX11_Init(pDevice, pContext);
-			initonce = true;
+			if (SUCCEEDED(pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer))) {
+				pDevice->CreateRenderTargetView(pBackBuffer, NULL, &mainRenderTargetViewD3D11);
+				pBackBuffer->Release();
+				oWndProc = (WNDPROC)SetWindowLongPtr(window, GWLP_WNDPROC, (LONG_PTR)WndProc);
+
+				ImGui::CreateContext();
+				ImGuiIO& io = ImGui::GetIO(); (void)io;
+				InitStyle();
+
+				ImGui_ImplWin32_Init(window);
+				ImGui_ImplDX11_Init(pDevice, pContext);
+
+				initonce = true;
+			}
+			else {
+				return phookD3D11Present(pSwapChain, SyncInterval, Flags);
+			}
 		}
 		else
 			return phookD3D11Present(pSwapChain, SyncInterval, Flags);
+	}
+
+	if (mainRenderTargetViewD3D11) {
+		pContext->OMSetRenderTargets(1, &mainRenderTargetViewD3D11, NULL);
+	}
+
+	if (GetKeyDown(KeyCode::Insert)) {
+		pressed = true;
 	}
 
 	if (GetKeyDown(KeyCode::Insert)) {
@@ -750,10 +765,32 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 	return phookD3D11Present(pSwapChain, SyncInterval, Flags);
 }
 
+typedef HRESULT(__stdcall* D3D11ResizeBuffersHook)(IDXGISwapChain* pSwapChain, UINT BufferCount, UINT Width, UINT Height, DXGI_FORMAT NewFormat, UINT SwapChainFlags);
+
 DWORD_PTR* pSwapChainVtable = NULL;
 DWORD_PTR* pContextVTable = NULL;
 DWORD_PTR* pDeviceVTable = NULL;
 IDXGISwapChain* pSwapChain;
+
+D3D11ResizeBuffersHook phookResizeBuffers = NULL;
+
+HRESULT __stdcall hookResizeBuffers(IDXGISwapChain* pSwapChain, UINT BufferCount, UINT Width, UINT Height, DXGI_FORMAT NewFormat, UINT SwapChainFlags) {
+	if (mainRenderTargetViewD3D11) {
+		mainRenderTargetViewD3D11->Release();
+		mainRenderTargetViewD3D11 = NULL;
+	}
+
+	HRESULT hr = phookResizeBuffers(pSwapChain, BufferCount, Width, Height, NewFormat, SwapChainFlags);
+
+	ID3D11Texture2D* pBackBuffer;
+	if (SUCCEEDED(hr) && SUCCEEDED(pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer))) {
+		pDevice->CreateRenderTargetView(pBackBuffer, NULL, &mainRenderTargetViewD3D11);
+		pBackBuffer->Release();
+	}
+
+	return hr;
+}
+
 bool HookDX11() {
 	HMODULE hDXGIDLL = GetModuleHandle(L"dxgi.dll");
 	while (!hDXGIDLL) {
@@ -826,6 +863,10 @@ bool HookDX11() {
 
 	if (MH_CreateHook((DWORD_PTR*)pSwapChainVtable[8], hookD3D11Present, reinterpret_cast<void**>(&phookD3D11Present)) != MH_OK) { return false; }
 	if (MH_EnableHook((DWORD_PTR*)pSwapChainVtable[8]) != MH_OK) { return false; }
+
+	if (MH_CreateHook((DWORD_PTR*)pSwapChainVtable[13], hookResizeBuffers, reinterpret_cast<void**>(&phookResizeBuffers)) != MH_OK) { return false; }
+	if (MH_EnableHook((DWORD_PTR*)pSwapChainVtable[13]) != MH_OK) { return false; }
+
 
 	DWORD dwOld;
 	VirtualProtect(phookD3D11Present, 2, PAGE_EXECUTE_READWRITE, &dwOld);
