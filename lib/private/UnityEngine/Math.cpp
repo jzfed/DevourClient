@@ -3,7 +3,7 @@
 #include "UnityEngine/Math.h"
 #include <helpers.h>
 
-const char* Math::Vector3::ToString(app::Vector3* v)
+const char* Math::Vector3::ToString(app::Vector3__Boxed* v)
 {
 	app::String* str = app::Vector3_ToString(v, nullptr);
 
@@ -13,4 +13,18 @@ const char* Math::Vector3::ToString(app::Vector3* v)
 const char* Math::Vector3::ToString(app::Vector3 v)
 {
 	return ("x: " + std::to_string(v.x) + " y: " + std::to_string(v.y) + " z: " + std::to_string(v.z)).c_str();
+}
+
+namespace app {
+	Vector3 operator+(const Vector3& lhs, const Vector3& rhs) {
+		return { lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z };
+	}
+
+	Vector3 operator*(const Vector3& vec, float scalar) {
+		return { vec.x * scalar, vec.y * scalar, vec.z * scalar };
+	}
+
+	Vector3 operator-(const Vector3& lhs, const Vector3& rhs) {
+		return { lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z };
+	}
 }

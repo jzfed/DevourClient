@@ -149,6 +149,7 @@ void Misc::SpawnPrefab(const char* prefabName) {
 	std::string _scene = SceneName();
 	if (_scene == std::string("Menu")) return;
 
+	/*
 	if (il2cppi_is_initialized(app::BoltPrefabs__TypeInfo)) {
 
 		app::BoltPrefabs__StaticFields* _prefab_field = (*app::BoltPrefabs__TypeInfo)->static_fields;
@@ -184,6 +185,7 @@ void Misc::SpawnPrefab(const char* prefabName) {
 			}
 		}
 	}
+	*/
 }
 
 void Misc::RankSpoofer(int value) {

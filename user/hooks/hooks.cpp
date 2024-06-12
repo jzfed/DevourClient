@@ -13,6 +13,7 @@
 #include "UnityEngine/Engine.hpp"
 #include "ClientHelper.h"
 #include "features/misc/misc.h"
+#include "UnityEngine/Math.h"
 
 #pragma warning(push, 0) //important cuz dx11 throws so much warnings
 #include <d3d11.h>
