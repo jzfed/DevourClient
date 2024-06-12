@@ -21,7 +21,7 @@ env:
   BUILD_CONFIGURATION: Release
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -42,5 +42,7 @@ jobs:
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
+        tag: ${{ github.ref }}
+        name: Release ${{ github.ref }}
         artifacts: "x64/Release/DevourClient.dll"
         generateReleaseNotes: true
