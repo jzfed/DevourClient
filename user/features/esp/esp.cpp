@@ -24,7 +24,7 @@ static void DrawString(ImVec2 pos, ImColor color, std::string label)
 	drawlist->AddText(pos, color, label.c_str());
 }
 
-static void DrawBoxESP(app::GameObject *it, float footOffset, float headOffset, std::string name, ImColor color, bool snapline = false, bool esp = false, float nameOffset = -0.5f, float widthOffset = 2.0f)
+static void DrawBoxESP(app::GameObject *it, float footOffset, float headOffset, std::string name, ImColor color, ImColor snapcolor, bool snapline = false, bool esp = false, float nameOffset = -0.5f, float widthOffset = 2.0f)
 {
 	ImGuiIO& io = ImGui::GetIO();
 	app::Camera* cam = app::Camera_get_main(nullptr);
@@ -51,7 +51,7 @@ static void DrawBoxESP(app::GameObject *it, float footOffset, float headOffset, 
 
 	if (snapline && footpos.z > 0.f) {
 		auto drawlist = ImGui::GetBackgroundDrawList();
-		drawlist->AddLine(ImVec2(io.DisplaySize.x / 2, io.DisplaySize.y / 2), ImVec2(footpos.x, io.DisplaySize.y - footpos.y), color, 2.f);
+		drawlist->AddLine(ImVec2(io.DisplaySize.x / 2, io.DisplaySize.y / 2), ImVec2(footpos.x, io.DisplaySize.y - footpos.y), snapcolor, 2.f);
 	}
 }
 
@@ -67,6 +67,7 @@ void ESP::RunPlayersESP() {
 		if (ent == nullptr || ent == Player::GetLocalPlayer())
 			continue;
 	
-		DrawBoxESP(ent, -0.25, 1.75, "Player", ImColor{settings::player_esp_color[0], settings::player_esp_color[1], settings::player_esp_color[2], settings::player_esp_color[3]}, settings::player_snaplines, settings::player_esp);
+		DrawBoxESP(ent, -0.25, 1.75, "Player", ImColor{settings::player_esp_color[0], settings::player_esp_color[1], settings::player_esp_color[2], settings::player_esp_color[3]},
+			ImColor{ settings::player_snaplines_color[0], settings::player_snaplines_color[1], settings::player_snaplines_color[2], settings::player_snaplines_color[3]}, settings::player_snaplines, settings::player_esp);
 	}
 }
