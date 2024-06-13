@@ -75,7 +75,7 @@ void DrawVisualsTab() {
 		ImGui::OpenPopup("playersnpop");
 	}
 	if (ImGui::BeginPopup("playersnpop")) {
-		ImGui::ColorPicker4("Player snaplines color", (float*)&settings::flashlight_color);
+		ImGui::ColorPicker4("Player snaplines color", (float*)&settings::player_snaplines_color);
 		ImGui::EndPopup();
 	}
 

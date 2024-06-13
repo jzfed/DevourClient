@@ -60,8 +60,9 @@ void VersionControl::CheckForUpdate()
 
             if (data.find("tag_name") != data.end() && data["tag_name"].is_string()) {
                 std::string latestTagName = data["tag_name"];
+                std::string latestName = data["name"];
 
-                if (strcmp(latestTagName.c_str(), current_version_tag) == 0) {
+                if (strcmp(latestTagName.c_str(), current_version_tag) == 0 || latestName.find("Auto") != std::string::npos) { //TOFIX
                     SetIsUpToDate(true);
                 }
                 else {
