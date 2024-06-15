@@ -243,6 +243,9 @@
     <ClInclude Include="lib\public\UnityEngine\Transform.h">
       <Filter>lib\public\UnityEngine</Filter>
     </ClInclude>
+    <ClInclude Include="include\magic_enum.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="appdata">

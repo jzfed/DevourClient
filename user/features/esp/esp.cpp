@@ -6,6 +6,8 @@
 #include "players/players.h"
 #include "helpers.h"
 #include "esp.hpp"
+#include <magic_enum.hpp>
+#include <vector>
 
 static void DrawBox(float x, float y, float w, float h, ImColor color, float thickness)
 {
@@ -53,6 +55,111 @@ static void DrawBoxESP(app::GameObject *it, float footOffset, float headOffset, 
 		auto drawlist = ImGui::GetBackgroundDrawList();
 		drawlist->AddLine(ImVec2(io.DisplaySize.x / 2, io.DisplaySize.y / 2), ImVec2(footpos.x, io.DisplaySize.y - footpos.y), snapcolor, 2.f);
 	}
+}
+
+void DrawNameESP(app::Vector3 pos, std::string name, ImColor color)
+{
+	app::Camera* cam = app::Camera_get_main(nullptr);
+	ImGuiIO& io = ImGui::GetIO();
+	if (cam == nullptr)
+		return;
+
+	app::Vector3 vector = app::Camera_WorldToScreenPoint_1(cam, pos, NULL);
+	if (vector.z > 0)
+	{
+		vector.y = io.DisplaySize.y - (vector.y + 1.f);
+		auto drawlist = ImGui::GetBackgroundDrawList();
+
+		drawlist->AddRectFilled(ImVec2(vector.x, vector.y), ImVec2(vector.x + 6.f, vector.y + 6.f), color);
+		DrawString(ImVec2(vector.x + 8.f, vector.y), color, name);
+	}
+}
+
+void ComputePositionAndDrawESP(app::Object_1__Array* ents, ImColor color, bool use_prefab = false, std::string name = "") {
+	for (int i = 0; i < ents->max_length; i++) {
+		app::Object_1 *ent = ents->vector[i];
+		if (ent == nullptr)
+			continue;
+
+		app::Transform* _transform = Transform::GetTransform(ent);
+		if (_transform == nullptr)
+			continue;
+
+		app::Vector3 pos = Transform::GetPosition(_transform);
+
+		auto field = il2cpp_class_get_field_from_name(ent->klass->_0.castClass, "m_AI");
+		if (field != nullptr) {
+			app::Survival_AI__Enum type = il2cpp_object_get_field_value(ent, app::Survival_AI__Enum, field);
+			name = magic_enum::enum_name(type);
+		}
+
+		if (use_prefab) {
+			if ((((app::SurvivalInteractable*)ent)->fields.prefabName) == nullptr)
+				continue;
+			name = il2cppi_to_string(((app::SurvivalInteractable*)ent)->fields.prefabName);
+			string_replace(name, "Survival", "");
+		}
+
+		DrawNameESP(pos, name, color);
+ 	}
+}
+
+void ESP::RunAzazelESP() {
+	app::GameObject__Array* ents = Object::FindGameObjectsWithTag("Azazel");
+	//app::Object_1__Array *ents = Object::FindObjectsOfType("SurvivalAzazelBehaviour", "");
+
+	if (ents == NULL)
+		return;
+
+	for (int i = 0; i < ents->max_length; i++) {
+		app::GameObject* ent = (app::GameObject *)ents->vector[i];
+
+		if (ent == nullptr)
+			continue;
+	
+		DrawBoxESP(ent, -0.25, 2.0f, "Azazel", ImColor{settings::azazel_esp_color[0], settings::azazel_esp_color[1], settings::azazel_esp_color[2], settings::azazel_esp_color[3]},
+			ImColor{ settings::azazel_snaplines_color[0], settings::azazel_snaplines_color[1], settings::azazel_snaplines_color[2], settings::azazel_snaplines_color[3]}, settings::azazel_snaplines, settings::azazel_esp);
+	}
+}
+
+void ESP::RunDemonESP() {
+	ImColor col = ImColor{ settings::demon_esp_color[0], settings::demon_esp_color[1], settings::demon_esp_color[2], settings::demon_esp_color[3] };
+
+	std::vector<std::string> demons_c = { "SurvivalDemonBehaviour", "SpiderBehaviour", "GhostBehaviour", "BoarBehaviour", "CorpseBehaviour" };
+
+	for (std::string& class_ : demons_c) {
+		app::Object_1__Array *ents = Object::FindObjectsOfType(class_.c_str(), "");
+		if (ents == nullptr)
+			continue;
+
+		std::string name = class_;
+		string_replace(name, "Survival", "");
+		string_replace(name, "Behaviour", "");
+		ComputePositionAndDrawESP(ents, col, false, name);
+	}
+}
+
+void ESP::RunItemsESP() {
+	ImColor col = ImColor{ settings::item_esp_color[0], settings::item_esp_color[1], settings::item_esp_color[2], settings::item_esp_color[3] };
+
+	app::Object_1__Array *ents = Object::FindObjectsOfType("SurvivalInteractable", "");
+	if (ents != nullptr && ents->vector[0] != nullptr) {
+		ComputePositionAndDrawESP(ents, col, true);
+	}
+
+	ents = Object::FindObjectsOfType("KeyBehaviour", "");
+	if (ents != nullptr && ents->vector[0] != nullptr) {
+		ComputePositionAndDrawESP(ents, col, false, "Key");
+	}
+}
+
+void ESP::RunGoatsESP() {
+	app::Object_1__Array *goats = Object::FindObjectsOfType("GoatBehaviour", "");
+	
+	if (goats == nullptr || goats->vector[0] == nullptr)
+		return;
+	
+	ComputePositionAndDrawESP(goats, ImColor{ settings::goat_esp_color[0], settings::goat_esp_color[1], settings::goat_esp_color[2], settings::goat_esp_color[3] });
 }
 
 void ESP::RunPlayersESP() {

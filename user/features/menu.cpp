@@ -79,7 +79,6 @@ void DrawVisualsTab() {
 		ImGui::EndPopup();
 	}
 
-	/*
 	ImGui::Checkbox("Azazel ESP", &settings::azazel_esp);
 	ImGui::SameLine();
 	bool open_azacolor_popup = ImGui::ColorButton("azaespcolor", ImVec4(settings::azazel_esp_color[0], settings::azazel_esp_color[1], settings::azazel_esp_color[2], settings::azazel_esp_color[3]));
@@ -138,7 +137,7 @@ void DrawVisualsTab() {
 	if (ImGui::BeginPopup("gesppop")) {
 		ImGui::ColorPicker4("Goat ESP color", (float*)&settings::goat_esp_color);
 		ImGui::EndPopup();
-	}*/
+	}
 }
 
 void DrawEntitiesTab() {
@@ -182,6 +181,8 @@ void DrawEntitiesTab() {
 }
 
 void DrawMapSpecificTab() {
+	ImGui::SliderInt("Server player limit", &settings::player_count, 4, 20);
+
 	if (ImGui::Button("Force Start The Game")) {
 		Misc::ForceStart();
 	}
@@ -336,7 +337,6 @@ void DrawMiscTab() {
 
 	ImGui::Checkbox("Azazel Speed", &settings::freeze_azazel);
 	ImGui::SliderFloat("Multiplier", &settings::new_azazel_speed, 0, 15);
-	
 
 #if _DEBUG
 	ImGui::Spacing();

@@ -33,6 +33,7 @@ namespace settings {
 	extern std::string message;
 	extern bool spoof_level;
 	extern int new_level;
+	extern int player_count;
 	extern bool steam_name_spoof;
 	extern std::string new_name;
 	extern bool server_name_spoof;

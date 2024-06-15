@@ -24,12 +24,13 @@ namespace settings {
 	bool demon_esp = false;
 	float demon_esp_color[4] = { 255.f, 0, 0, 255.f };
 	bool goat_esp = false;
-	float goat_esp_color[4] = { 0, 255.f, 0, 255.f };
+	float goat_esp_color[4] = { 247.f, 156.f, 37.f, 255.f };
 
 	bool chat_spam = false;
 	std::string message = "deez nuts";
 	bool spoof_level = false;
 	int new_level = 0;
+	int player_count = 4;
 	bool steam_name_spoof = false;
 	std::string new_name = "patate";
 	bool server_name_spoof = false;

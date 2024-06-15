@@ -9,6 +9,21 @@ struct Object {
 
 	static bool IsNull(app::Object_1* obj);
 
+	static inline app::Object_1__Array *FindObjectsOfType(const char* className, const char* classNamespace = "", const char* assemblyName = "Assembly-CSharp.dll") {
+
+		Wrapper obj(assemblyName);
+
+		Il2CppObject* object = obj.find_class(classNamespace, className).get_class();
+
+		if (!object || !app::Object_1_FindObjectsOfType) return nullptr;
+
+		app::Object_1__Array* obj_1 = app::Object_1_FindObjectsOfType(reinterpret_cast<app::Type*>(object), nullptr);
+
+		if (!obj_1) return nullptr;
+
+		return obj_1;
+	}
+
 	template<typename T>
 	static inline T* FindObjectOfType(const char* className, const char* classNamespace = "", const char* assemblyName = "Assembly-CSharp.dll") {
 

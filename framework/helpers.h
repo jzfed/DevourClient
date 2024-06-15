@@ -9,6 +9,8 @@
 
 #include "il2cpp-metadata-version.h"
 
+#define il2cpp_object_get_field_value(object, type, field)  *(type*)((uintptr_t)object + field->offset)
+
 // Helper function to get the module base address
 uintptr_t il2cppi_get_base_address();
 
@@ -19,6 +21,8 @@ void il2cppi_log_write(std::string text);
 void il2cppi_new_console();
 
 void il2cpp_close_console();
+
+bool string_replace(std::string& str, const std::string& from, const std::string& to);
 
 #if _MSC_VER >= 1920
 // Helper function to convert Il2CppString to std::string

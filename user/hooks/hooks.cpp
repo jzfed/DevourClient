@@ -436,6 +436,12 @@ bool __stdcall hSteamInventoryManager_HasRetrievedUserInventoryItems(app::SteamI
 	return oSteamInventoryManager_HasRetrievedUserInventoryItems(__this, method);
 }
 
+// DO_APP_FUNC(0x00A83990, int32_t, BoltNetwork_get_MaxConnections, (MethodInfo * method));
+typedef int32_t(__stdcall* TBoltNetwork_get_MaxConnections)(MethodInfo*);
+TBoltNetwork_get_MaxConnections oBoltNetwork_get_MaxConnections = NULL;
+int32_t __stdcall hBoltNetwork_get_MaxConnections(MethodInfo* method) {
+	return settings::player_count; //oBoltNetwork_get_MaxConnections(method);
+}
 
 void CreateHooks() {
 	/*
@@ -636,6 +642,12 @@ void CreateHooks() {
 		return;
 	}
 
+	// BoltNetwork_get_MaxConnections
+	MH_STATUS status_BoltNetwork_get_MaxConnections = MH_CreateHook((LPVOID*)app::BoltNetwork_get_MaxConnections, &hBoltNetwork_get_MaxConnections, reinterpret_cast<LPVOID*>(&oBoltNetwork_get_MaxConnections));
+	if (status_BoltNetwork_get_MaxConnections != MH_OK) {
+		std::cout << "Failed to create BoltNetwork_get_MaxConnections hook: " << MH_StatusToString(status_BoltNetwork_get_MaxConnections) << std::endl;
+		return;
+	}
 
 	// SteamInventoryValidator_PlayerHasItem
 	//MH_STATUS status_playerHasItem = MH_CreateHook((LPVOID*)app::SteamInventoryValidator_PlayerHasItem, &hSteamInventoryValidator_PlayerHasItem, reinterpret_cast<LPVOID*>(&oSteamInventoryValidator_PlayerHasItem));
@@ -751,6 +763,17 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 	if (settings::player_esp)
 		ESP::RunPlayersESP();
 
+	if (settings::goat_esp)
+		ESP::RunGoatsESP();
+
+	if (settings::item_esp)
+		ESP::RunItemsESP();
+
+	if (settings::demon_esp)
+		ESP::RunDemonESP();
+
+	if (settings::azazel_esp)
+		ESP::RunAzazelESP();
 
 	ImGui::GetIO().MouseDrawCursor = open_menu;
 

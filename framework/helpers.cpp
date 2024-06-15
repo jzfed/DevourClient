@@ -41,6 +41,14 @@ void il2cpp_close_console() {
     FreeConsole();
 }
 
+bool string_replace(std::string& str, const std::string& from, const std::string& to) {
+    size_t start_pos = str.find(from);
+    if (start_pos == std::string::npos)
+        return false;
+    str.replace(start_pos, from.length(), to);
+    return true;
+}
+
 #if _MSC_VER >= 1920
 // Helper function to convert Il2CppString to std::string
 std::string il2cppi_to_string(Il2CppString* str) {
@@ -52,6 +60,7 @@ std::string il2cppi_to_string(Il2CppString* str) {
 std::string il2cppi_to_string(app::String* str) {
     return il2cppi_to_string(reinterpret_cast<Il2CppString*>(str));
 }
+
 app::String* ConvertToSystemString(const char* str)
 {
     Il2CppString* il2cpp_str =  il2cpp_string_new(str);
