@@ -106,7 +106,6 @@ void ComputePositionAndDrawESP(app::Object_1__Array* ents, ImColor color, bool u
 
 void ESP::RunAzazelESP() {
 	app::GameObject__Array* ents = Object::FindGameObjectsWithTag("Azazel");
-	//app::Object_1__Array *ents = Object::FindObjectsOfType("SurvivalAzazelBehaviour", "");
 
 	if (ents == NULL)
 		return;
@@ -128,6 +127,8 @@ void ESP::RunDemonESP() {
 	std::vector<std::string> demons_c = { "SurvivalDemonBehaviour", "SpiderBehaviour", "GhostBehaviour", "BoarBehaviour", "CorpseBehaviour" };
 
 	for (std::string& class_ : demons_c) {
+		if (SceneName() != "Menu")
+			return;
 		app::Object_1__Array *ents = Object::FindObjectsOfType(class_.c_str(), "");
 		if (ents == nullptr)
 			continue;
@@ -147,6 +148,8 @@ void ESP::RunItemsESP() {
 		ComputePositionAndDrawESP(ents, col, true);
 	}
 
+	if (SceneName() != "Menu")
+		return;
 	ents = Object::FindObjectsOfType("KeyBehaviour", "");
 	if (ents != nullptr && ents->vector[0] != nullptr) {
 		ComputePositionAndDrawESP(ents, col, false, "Key");
