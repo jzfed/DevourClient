@@ -21,6 +21,7 @@
 #include "utils/utils.hpp"
 #include "network/VersionControl.h"
 
+#include "players/players.h"
 
 #define CLIENT_VERSION "4.1"
 
@@ -146,8 +147,17 @@ void Run()
 		if (GetAsyncKeyState(VK_END) & 0x8000 || should_unhook)
 			break;
 
+		// enable "NolanBehaviour" in the lobby so the client can use fly mode
+		if (SceneName() == std::string("Menu")) {
+			if (Player::GetLocalPlayer() != nullptr) {
+				app::NolanBehaviour* nolan = Player::GetNolan();
+				if (nolan != nullptr) {
+					if (!Object::Enabled(nolan)) Object::Enabled(nolan, true);
+				}
+			}
+		}
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 	}
 	CreateThread(0, 0, EjectThread, 0, 0, 0);
 }

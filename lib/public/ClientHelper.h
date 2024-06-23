@@ -8,6 +8,7 @@ bool IsLocalPlayer(app::NolanBehaviour* player);
 bool IsPlayerCrawling();
 bool IsPlayerCrawling(app::GameObject* go);
 bool IsInGame();
+bool IsSequencePlaying();
 
 app::GameObject* GetAzazel(app::Survival* survival);
 

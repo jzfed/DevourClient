@@ -67,6 +67,21 @@ bool IsInGame()
 	return false;
 }
 
+bool IsSequencePlaying()
+{
+	app::Survival* survival = Object::FindObjectOfType<app::Survival>("Survival");
+
+	// Return false if the object was not found.
+	if (survival == nullptr) return false;
+
+	bool isEndingPlaying = app::Survival_IsEndingPlaying(survival, nullptr);
+	bool isJumpScarePlaying = app::Survival_IsJumpScarePlaying(survival, nullptr);
+	bool isStartingToPlayFailEnding = app::Survival_StartingToPlayFailEnding(survival, nullptr);
+
+	// Return true if any sequence is playing.
+	return isEndingPlaying || isJumpScarePlaying || isStartingToPlayFailEnding;
+}
+
 app::GameObject* GetAzazel(app::Survival* survival)
 {
 	app::GameObject* ai = app::Survival_GetAzazel(survival, nullptr);
