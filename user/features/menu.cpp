@@ -319,15 +319,15 @@ void DrawMiscTab() {
 	if (ImGui::Button("Make random noise")) {
 		//Misc::PlayRandomSound();
 	}
-
 	
 	ImGui::Checkbox("Walk in lobby", &settings::walk_in_lobby);
 
 	ImGui::Checkbox("Auto respawn", &settings::auto_respawn);
+	*/
 
 	ImGui::Checkbox("Spoof level", &settings::spoof_level);
 	ImGui::InputInt("New level", &settings::new_level);
-	*/
+	
 
 	ImGui::Checkbox("EXP Modifier", &settings::exp_modifier);
 	ImGui::SliderInt("Amount", &settings::new_exp, 0, 5000);

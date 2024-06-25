@@ -13,4 +13,6 @@ bool IsSequencePlaying();
 app::GameObject* GetAzazel(app::Survival* survival);
 
 std::string SceneName();
+std::string GetAzazelName();
+
 float Time_DeltaTime();

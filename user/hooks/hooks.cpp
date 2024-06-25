@@ -94,6 +94,10 @@ typedef void(__stdcall* TNolanBehaviour_Update)(app::NolanBehaviour*, MethodInfo
 TNolanBehaviour_Update oNolanBehaviour_Update = NULL;
 void __stdcall hNolanBehaviour_Update(app::NolanBehaviour* __this, MethodInfo* method) {
 
+	if (settings::spoof_level && IsLocalPlayer(__this)) {
+		Misc::RankSpoofer(settings::new_level);
+	}
+
 	if (settings::fly && IsLocalPlayer(__this)) {
 
 		float speed = settings::fly_speed;
@@ -159,7 +163,7 @@ typedef void(__stdcall* TNolanBehaviour_FixedUpdate)(app::NolanBehaviour*, Metho
 TNolanBehaviour_FixedUpdate oNolanBehaviour_FixedUpdate = NULL;
 void __stdcall hNolanBehaviour_FixedUpdate(app::NolanBehaviour* __this, MethodInfo* method) {
 
-	if (settings::freeze_azazel && IsHost()) {
+	if (settings::freeze_azazel && IsHost() && IsInGame()) {
 		app::GameObject* goAzazel = __this->fields.m_Survival->fields.m_Azazel;
 
 		if (goAzazel) {

@@ -94,7 +94,7 @@ void Misc::InstantWin()
 
 	std::string _scene = SceneName();
 
-	if (_scene == std::string("Menu") && !IsHost() && !Player::GetLocalPlayer()) return;
+	if (_scene == std::string("Menu") || !IsHost() || !Player::GetLocalPlayer()) return;
 
 	int32_t progress = 10;
 
@@ -104,7 +104,6 @@ void Misc::InstantWin()
 		if (_MapController) {
 
 			// DO_APP_FUNC(0x00930CD0, void, MapController_SetProgressTo, (MapController * __this, int32_t progress, MethodInfo * method));
-
 			if (app::MapController_SetProgressTo != nullptr) {
 				app::MapController_SetProgressTo(_MapController, progress, nullptr);
 			}
@@ -116,7 +115,6 @@ void Misc::InstantWin()
 		if (_SlaughterhouseAltarController) {
 
 			// DO_APP_FUNC(0x0050DEB0, void, SlaughterhouseAltarController_SkipToGoat, (SlaughterhouseAltarController * __this, int32_t number, MethodInfo * method));
-
 			if (app::SlaughterhouseAltarController_SkipToGoat != nullptr) {
 				app::SlaughterhouseAltarController_SkipToGoat(_SlaughterhouseAltarController, progress, nullptr);
 			}
@@ -128,7 +126,6 @@ void Misc::InstantWin()
 
 		if (_SurvivalObjectBurnController) {
 			// DO_APP_FUNC(0x00562590, void, SurvivalObjectBurnController_SkipToGoat, (SurvivalObjectBurnController * __this, int32_t number, MethodInfo * method));
-
 			if (app::SurvivalObjectBurnController_SkipToGoat != nullptr) {
 				app::SurvivalObjectBurnController_SkipToGoat(_SurvivalObjectBurnController, progress, nullptr);
 			}

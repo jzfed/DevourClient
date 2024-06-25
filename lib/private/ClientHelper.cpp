@@ -74,12 +74,16 @@ bool IsSequencePlaying()
 	// Return false if the object was not found.
 	if (survival == nullptr) return false;
 
-	bool isEndingPlaying = app::Survival_IsEndingPlaying(survival, nullptr);
-	bool isJumpScarePlaying = app::Survival_IsJumpScarePlaying(survival, nullptr);
-	bool isStartingToPlayFailEnding = app::Survival_StartingToPlayFailEnding(survival, nullptr);
+	if (app::Survival_IsEndingPlaying != nullptr || app::Survival_IsJumpScarePlaying != nullptr || app::Survival_StartingToPlayFailEnding != nullptr) {
+		bool isEndingPlaying = app::Survival_IsEndingPlaying(survival, nullptr);
+		bool isJumpScarePlaying = app::Survival_IsJumpScarePlaying(survival, nullptr);
+		bool isStartingToPlayFailEnding = app::Survival_StartingToPlayFailEnding(survival, nullptr);
 
-	// Return true if any sequence is playing.
-	return isEndingPlaying || isJumpScarePlaying || isStartingToPlayFailEnding;
+		// Return true if any sequence is playing.
+		return isEndingPlaying || isJumpScarePlaying || isStartingToPlayFailEnding;
+	}
+	
+	return false;
 }
 
 app::GameObject* GetAzazel(app::Survival* survival)
@@ -108,6 +112,18 @@ std::string SceneName()
 	}
 
 	return std::string("");
+}
+
+std::string GetAzazelName()
+{
+	if (IsInGame()) {
+		app::InGameHelpers* inGameHelpers = app::InGameHelpers_get_singleton(nullptr);
+
+		if (inGameHelpers)
+			return il2cppi_to_string(app::InGameHelpers_GetAzazelName(inGameHelpers, nullptr));
+	}
+
+	return std::string("Azazel");
 }
 
 
