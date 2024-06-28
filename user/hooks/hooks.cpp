@@ -766,17 +766,19 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 	if (settings::player_esp)
 		ESP::RunPlayersESP();
 
-	if (settings::goat_esp && SceneName() != "Menu")
-		ESP::RunGoatsESP();
+	if (IsInGame() && !IsSequencePlaying()) {
+		if (settings::goat_esp && SceneName() != "Menu")
+			ESP::RunGoatsESP();
 
-	if (settings::item_esp && SceneName() != "Menu")
-		ESP::RunItemsESP();
+		if (settings::item_esp && SceneName() != "Menu")
+			ESP::RunItemsESP();
 
-	if (settings::demon_esp)
-		ESP::RunDemonESP();
+		if (settings::demon_esp)
+			ESP::RunDemonESP();
 
-	if (settings::azazel_esp && SceneName() != "Menu")
-		ESP::RunAzazelESP();
+		if (settings::azazel_esp && SceneName() != "Menu")
+			ESP::RunAzazelESP();
+	}
 
 	ImGui::GetIO().MouseDrawCursor = open_menu;
 

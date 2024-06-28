@@ -78,7 +78,7 @@ void DrawNameESP(app::Vector3 pos, std::string name, ImColor color)
 void ComputePositionAndDrawESP(app::Object_1__Array* ents, ImColor color, bool use_prefab = false, std::string name = "") {
 	for (int i = 0; i < ents->max_length; i++) {
 		app::Object_1 *ent = ents->vector[i];
-		if (ent == nullptr)
+		if (Object::IsNull(ent))
 			continue;
 
 		app::Transform* _transform = Transform::GetTransform(ent);
@@ -144,14 +144,14 @@ void ESP::RunItemsESP() {
 	ImColor col = ImColor{ settings::item_esp_color[0], settings::item_esp_color[1], settings::item_esp_color[2], settings::item_esp_color[3] };
 
 	app::Object_1__Array *ents = Object::FindObjectsOfType("SurvivalInteractable", "");
-	if (ents != nullptr && ents->vector[0] != nullptr) {
+	if (ents != nullptr || !Object::IsNull(ents->vector[0])) {
 		ComputePositionAndDrawESP(ents, col, true);
 	}
 
 	if (SceneName() != "Menu")
 		return;
 	ents = Object::FindObjectsOfType("KeyBehaviour", "");
-	if (ents != nullptr && ents->vector[0] != nullptr) {
+	if (ents != nullptr || !Object::IsNull(ents->vector[0])) {
 		ComputePositionAndDrawESP(ents, col, false, "Key");
 	}
 }
@@ -159,7 +159,7 @@ void ESP::RunItemsESP() {
 void ESP::RunGoatsESP() {
 	app::Object_1__Array *goats = Object::FindObjectsOfType("GoatBehaviour", "");
 	
-	if (goats == nullptr || goats->vector[0] == nullptr)
+	if (goats == nullptr || Object::IsNull(goats->vector[0]))
 		return;
 	
 	ComputePositionAndDrawESP(goats, ImColor{ settings::goat_esp_color[0], settings::goat_esp_color[1], settings::goat_esp_color[2], settings::goat_esp_color[3] });

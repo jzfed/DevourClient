@@ -21,6 +21,28 @@ bool IsHost()
 	return app::BoltNetwork_get_IsServer(NULL);
 }
 
+app::Survival* GetSurvivalObject()
+{
+	static app::Survival* cachedSurvival = nullptr;
+
+	if (cachedSurvival == nullptr || Object::IsNull((app::Object_1*)cachedSurvival)) {
+		cachedSurvival = Object::FindObjectOfType<app::Survival>("Survival");
+	}
+
+	return cachedSurvival;
+}
+
+app::OptionsHelpers* GetOptionsHelpersObject()
+{
+	static app::OptionsHelpers* cachedOptionsHelpers = nullptr;
+
+	if (cachedOptionsHelpers == nullptr || Object::IsNull((app::Object_1*)cachedOptionsHelpers)) {
+		cachedOptionsHelpers = Object::FindObjectOfType<app::OptionsHelpers>("OptionsHelpers");
+	}
+
+	return cachedOptionsHelpers;
+}
+
 bool IsLocalPlayer(app::NolanBehaviour* player)
 {
 	auto boltEntity = app::EntityBehaviour_get_entity((app::EntityBehaviour*)player, NULL);
@@ -59,7 +81,7 @@ bool IsPlayerCrawling(app::GameObject* go)
 
 bool IsInGame()
 {
-	app::OptionsHelpers* optionsHelpers = Object::FindObjectOfType<app::OptionsHelpers>("OptionsHelpers");
+	app::OptionsHelpers* optionsHelpers = GetOptionsHelpersObject();
 
 	if (optionsHelpers)
 		return optionsHelpers->fields._inGame_k__BackingField;
@@ -69,20 +91,17 @@ bool IsInGame()
 
 bool IsSequencePlaying()
 {
-	app::Survival* survival = Object::FindObjectOfType<app::Survival>("Survival");
+	app::Survival* survival = GetSurvivalObject();
 
 	// Return false if the object was not found.
 	if (survival == nullptr) return false;
 
-	if (app::Survival_IsEndingPlaying != nullptr || app::Survival_IsJumpScarePlaying != nullptr || app::Survival_StartingToPlayFailEnding != nullptr) {
-		bool isEndingPlaying = app::Survival_IsEndingPlaying(survival, nullptr);
-		bool isJumpScarePlaying = app::Survival_IsJumpScarePlaying(survival, nullptr);
-		bool isStartingToPlayFailEnding = app::Survival_StartingToPlayFailEnding(survival, nullptr);
+	// Check if any of the sequences are playing and return the result directly.
+	if (app::Survival_IsEndingPlaying && app::Survival_IsEndingPlaying(survival, nullptr)) return true;
+	if (app::Survival_IsJumpScarePlaying && app::Survival_IsJumpScarePlaying(survival, nullptr)) return true;
+	if (app::Survival_StartingToPlayFailEnding && app::Survival_StartingToPlayFailEnding(survival, nullptr)) return true;
 
-		// Return true if any sequence is playing.
-		return isEndingPlaying || isJumpScarePlaying || isStartingToPlayFailEnding;
-	}
-	
+	// If none of the sequences are playing, return false.
 	return false;
 }
 
@@ -96,6 +115,7 @@ app::GameObject* GetAzazel(app::Survival* survival)
 
 	return NULL;
 }
+
 
 
 std::string SceneName()

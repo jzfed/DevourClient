@@ -20,6 +20,10 @@ namespace Transform {
 	{
 		if (!component) return nullptr;
 
-		return app::Component_get_transform((app::Component*)component, nullptr);
+		if (app::Component_get_transform != nullptr) {
+			return app::Component_get_transform((app::Component*)component, nullptr);
+		}
+
+		return nullptr;
 	}
 }
