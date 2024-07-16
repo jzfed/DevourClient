@@ -16,7 +16,7 @@ static void DrawBox(float x, float y, float w, float h, ImColor color, float thi
 	drawlist->AddLine(ImVec2{ x, y }, ImVec2{ x + w, y }, color, thickness);
 	drawlist->AddLine(ImVec2{ x, y }, ImVec2{ x, y + h }, color, thickness);
 	drawlist->AddLine(ImVec2{ x + w, y }, ImVec2{ x + w, y + h }, color, thickness);
-	drawlist->AddLine(ImVec2{ x, y + h }, ImVec2{ x + w, y + h}, color, thickness);
+	drawlist->AddLine(ImVec2{ x, y + h }, ImVec2{ x + w, y + h }, color, thickness);
 }
 
 static void DrawString(ImVec2 pos, ImColor color, std::string label)
@@ -26,7 +26,7 @@ static void DrawString(ImVec2 pos, ImColor color, std::string label)
 	drawlist->AddText(pos, color, label.c_str());
 }
 
-static void DrawBoxESP(app::GameObject *it, float footOffset, float headOffset, std::string name, ImColor color, ImColor snapcolor, bool snapline = false, bool esp = false, float nameOffset = -0.5f, float widthOffset = 2.0f)
+static void DrawBoxESP(app::GameObject* it, float footOffset, float headOffset, std::string name, ImColor color, ImColor snapcolor, bool snapline = false, bool esp = false, float nameOffset = -0.5f, float widthOffset = 2.0f)
 {
 	ImGuiIO& io = ImGui::GetIO();
 	app::Camera* cam = app::Camera_get_main(nullptr);
@@ -36,12 +36,12 @@ static void DrawBoxESP(app::GameObject *it, float footOffset, float headOffset, 
 	app::Transform* _transform = Transform::GetTransform(it);
 	if (_transform == nullptr)
 		return;
-		
+
 	app::Vector3 pos = Transform::GetPosition(_transform);
 
-	app::Vector3 footpos = app::Camera_WorldToScreenPoint_1(cam, app::Vector3{pos.x, pos.y + footOffset, pos.z}, NULL);
-	app::Vector3 headpos = app::Camera_WorldToScreenPoint_1(cam, app::Vector3{pos.x, pos.y + headOffset, pos.z}, NULL);
-	app::Vector3 namepos = app::Camera_WorldToScreenPoint_1(cam, app::Vector3{pos.x, pos.y + nameOffset, pos.z}, NULL);
+	app::Vector3 footpos = app::Camera_WorldToScreenPoint_1(cam, app::Vector3{ pos.x, pos.y + footOffset, pos.z }, NULL);
+	app::Vector3 headpos = app::Camera_WorldToScreenPoint_1(cam, app::Vector3{ pos.x, pos.y + headOffset, pos.z }, NULL);
+	app::Vector3 namepos = app::Camera_WorldToScreenPoint_1(cam, app::Vector3{ pos.x, pos.y + nameOffset, pos.z }, NULL);
 
 	if (esp && footpos.z > 0.0f) {
 		float height = (headpos.y - footpos.y);
@@ -77,7 +77,7 @@ void DrawNameESP(app::Vector3 pos, std::string name, ImColor color)
 
 void ComputePositionAndDrawESP(app::Object_1__Array* ents, ImColor color, bool use_prefab = false, std::string name = "") {
 	for (int i = 0; i < ents->max_length; i++) {
-		app::Object_1 *ent = ents->vector[i];
+		app::Object_1* ent = ents->vector[i];
 		if (Object::IsNull(ent))
 			continue;
 
@@ -101,23 +101,34 @@ void ComputePositionAndDrawESP(app::Object_1__Array* ents, ImColor color, bool u
 		}
 
 		DrawNameESP(pos, name, color);
- 	}
+	}
+}
+
+// TEMP FIX #60
+app::Object_1__Array* ESP::RefreshEntList(app::Object_1__Array* ent, const char* className, const char* classNamespace) {
+	if (time_counter < time_refresh) return ent;
+	return Object::FindObjectsOfType(className, classNamespace);
 }
 
 void ESP::RunAzazelESP() {
-	app::GameObject__Array* ents = Object::FindGameObjectsWithTag("Azazel");
+
+	if (time_counter < (time_refresh - 1)) {
+		ents_azazel = Object::FindGameObjectsWithTag("Azazel");
+	}
+	app::GameObject__Array* ents = ents_azazel;
+
 
 	if (ents == NULL)
 		return;
 
 	for (int i = 0; i < ents->max_length; i++) {
-		app::GameObject* ent = (app::GameObject *)ents->vector[i];
+		app::GameObject* ent = (app::GameObject*)ents->vector[i];
 
 		if (ent == nullptr)
 			continue;
-	
-		DrawBoxESP(ent, -0.25, 2.0f, "Azazel", ImColor{settings::azazel_esp_color[0], settings::azazel_esp_color[1], settings::azazel_esp_color[2], settings::azazel_esp_color[3]},
-			ImColor{ settings::azazel_snaplines_color[0], settings::azazel_snaplines_color[1], settings::azazel_snaplines_color[2], settings::azazel_snaplines_color[3]}, settings::azazel_snaplines, settings::azazel_esp);
+
+		DrawBoxESP(ent, -0.25, 2.0f, "Azazel", ImColor{ settings::azazel_esp_color[0], settings::azazel_esp_color[1], settings::azazel_esp_color[2], settings::azazel_esp_color[3] },
+			ImColor{ settings::azazel_snaplines_color[0], settings::azazel_snaplines_color[1], settings::azazel_snaplines_color[2], settings::azazel_snaplines_color[3] }, settings::azazel_snaplines, settings::azazel_esp);
 	}
 }
 
@@ -129,7 +140,7 @@ void ESP::RunDemonESP() {
 	for (std::string& class_ : demons_c) {
 		if (SceneName() != "Menu")
 			return;
-		app::Object_1__Array *ents = Object::FindObjectsOfType(class_.c_str(), "");
+		app::Object_1__Array* ents = Object::FindObjectsOfType(class_.c_str(), "");
 		if (ents == nullptr)
 			continue;
 
@@ -140,10 +151,16 @@ void ESP::RunDemonESP() {
 	}
 }
 
+
 void ESP::RunItemsESP() {
 	ImColor col = ImColor{ settings::item_esp_color[0], settings::item_esp_color[1], settings::item_esp_color[2], settings::item_esp_color[3] };
 
-	app::Object_1__Array *ents = Object::FindObjectsOfType("SurvivalInteractable", "");
+	ents_item = RefreshEntList(ents_item, "SurvivalInteractable");
+	if (ents_item == nullptr) return;
+
+	app::Object_1__Array* ents = ents_item;
+
+
 	if (ents != nullptr || !Object::IsNull(ents->vector[0])) {
 		ComputePositionAndDrawESP(ents, col, true);
 	}
@@ -157,11 +174,12 @@ void ESP::RunItemsESP() {
 }
 
 void ESP::RunGoatsESP() {
-	app::Object_1__Array *goats = Object::FindObjectsOfType("GoatBehaviour", "");
-	
+
+	app::Object_1__Array* goats = ESP::ents_goat;
+
 	if (goats == nullptr || Object::IsNull(goats->vector[0]))
 		return;
-	
+
 	ComputePositionAndDrawESP(goats, ImColor{ settings::goat_esp_color[0], settings::goat_esp_color[1], settings::goat_esp_color[2], settings::goat_esp_color[3] });
 }
 
@@ -176,8 +194,8 @@ void ESP::RunPlayersESP() {
 
 		if (ent == nullptr || ent == Player::GetLocalPlayer())
 			continue;
-	
-		DrawBoxESP(ent, -0.25, 1.75, "Player", ImColor{settings::player_esp_color[0], settings::player_esp_color[1], settings::player_esp_color[2], settings::player_esp_color[3]},
-			ImColor{ settings::player_snaplines_color[0], settings::player_snaplines_color[1], settings::player_snaplines_color[2], settings::player_snaplines_color[3]}, settings::player_snaplines, settings::player_esp);
+
+		DrawBoxESP(ent, -0.25, 1.75, "Player", ImColor{ settings::player_esp_color[0], settings::player_esp_color[1], settings::player_esp_color[2], settings::player_esp_color[3] },
+			ImColor{ settings::player_snaplines_color[0], settings::player_snaplines_color[1], settings::player_snaplines_color[2], settings::player_snaplines_color[3] }, settings::player_snaplines, settings::player_esp);
 	}
 }

@@ -94,6 +94,11 @@ typedef void(__stdcall* TNolanBehaviour_Update)(app::NolanBehaviour*, MethodInfo
 TNolanBehaviour_Update oNolanBehaviour_Update = NULL;
 void __stdcall hNolanBehaviour_Update(app::NolanBehaviour* __this, MethodInfo* method) {
 
+	// TEMP FIX #60
+	if (SceneName() != "Menu") {
+		ESP::ents_goat = Object::FindObjectsOfType("GoatBehaviour", "");
+	}
+
 	if (settings::spoof_level && IsLocalPlayer(__this)) {
 		Misc::RankSpoofer(settings::new_level);
 	}
@@ -778,7 +783,21 @@ HRESULT __stdcall hookD3D11Present(IDXGISwapChain* pSwapChain, UINT SyncInterval
 
 		if (settings::azazel_esp && SceneName() != "Menu")
 			ESP::RunAzazelESP();
+
+		ESP::time_counter += 1;
+
+		if (ESP::time_counter > ESP::time_refresh) {
+			ESP::time_counter = 0;
+		}
 	}
+	if (!IsInGame() && SceneName() == "Menu") {
+		if (settings::item_esp) {
+			ESP::ents_azazel	= nullptr;
+			ESP::ents_item		= nullptr;
+			ESP::ents_goat		= nullptr;
+		}
+	}
+
 
 	ImGui::GetIO().MouseDrawCursor = open_menu;
 
